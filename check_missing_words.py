@@ -37,11 +37,15 @@ def strip_diacritics(text):
 
 def load_word_set(filepath):
     """Load words from CSV file into a set with normalized and stripped versions."""
+    print(f"Opening file for reading: {filepath}")
     words = set()
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
+            print(f"Successfully opened {filepath}")
             reader = csv.reader(f, delimiter='\t')
+            row_count = 0
             for row in reader:
+                row_count += 1
                 if len(row) >= 2:
                     # Rahlfs has 3 columns (num, num, word), Swete has 2 (num, word)
                     # Use the last column which is always the word
@@ -49,6 +53,7 @@ def load_word_set(filepath):
                     # Store both case-insensitive and diacritic-stripped version
                     normalized = strip_diacritics(word.lower())
                     words.add(normalized)
+            print(f"Finished reading {filepath} ({row_count} rows processed)")
     except Exception as e:
         print(f"Error loading {filepath}: {e}")
     return words
@@ -56,15 +61,20 @@ def load_word_set(filepath):
 
 def load_accepted_words(filepath):
     """Load accepted words from a text file (one word per line)."""
+    print(f"Opening accepted words file: {filepath}")
     words = set()
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
+            print(f"Successfully opened {filepath}")
+            line_count = 0
             for line in f:
+                line_count += 1
                 word = line.strip()
                 if word and not word.startswith('#'):  # Skip empty lines and comments
                     # Normalize and strip diacritics for comparison
                     normalized = strip_diacritics(normalize_text(word).lower())
                     words.add(normalized)
+            print(f"Finished reading {filepath} ({line_count} lines, {len(words)} words loaded)")
     except FileNotFoundError:
         print(f"Note: Accepted words file '{filepath}' not found. Continuing without it.")
     except Exception as e:
@@ -74,16 +84,21 @@ def load_accepted_words(filepath):
 
 def load_words_with_ids(filepath):
     """Load words from CSV file with their word IDs for verse-specific lookups."""
+    print(f"Opening file with word IDs: {filepath}")
     words_dict = {}  # word_id -> normalized_word
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
+            print(f"Successfully opened {filepath}")
             reader = csv.reader(f, delimiter='\t')
+            row_count = 0
             for row in reader:
+                row_count += 1
                 if len(row) >= 2:
                     word_id = int(row[0])
                     word = normalize_text(row[-1])
                     normalized = strip_diacritics(word.lower())
                     words_dict[word_id] = normalized
+            print(f"Finished reading {filepath} ({row_count} rows, {len(words_dict)} word IDs loaded)")
     except Exception as e:
         print(f"Error loading {filepath} with IDs: {e}")
     return words_dict
@@ -91,11 +106,15 @@ def load_words_with_ids(filepath):
 
 def load_versification(filepath):
     """Load versification file mapping verses to word IDs."""
+    print(f"Opening versification file: {filepath}")
     verse_map = {}  # verse_ref -> word_id
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
+            print(f"Successfully opened {filepath}")
             reader = csv.reader(f, delimiter='\t')
+            row_count = 0
             for row in reader:
+                row_count += 1
                 if len(row) >= 2:
                     # Rahlfs: verse_ref, word_id
                     # Swete: word_id, verse_ref
@@ -108,11 +127,14 @@ def load_versification(filepath):
                         verse_ref = row[0]
                         word_id = int(row[1])
                     verse_map[verse_ref] = word_id
+            print(f"Finished reading {filepath} ({row_count} rows, {len(verse_map)} verses loaded)")
     except Exception as e:
         print(f"Error loading {filepath}: {e}")
     
     # Pre-sort verses by word_id for efficient range lookup
+    print(f"Sorting verses from {filepath}...")
     sorted_verses = sorted(verse_map.items(), key=lambda x: x[1])
+    print(f"Finished sorting {len(sorted_verses)} verses")
     return verse_map, sorted_verses
 
 
@@ -345,7 +367,9 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typ
     if not check_typos:
         print("Typo checking disabled for faster processing.")
     
+    print(f"Opening Bible file for reading: {bible_path}")
     with open(bible_path, 'r', encoding='utf-8') as f:
+        print(f"Successfully opened {bible_path}")
         for line_num, line in enumerate(f, 1):
             line = line.strip()
             
@@ -426,7 +450,9 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typ
     
     # Write results to log file
     print(f"\nWriting results to {output_path}...")
+    print(f"Opening file for writing: {output_path}")
     with open(output_path, 'w', encoding='utf-8', newline='') as f:
+        print(f"Successfully opened {output_path} for writing")
         writer = csv.writer(f, delimiter='\t')
         # Write header - simple format without typo check columns
         writer.writerow(['Line Number', 'Verse Reference', 'Word', 'Full Line'])
@@ -439,12 +465,15 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typ
                 entry['word'],
                 entry['full_line']
             ])
+        print(f"Finished writing {len(missing_words)} rows to {output_path}")
     
     # Write full typo check results if enabled
     if check_typos:
         typo_check_path = output_path.replace('.tsv', '_typo_check.tsv')
         print(f"Writing full typo check results to {typo_check_path}...")
+        print(f"Opening file for writing: {typo_check_path}")
         with open(typo_check_path, 'w', encoding='utf-8', newline='') as f:
+            print(f"Successfully opened {typo_check_path} for writing")
             writer = csv.writer(f, delimiter='\t')
             # Write header with all columns including verse match
             writer.writerow(['Line Number', 'Verse Reference', 'Word', 'Is Name?', 'Is Number?', 
@@ -464,6 +493,7 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typ
                     'Yes' if entry.get('verse_match', False) else 'No',
                     entry['full_line']
                 ])
+            print(f"Finished writing {len(missing_words)} rows to {typo_check_path}")
     
     # Create a filtered file with likely typos only
     if check_typos:
@@ -471,7 +501,9 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typ
         likely_typos = [e for e in missing_words if e['is_typo'] and not e['is_name'] and not e['is_number']]
         
         print(f"Writing likely typos to {filtered_path}...")
+        print(f"Opening file for writing: {filtered_path}")
         with open(filtered_path, 'w', encoding='utf-8', newline='') as f:
+            print(f"Successfully opened {filtered_path} for writing")
             writer = csv.writer(f, delimiter='\t')
             # Write header with verse match column
             writer.writerow(['Line Number', 'Verse Reference', 'Word', 'Closest Match', 'Similarity', 'Verse Match?', 'Full Line'])
@@ -487,6 +519,7 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typ
                     'Yes' if entry.get('verse_match', False) else 'No',
                     entry['full_line']
                 ])
+            print(f"Finished writing {len(likely_typos)} rows to {filtered_path}")
     
     print(f"\nComplete! Found {len(missing_words)} missing words.")
     if check_typos:
