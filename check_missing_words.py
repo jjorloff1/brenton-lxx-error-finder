@@ -7,6 +7,7 @@ rahlfs_words.csv or swete_words.csv files.
 import re
 import unicodedata
 import csv
+import argparse
 from difflib import SequenceMatcher
 
 
@@ -191,7 +192,7 @@ def extract_verse_number(line):
     return None
 
 
-def process_bible_file(bible_path, rahlfs_set, swete_set, output_path):
+def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typos=True):
     """Process the Bible file and log missing words."""
     
     current_book = None
@@ -201,6 +202,8 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path):
     missing_words = []
     
     print("Processing Bible file...")
+    if not check_typos:
+        print("Typo checking disabled for faster processing.")
     
     with open(bible_path, 'r', encoding='utf-8') as f:
         for line_num, line in enumerate(f, 1):
@@ -238,13 +241,16 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path):
                             verse_ref = f"{current_book} {current_chapter}:{current_verse}"
                         
                         # Check if likely proper name
-                        is_name = is_likely_proper_name(word)
+                        is_name = is_likely_proper_name(word) if check_typos else False
                         
                         # Check if likely number word
-                        is_number = is_likely_number_word(word)
+                        is_number = is_likely_number_word(word) if check_typos else False
                         
                         # Check if likely typo
-                        is_typo, closest_match, similarity = is_likely_typo(word, rahlfs_set, swete_set)
+                        if check_typos:
+                            is_typo, closest_match, similarity = is_likely_typo(word, rahlfs_set, swete_set)
+                        else:
+                            is_typo, closest_match, similarity = False, None, 0
                         
                         missing_words.append({
                             'line_num': line_num,
@@ -262,9 +268,8 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path):
     print(f"\nWriting results to {output_path}...")
     with open(output_path, 'w', encoding='utf-8', newline='') as f:
         writer = csv.writer(f, delimiter='\t')
-        # Write header
-        writer.writerow(['Line Number', 'Verse Reference', 'Word', 'Is Name?', 'Is Number?', 
-                        'Likely Typo?', 'Closest Match', 'Similarity', 'Full Line'])
+        # Write header - simple format without typo check columns
+        writer.writerow(['Line Number', 'Verse Reference', 'Word', 'Full Line'])
         
         # Write data
         for entry in missing_words:
@@ -272,50 +277,103 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path):
                 entry['line_num'],
                 entry['verse_ref'],
                 entry['word'],
-                'Yes' if entry['is_name'] else 'No',
-                'Yes' if entry['is_number'] else 'No',
-                'Yes' if entry['is_typo'] else 'No',
-                entry['closest_match'],
-                entry['similarity'],
                 entry['full_line']
             ])
+    
+    # Write full typo check results if enabled
+    if check_typos:
+        typo_check_path = output_path.replace('.tsv', '_typo_check.tsv')
+        print(f"Writing full typo check results to {typo_check_path}...")
+        with open(typo_check_path, 'w', encoding='utf-8', newline='') as f:
+            writer = csv.writer(f, delimiter='\t')
+            # Write header with all columns
+            writer.writerow(['Line Number', 'Verse Reference', 'Word', 'Is Name?', 'Is Number?', 
+                            'Likely Typo?', 'Closest Match', 'Similarity', 'Full Line'])
+            
+            # Write data
+            for entry in missing_words:
+                writer.writerow([
+                    entry['line_num'],
+                    entry['verse_ref'],
+                    entry['word'],
+                    'Yes' if entry['is_name'] else 'No',
+                    'Yes' if entry['is_number'] else 'No',
+                    'Yes' if entry['is_typo'] else 'No',
+                    entry['closest_match'],
+                    entry['similarity'],
+                    entry['full_line']
+                ])
     
     # Create a filtered file with likely typos only
-    filtered_path = output_path.replace('.tsv', '_likely_typos.tsv')
-    likely_typos = [e for e in missing_words if e['is_typo'] and not e['is_name'] and not e['is_number']]
-    
-    print(f"Writing likely typos to {filtered_path}...")
-    with open(filtered_path, 'w', encoding='utf-8', newline='') as f:
-        writer = csv.writer(f, delimiter='\t')
-        # Write header
-        writer.writerow(['Line Number', 'Verse Reference', 'Word', 'Closest Match', 'Similarity', 'Full Line'])
+    if check_typos:
+        filtered_path = output_path.replace('.tsv', '_likely_typos.tsv')
+        likely_typos = [e for e in missing_words if e['is_typo'] and not e['is_name'] and not e['is_number']]
         
-        # Write data
-        for entry in likely_typos:
-            writer.writerow([
-                entry['line_num'],
-                entry['verse_ref'],
-                entry['word'],
-                entry['closest_match'],
-                entry['similarity'],
-                entry['full_line']
-            ])
+        print(f"Writing likely typos to {filtered_path}...")
+        with open(filtered_path, 'w', encoding='utf-8', newline='') as f:
+            writer = csv.writer(f, delimiter='\t')
+            # Write header
+            writer.writerow(['Line Number', 'Verse Reference', 'Word', 'Closest Match', 'Similarity', 'Full Line'])
+            
+            # Write data
+            for entry in likely_typos:
+                writer.writerow([
+                    entry['line_num'],
+                    entry['verse_ref'],
+                    entry['word'],
+                    entry['closest_match'],
+                    entry['similarity'],
+                    entry['full_line']
+                ])
     
     print(f"\nComplete! Found {len(missing_words)} missing words.")
-    print(f"  - Likely proper names: {sum(1 for e in missing_words if e['is_name'])}")
-    print(f"  - Likely numbers: {sum(1 for e in missing_words if e['is_number'])}")
-    print(f"  - Likely typos: {len(likely_typos)}")
+    if check_typos:
+        print(f"  - Likely proper names: {sum(1 for e in missing_words if e['is_name'])}")
+        print(f"  - Likely numbers: {sum(1 for e in missing_words if e['is_number'])}")
+        print(f"  - Likely typos: {len(likely_typos)}")
     print(f"Results saved to: {output_path}")
-    print(f"Filtered typos saved to: {filtered_path}")
+    if check_typos:
+        print(f"Full typo check results saved to: {typo_check_path}")
+        print(f"Filtered typos saved to: {filtered_path}")
 
 
 def main():
     """Main entry point."""
+    parser = argparse.ArgumentParser(
+        description='Check for Greek words in Bible file that are not found in reference word lists.',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  # Run with typo checking (default):
+  python check_missing_words.py
+  
+  # Run without typo checking (faster):
+  python check_missing_words.py --no-typo-check
+  
+  # Specify custom input files:
+  python check_missing_words.py --bible MyBible.tex --rahlfs rahlfs.csv
+        """
+    )
+    
+    parser.add_argument('--bible', default='Brenton.tex',
+                        help='Path to Bible .tex file (default: Brenton.tex)')
+    parser.add_argument('--rahlfs', default='rahlfs_words.csv',
+                        help='Path to Rahlfs words CSV file (default: rahlfs_words.csv)')
+    parser.add_argument('--swete', default='swete_words.csv',
+                        help='Path to Swete words CSV file (default: swete_words.csv)')
+    parser.add_argument('--output', default='missing_words.tsv',
+                        help='Path to output TSV file (default: missing_words.tsv)')
+    parser.add_argument('--no-typo-check', action='store_true',
+                        help='Disable typo checking for faster processing')
+    
+    args = parser.parse_args()
+    
     # File paths
-    bible_path = 'Brenton.tex'
-    rahlfs_path = 'rahlfs_words.csv'
-    swete_path = 'swete_words.csv'
-    output_path = 'missing_words.tsv'
+    bible_path = args.bible
+    rahlfs_path = args.rahlfs
+    swete_path = args.swete
+    output_path = args.output
+    check_typos = not args.no_typo_check
     
     print("Loading word sets...")
     rahlfs_set = load_word_set(rahlfs_path)
@@ -324,7 +382,7 @@ def main():
     swete_set = load_word_set(swete_path)
     print(f"Loaded {len(swete_set)} words from Swete")
     
-    process_bible_file(bible_path, rahlfs_set, swete_set, output_path)
+    process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typos)
 
 
 if __name__ == '__main__':
