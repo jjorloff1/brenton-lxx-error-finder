@@ -237,6 +237,44 @@ def get_verse_words(verse_ref, verse_map, sorted_verses, words_dict):
     return verse_words
 
 
+def get_area_words(verse_ref, verse_map, sorted_verses, words_dict, verse_range=2):
+    """Get all words from surrounding verses (±verse_range verses)."""
+    area_words = set()
+    
+    # Find the current verse index in sorted list
+    if verse_ref not in verse_map:
+        return area_words
+    
+    current_idx = None
+    for i, (v_ref, v_id) in enumerate(sorted_verses):
+        if v_ref == verse_ref:
+            current_idx = i
+            break
+    
+    if current_idx is None:
+        return area_words
+    
+    # Get range of verses (current ± verse_range)
+    start_verse_idx = max(0, current_idx - verse_range)
+    end_verse_idx = min(len(sorted_verses) - 1, current_idx + verse_range)
+    
+    # Get word IDs for the range
+    start_word_id = sorted_verses[start_verse_idx][1]
+    
+    # Find the end word ID (start of next verse after range, minus 1)
+    if end_verse_idx + 1 < len(sorted_verses):
+        end_word_id = sorted_verses[end_verse_idx + 1][1] - 1
+    else:
+        end_word_id = max(words_dict.keys()) if words_dict else start_word_id
+    
+    # Extract all words in this ID range
+    for word_id in range(start_word_id, end_word_id + 1):
+        if word_id in words_dict:
+            area_words.add(words_dict[word_id])
+    
+    return area_words
+
+
 def is_likely_typo(word, rahlfs_set, swete_set, 
                    brenton_book=None, brenton_ch=None, brenton_vs=None,
                    rahlfs_verse_map=None, swete_verse_map=None,
@@ -244,10 +282,11 @@ def is_likely_typo(word, rahlfs_set, swete_set,
                    rahlfs_words_dict=None, swete_words_dict=None):
     """
     Check if word is likely a typo by finding very similar words in the sets.
-    First checks verse-specific words if verse context provided, then falls back to broader corpus.
-    Returns (is_typo, closest_match, similarity_ratio, verse_match)
+    First checks verse-specific words, then area (±2 verses), then falls back to broader corpus.
+    Returns (is_typo, closest_match, similarity_ratio, verse_match, area_match)
     """
     verse_match = False
+    area_match = False
     
     # First try verse-specific search if we have the necessary data
     if all([brenton_book, brenton_ch, brenton_vs, rahlfs_verse_map, swete_verse_map, 
@@ -269,7 +308,22 @@ def is_likely_typo(word, rahlfs_set, swete_set,
                 best_match = closest_r if ratio_r > ratio_s else closest_s
                 
                 if best_ratio >= 0.85:
-                    return True, best_match, best_ratio, True
+                    return True, best_match, best_ratio, True, False
+            
+            # If not found in exact verse, check surrounding area (±2 verses)
+            rahlfs_area_words = get_area_words(rahlfs_ref, rahlfs_verse_map, rahlfs_sorted_verses, rahlfs_words_dict, verse_range=2)
+            swete_area_words = get_area_words(swete_ref, swete_verse_map, swete_sorted_verses, swete_words_dict, verse_range=2)
+            
+            if rahlfs_area_words or swete_area_words:
+                # Check area words
+                closest_r, ratio_r = find_closest_word(word, rahlfs_area_words)
+                closest_s, ratio_s = find_closest_word(word, swete_area_words)
+                
+                best_ratio = max(ratio_r, ratio_s)
+                best_match = closest_r if ratio_r > ratio_s else closest_s
+                
+                if best_ratio >= 0.85:
+                    return True, best_match, best_ratio, False, True
         except Exception:
             # If conversion or verse lookup fails, continue to broad search
             pass
@@ -283,8 +337,8 @@ def is_likely_typo(word, rahlfs_set, swete_set,
     
     # If we found a very close match (85%+ similar), it's likely a typo
     if best_ratio >= 0.85:
-        return True, best_match, best_ratio, False
-    return False, None, 0, False
+        return True, best_match, best_ratio, False, False
+    return False, None, 0, False, False
 
 
 def is_word_in_sets(word, rahlfs_set, swete_set):
@@ -422,7 +476,7 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typ
                             if words_checked % 100 == 0:
                                 print(f"  Checked {words_checked} words, found {typos_found} potential typos so far... (Current: {verse_ref})")
                             
-                            is_typo, closest_match, similarity, verse_match = is_likely_typo(
+                            is_typo, closest_match, similarity, verse_match, area_match = is_likely_typo(
                                 word, rahlfs_set, swete_set,
                                 current_book, current_chapter, current_verse,
                                 rahlfs_verse_map, swete_verse_map,
@@ -433,7 +487,7 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typ
                             if is_typo:
                                 typos_found += 1
                         else:
-                            is_typo, closest_match, similarity, verse_match = False, None, 0, False
+                            is_typo, closest_match, similarity, verse_match, area_match = False, None, 0, False, False
                         
                         missing_words.append({
                             'line_num': line_num,
@@ -445,7 +499,8 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typ
                             'is_typo': is_typo,
                             'closest_match': closest_match if closest_match else '',
                             'similarity': f"{similarity:.2f}" if similarity > 0 else '',
-                            'verse_match': verse_match
+                            'verse_match': verse_match,
+                            'area_match': area_match
                         })
     
     # Write results to log file
@@ -475,9 +530,9 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typ
         with open(typo_check_path, 'w', encoding='utf-8', newline='') as f:
             print(f"Successfully opened {typo_check_path} for writing")
             writer = csv.writer(f, delimiter='\t')
-            # Write header with all columns including verse match
+            # Write header with all columns including verse match and area match
             writer.writerow(['Line Number', 'Verse Reference', 'Word', 'Is Name?', 'Is Number?', 
-                            'Likely Typo?', 'Closest Match', 'Similarity', 'Verse Match?', 'Full Line'])
+                            'Likely Typo?', 'Closest Match', 'Similarity', 'Verse Match?', 'Area Match?', 'Full Line'])
             
             # Write data
             for entry in missing_words:
@@ -491,6 +546,7 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typ
                     entry['closest_match'],
                     entry['similarity'],
                     'Yes' if entry.get('verse_match', False) else 'No',
+                    'Yes' if entry.get('area_match', False) else 'No',
                     entry['full_line']
                 ])
             print(f"Finished writing {len(missing_words)} rows to {typo_check_path}")
@@ -505,8 +561,8 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typ
         with open(filtered_path, 'w', encoding='utf-8', newline='') as f:
             print(f"Successfully opened {filtered_path} for writing")
             writer = csv.writer(f, delimiter='\t')
-            # Write header with verse match column
-            writer.writerow(['Line Number', 'Verse Reference', 'Word', 'Closest Match', 'Similarity', 'Verse Match?', 'Full Line'])
+            # Write header with verse match and area match columns
+            writer.writerow(['Line Number', 'Verse Reference', 'Word', 'Closest Match', 'Similarity', 'Verse Match?', 'Area Match?', 'Full Line'])
             
             # Write data
             for entry in likely_typos:
@@ -517,6 +573,7 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typ
                     entry['closest_match'],
                     entry['similarity'],
                     'Yes' if entry.get('verse_match', False) else 'No',
+                    'Yes' if entry.get('area_match', False) else 'No',
                     entry['full_line']
                 ])
             print(f"Finished writing {len(likely_typos)} rows to {filtered_path}")
@@ -528,8 +585,11 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typ
         print(f"  - Likely typos: {len(likely_typos)}")
         if likely_typos:
             verse_matches = sum(1 for e in likely_typos if e.get('verse_match', False))
+            area_matches = sum(1 for e in likely_typos if e.get('area_match', False))
+            corpus_matches = len(likely_typos) - verse_matches - area_matches
             print(f"    - Matched within verse: {verse_matches}")
-            print(f"    - Matched in broader corpus: {len(likely_typos) - verse_matches}")
+            print(f"    - Matched within area (±2 verses): {area_matches}")
+            print(f"    - Matched in broader corpus: {corpus_matches}")
     print(f"Results saved to: {output_path}")
     if check_typos:
         print(f"Full typo check results saved to: {typo_check_path}")

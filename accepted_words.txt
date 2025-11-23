@@ -3,3 +3,7 @@
 # Lines starting with # are comments and will be ignored
 # Words will be normalized (case-insensitive, diacritics-stripped) for comparison
 
+# Brenton spelling variants
+ἐλήφθη
+φαγούμεθα
+# ἐνεθυμήθην
