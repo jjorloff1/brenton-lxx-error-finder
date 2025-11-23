@@ -1,0 +1,5 @@
+# Accepted words list
+# Add Greek words here (one per word per line) that should be excluded from typo checking
+# Lines starting with # are comments and will be ignored
+# Words will be normalized (case-insensitive, diacritics-stripped) for comparison
+

@@ -54,6 +54,24 @@ def load_word_set(filepath):
     return words
 
 
+def load_accepted_words(filepath):
+    """Load accepted words from a text file (one word per line)."""
+    words = set()
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            for line in f:
+                word = line.strip()
+                if word and not word.startswith('#'):  # Skip empty lines and comments
+                    # Normalize and strip diacritics for comparison
+                    normalized = strip_diacritics(normalize_text(word).lower())
+                    words.add(normalized)
+    except FileNotFoundError:
+        print(f"Note: Accepted words file '{filepath}' not found. Continuing without it.")
+    except Exception as e:
+        print(f"Error loading accepted words from {filepath}: {e}")
+    return words
+
+
 def load_words_with_ids(filepath):
     """Load words from CSV file with their word IDs for verse-specific lookups."""
     words_dict = {}  # word_id -> normalized_word
@@ -311,7 +329,8 @@ def extract_verse_number(line):
 def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typos=True,
                        rahlfs_verse_map=None, swete_verse_map=None,
                        rahlfs_sorted_verses=None, swete_sorted_verses=None,
-                       rahlfs_words_dict=None, swete_words_dict=None):
+                       rahlfs_words_dict=None, swete_words_dict=None,
+                       accepted_words=None):
     """Process the Bible file and log missing words."""
     
     current_book = None
@@ -355,6 +374,12 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typ
             greek_words = extract_greek_words(line)
             if greek_words:
                 for word in greek_words:
+                    # First check if word is in accepted words list (skip if accepted)
+                    if accepted_words:
+                        normalized_word = strip_diacritics(word.lower())
+                        if normalized_word in accepted_words:
+                            continue
+                    
                     if not is_word_in_sets(word, rahlfs_set, swete_set):
                         # Build verse reference
                         verse_ref = "Unknown"
@@ -508,6 +533,8 @@ Examples:
                         help='Path to Swete versification CSV file (default: swete_versification.csv)')
     parser.add_argument('--output', default='missing_words.tsv',
                         help='Path to output TSV file (default: missing_words.tsv)')
+    parser.add_argument('--accepted-words', default='accepted_words.txt',
+                        help='Path to accepted words file (default: accepted_words.txt)')
     parser.add_argument('--no-typo-check', action='store_true',
                         help='Disable typo checking for faster processing')
     
@@ -528,6 +555,10 @@ Examples:
     
     swete_set = load_word_set(swete_path)
     print(f"Loaded {len(swete_set)} words from Swete")
+    
+    accepted_words = load_accepted_words(args.accepted_words)
+    if accepted_words:
+        print(f"Loaded {len(accepted_words)} accepted words")
     
     # Load additional data for verse-specific typo checking
     rahlfs_words_dict = None
@@ -554,7 +585,8 @@ Examples:
     process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typos,
                       rahlfs_verse_map, swete_verse_map,
                       rahlfs_sorted_verses, swete_sorted_verses,
-                      rahlfs_words_dict, swete_words_dict)
+                      rahlfs_words_dict, swete_words_dict,
+                      accepted_words)
 
 
 if __name__ == '__main__':
