@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Script to check for Greek words in Bible-B9p01.tex that are not found in
+Script to check for Greek words in Brenton.tex that are not found in
 rahlfs_words.csv or swete_words.csv files.
 """
 
@@ -169,7 +169,7 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path):
 def main():
     """Main entry point."""
     # File paths
-    bible_path = 'Bible-B9p01.tex'
+    bible_path = 'Brenton.tex'
     rahlfs_path = 'rahlfs_words.csv'
     swete_path = 'swete_words.csv'
     output_path = 'missing_words.tsv'
