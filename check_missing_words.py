@@ -7,6 +7,7 @@ rahlfs_words.csv or swete_words.csv files.
 import re
 import unicodedata
 import csv
+from difflib import SequenceMatcher
 
 
 def normalize_text(text):
@@ -62,7 +63,88 @@ def extract_greek_words(line):
     return [normalize_text(word) for word in words]
 
 
+def is_likely_proper_name(word):
+    """Check if a word is likely a proper name (starts with capital)."""
+    # After normalization, check if the first character is uppercase
+    return len(word) > 0 and word[0].isupper()
+
+
+def is_likely_number_word(word):
+    """Check if word appears to be a number/numeral."""
+    # Greek number words often contain these patterns
+    number_patterns = [
+        'ἑκατό', 'χίλι', 'μύρι',  # hundred, thousand, myriad
+        'δέκα', 'εἴκοσι', 'τριάκοντα', 'τεσσαράκοντα', 'πεντήκοντα',
+        'ἑξήκοντα', 'ἑβδομήκοντα', 'ὀγδοήκοντα', 'ἐνενήκοντα', 'ἐννενήκοντα', 'ἐννεήκοντα',
+        'πρῶτο', 'δεύτερο', 'τρίτο', 'τέταρτο', 'πέμπτο',
+        'διακόσι', 'τριακόσι', 'τετρακόσι', 'πεντακόσι', 'ἑξακόσι', 'ἑπτακόσι', 'ὀκτακόσι', 'ἐννακόσι'
+    ]
+    word_lower = word.lower()
+    word_stripped = strip_diacritics(word_lower)
+    
+    for pattern in number_patterns:
+        pattern_stripped = strip_diacritics(pattern.lower())
+        if pattern_stripped in word_stripped:
+            return True
+    return False
+
+
+def find_closest_word(word, word_set, max_distance=2):
+    """Find the closest matching word in the set within max_distance edits."""
+    normalized = strip_diacritics(word.lower())
+    best_match = None
+    best_ratio = 0
+    
+    # Only check words of similar length (within 2 characters)
+    target_len = len(normalized)
+    
+    for candidate in word_set:
+        if abs(len(candidate) - target_len) > 2:
+            continue
+            
+        # Calculate similarity ratio
+        ratio = SequenceMatcher(None, normalized, candidate).ratio()
+        
+        # If very similar (>0.8 similarity), it might be a typo
+        if ratio > best_ratio:
+            best_ratio = ratio
+            best_match = candidate
+    
+    # Return match only if it's very close (likely a typo)
+    if best_ratio >= 0.85:
+        return best_match, best_ratio
+    return None, 0
+
+
+def is_likely_typo(word, rahlfs_set, swete_set):
+    """Check if word is likely a typo by finding very similar words in the sets."""
+    closest_r, ratio_r = find_closest_word(word, rahlfs_set)
+    closest_s, ratio_s = find_closest_word(word, swete_set)
+    
+    best_ratio = max(ratio_r, ratio_s)
+    best_match = closest_r if ratio_r > ratio_s else closest_s
+    
+    # If we found a very close match (85%+ similar), it's likely a typo
+    if best_ratio >= 0.85:
+        return True, best_match, best_ratio
+    return False, None, 0
+
+
 def is_word_in_sets(word, rahlfs_set, swete_set):
+    """Check if word exists in either word set (case-insensitive, diacritic-stripped)."""
+    normalized = strip_diacritics(word.lower())
+    
+    # First, try the word as-is
+    if normalized in rahlfs_set or normalized in swete_set:
+        return True
+    
+    # Second, try with movable ν added at the end
+    # This handles cases where Brenton drops the movable nu
+    normalized_with_nu = normalized + 'ν'
+    if normalized_with_nu in rahlfs_set or normalized_with_nu in swete_set:
+        return True
+    
+    return False
     """Check if word exists in either word set (case-insensitive, diacritic-stripped)."""
     normalized = strip_diacritics(word.lower())
     
@@ -155,11 +237,25 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path):
                         if current_book and current_chapter and current_verse:
                             verse_ref = f"{current_book} {current_chapter}:{current_verse}"
                         
+                        # Check if likely proper name
+                        is_name = is_likely_proper_name(word)
+                        
+                        # Check if likely number word
+                        is_number = is_likely_number_word(word)
+                        
+                        # Check if likely typo
+                        is_typo, closest_match, similarity = is_likely_typo(word, rahlfs_set, swete_set)
+                        
                         missing_words.append({
                             'line_num': line_num,
                             'verse_ref': verse_ref,
                             'word': word,
-                            'full_line': line
+                            'full_line': line,
+                            'is_name': is_name,
+                            'is_number': is_number,
+                            'is_typo': is_typo,
+                            'closest_match': closest_match if closest_match else '',
+                            'similarity': f"{similarity:.2f}" if similarity > 0 else ''
                         })
     
     # Write results to log file
@@ -167,7 +263,8 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path):
     with open(output_path, 'w', encoding='utf-8', newline='') as f:
         writer = csv.writer(f, delimiter='\t')
         # Write header
-        writer.writerow(['Line Number', 'Verse Reference', 'Word', 'Full Line'])
+        writer.writerow(['Line Number', 'Verse Reference', 'Word', 'Is Name?', 'Is Number?', 
+                        'Likely Typo?', 'Closest Match', 'Similarity', 'Full Line'])
         
         # Write data
         for entry in missing_words:
@@ -175,11 +272,41 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path):
                 entry['line_num'],
                 entry['verse_ref'],
                 entry['word'],
+                'Yes' if entry['is_name'] else 'No',
+                'Yes' if entry['is_number'] else 'No',
+                'Yes' if entry['is_typo'] else 'No',
+                entry['closest_match'],
+                entry['similarity'],
+                entry['full_line']
+            ])
+    
+    # Create a filtered file with likely typos only
+    filtered_path = output_path.replace('.tsv', '_likely_typos.tsv')
+    likely_typos = [e for e in missing_words if e['is_typo'] and not e['is_name'] and not e['is_number']]
+    
+    print(f"Writing likely typos to {filtered_path}...")
+    with open(filtered_path, 'w', encoding='utf-8', newline='') as f:
+        writer = csv.writer(f, delimiter='\t')
+        # Write header
+        writer.writerow(['Line Number', 'Verse Reference', 'Word', 'Closest Match', 'Similarity', 'Full Line'])
+        
+        # Write data
+        for entry in likely_typos:
+            writer.writerow([
+                entry['line_num'],
+                entry['verse_ref'],
+                entry['word'],
+                entry['closest_match'],
+                entry['similarity'],
                 entry['full_line']
             ])
     
     print(f"\nComplete! Found {len(missing_words)} missing words.")
+    print(f"  - Likely proper names: {sum(1 for e in missing_words if e['is_name'])}")
+    print(f"  - Likely numbers: {sum(1 for e in missing_words if e['is_number'])}")
+    print(f"  - Likely typos: {len(likely_typos)}")
     print(f"Results saved to: {output_path}")
+    print(f"Filtered typos saved to: {filtered_path}")
 
 
 def main():
