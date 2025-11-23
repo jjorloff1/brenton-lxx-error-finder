@@ -16,14 +16,17 @@ def normalize_text(text):
 
 def strip_diacritics(text):
     """Remove diacritical marks and accents from Greek text."""
-    # Normalize first
+    # First apply NFC normalization for consistency
     text = normalize_text(text)
+    # Then decompose to NFD (separates base chars from combining marks)
+    text = unicodedata.normalize('NFD', text)
     # Remove combining characters (accents, breathing marks, etc.)
     stripped = ''.join(
         char for char in text 
         if unicodedata.category(char) != 'Mn'
     )
-    return stripped
+    # Normalize back to NFC for consistent comparison
+    return unicodedata.normalize('NFC', stripped)
 
 
 def load_word_set(filepath):
@@ -34,7 +37,9 @@ def load_word_set(filepath):
             reader = csv.reader(f, delimiter='\t')
             for row in reader:
                 if len(row) >= 2:
-                    word = normalize_text(row[1])
+                    # Rahlfs has 3 columns (num, num, word), Swete has 2 (num, word)
+                    # Use the last column which is always the word
+                    word = normalize_text(row[-1])
                     # Store both case-insensitive and diacritic-stripped version
                     normalized = strip_diacritics(word.lower())
                     words.add(normalized)
@@ -60,7 +65,18 @@ def extract_greek_words(line):
 def is_word_in_sets(word, rahlfs_set, swete_set):
     """Check if word exists in either word set (case-insensitive, diacritic-stripped)."""
     normalized = strip_diacritics(word.lower())
-    return normalized in rahlfs_set or normalized in swete_set
+    
+    # First, try the word as-is
+    if normalized in rahlfs_set or normalized in swete_set:
+        return True
+    
+    # Second, try with movable ν added at the end
+    # This handles cases where Brenton drops the movable nu
+    normalized_with_nu = normalized + 'ν'
+    if normalized_with_nu in rahlfs_set or normalized_with_nu in swete_set:
+        return True
+    
+    return False
 
 
 def extract_book_name(line):
