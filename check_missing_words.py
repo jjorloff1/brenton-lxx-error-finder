@@ -9,6 +9,10 @@ import unicodedata
 import csv
 import argparse
 from difflib import SequenceMatcher
+from book_code_mappings import (
+    convert_brenton_reference_to_rahlfs,
+    convert_brenton_reference_to_swete
+)
 
 
 def normalize_text(text):
@@ -48,6 +52,50 @@ def load_word_set(filepath):
     except Exception as e:
         print(f"Error loading {filepath}: {e}")
     return words
+
+
+def load_words_with_ids(filepath):
+    """Load words from CSV file with their word IDs for verse-specific lookups."""
+    words_dict = {}  # word_id -> normalized_word
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            reader = csv.reader(f, delimiter='\t')
+            for row in reader:
+                if len(row) >= 2:
+                    word_id = int(row[0])
+                    word = normalize_text(row[-1])
+                    normalized = strip_diacritics(word.lower())
+                    words_dict[word_id] = normalized
+    except Exception as e:
+        print(f"Error loading {filepath} with IDs: {e}")
+    return words_dict
+
+
+def load_versification(filepath):
+    """Load versification file mapping verses to word IDs."""
+    verse_map = {}  # verse_ref -> word_id
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            reader = csv.reader(f, delimiter='\t')
+            for row in reader:
+                if len(row) >= 2:
+                    # Rahlfs: verse_ref, word_id
+                    # Swete: word_id, verse_ref
+                    # Detect format by checking if first column is numeric
+                    try:
+                        word_id = int(row[0])
+                        verse_ref = row[1]
+                    except ValueError:
+                        # First column is verse ref, second is word_id
+                        verse_ref = row[0]
+                        word_id = int(row[1])
+                    verse_map[verse_ref] = word_id
+    except Exception as e:
+        print(f"Error loading {filepath}: {e}")
+    
+    # Pre-sort verses by word_id for efficient range lookup
+    sorted_verses = sorted(verse_map.items(), key=lambda x: x[1])
+    return verse_map, sorted_verses
 
 
 def extract_greek_words(line):
@@ -117,8 +165,76 @@ def find_closest_word(word, word_set, max_distance=2):
     return None, 0
 
 
-def is_likely_typo(word, rahlfs_set, swete_set):
-    """Check if word is likely a typo by finding very similar words in the sets."""
+def get_verse_words(verse_ref, verse_map, sorted_verses, words_dict):
+    """Get all words for a specific verse using the versification mapping."""
+    verse_words = set()
+    
+    # Find start word ID for this verse
+    if verse_ref not in verse_map:
+        return verse_words
+    
+    start_id = verse_map[verse_ref]
+    
+    # Find the next verse to get end boundary using pre-sorted list
+    current_idx = None
+    for i, (v_ref, v_id) in enumerate(sorted_verses):
+        if v_ref == verse_ref:
+            current_idx = i
+            break
+    
+    # Determine end ID
+    if current_idx is not None and current_idx + 1 < len(sorted_verses):
+        end_id = sorted_verses[current_idx + 1][1] - 1
+    else:
+        # Last verse - use maximum word ID
+        end_id = max(words_dict.keys()) if words_dict else start_id
+    
+    # Extract words in this ID range
+    for word_id in range(start_id, end_id + 1):
+        if word_id in words_dict:
+            verse_words.add(words_dict[word_id])
+    
+    return verse_words
+
+
+def is_likely_typo(word, rahlfs_set, swete_set, 
+                   brenton_book=None, brenton_ch=None, brenton_vs=None,
+                   rahlfs_verse_map=None, swete_verse_map=None,
+                   rahlfs_sorted_verses=None, swete_sorted_verses=None,
+                   rahlfs_words_dict=None, swete_words_dict=None):
+    """
+    Check if word is likely a typo by finding very similar words in the sets.
+    First checks verse-specific words if verse context provided, then falls back to broader corpus.
+    Returns (is_typo, closest_match, similarity_ratio, verse_match)
+    """
+    verse_match = False
+    
+    # First try verse-specific search if we have the necessary data
+    if all([brenton_book, brenton_ch, brenton_vs, rahlfs_verse_map, swete_verse_map, 
+            rahlfs_sorted_verses, swete_sorted_verses,
+            rahlfs_words_dict, swete_words_dict]):
+        try:
+            rahlfs_ref = convert_brenton_reference_to_rahlfs(brenton_book, brenton_ch, brenton_vs)
+            swete_ref = convert_brenton_reference_to_swete(brenton_book, brenton_ch, brenton_vs)
+            
+            rahlfs_verse_words = get_verse_words(rahlfs_ref, rahlfs_verse_map, rahlfs_sorted_verses, rahlfs_words_dict)
+            swete_verse_words = get_verse_words(swete_ref, swete_verse_map, swete_sorted_verses, swete_words_dict)
+            
+            if rahlfs_verse_words or swete_verse_words:
+                # Check verse-specific words first
+                closest_r, ratio_r = find_closest_word(word, rahlfs_verse_words)
+                closest_s, ratio_s = find_closest_word(word, swete_verse_words)
+                
+                best_ratio = max(ratio_r, ratio_s)
+                best_match = closest_r if ratio_r > ratio_s else closest_s
+                
+                if best_ratio >= 0.85:
+                    return True, best_match, best_ratio, True
+        except Exception:
+            # If conversion or verse lookup fails, continue to broad search
+            pass
+    
+    # Fall back to broad corpus search
     closest_r, ratio_r = find_closest_word(word, rahlfs_set)
     closest_s, ratio_s = find_closest_word(word, swete_set)
     
@@ -127,8 +243,8 @@ def is_likely_typo(word, rahlfs_set, swete_set):
     
     # If we found a very close match (85%+ similar), it's likely a typo
     if best_ratio >= 0.85:
-        return True, best_match, best_ratio
-    return False, None, 0
+        return True, best_match, best_ratio, False
+    return False, None, 0, False
 
 
 def is_word_in_sets(word, rahlfs_set, swete_set):
@@ -192,7 +308,10 @@ def extract_verse_number(line):
     return None
 
 
-def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typos=True):
+def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typos=True,
+                       rahlfs_verse_map=None, swete_verse_map=None,
+                       rahlfs_sorted_verses=None, swete_sorted_verses=None,
+                       rahlfs_words_dict=None, swete_words_dict=None):
     """Process the Bible file and log missing words."""
     
     current_book = None
@@ -200,6 +319,8 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typ
     current_verse = None
     
     missing_words = []
+    words_checked = 0
+    typos_found = 0
     
     print("Processing Bible file...")
     if not check_typos:
@@ -246,11 +367,24 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typ
                         # Check if likely number word
                         is_number = is_likely_number_word(word) if check_typos else False
                         
-                        # Check if likely typo
+                        # Check if likely typo (with optional verse-specific checking)
                         if check_typos:
-                            is_typo, closest_match, similarity = is_likely_typo(word, rahlfs_set, swete_set)
+                            words_checked += 1
+                            if words_checked % 100 == 0:
+                                print(f"  Checked {words_checked} words, found {typos_found} potential typos so far... (Current: {verse_ref})")
+                            
+                            is_typo, closest_match, similarity, verse_match = is_likely_typo(
+                                word, rahlfs_set, swete_set,
+                                current_book, current_chapter, current_verse,
+                                rahlfs_verse_map, swete_verse_map,
+                                rahlfs_sorted_verses, swete_sorted_verses,
+                                rahlfs_words_dict, swete_words_dict
+                            )
+                            
+                            if is_typo:
+                                typos_found += 1
                         else:
-                            is_typo, closest_match, similarity = False, None, 0
+                            is_typo, closest_match, similarity, verse_match = False, None, 0, False
                         
                         missing_words.append({
                             'line_num': line_num,
@@ -261,7 +395,8 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typ
                             'is_number': is_number,
                             'is_typo': is_typo,
                             'closest_match': closest_match if closest_match else '',
-                            'similarity': f"{similarity:.2f}" if similarity > 0 else ''
+                            'similarity': f"{similarity:.2f}" if similarity > 0 else '',
+                            'verse_match': verse_match
                         })
     
     # Write results to log file
@@ -286,9 +421,9 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typ
         print(f"Writing full typo check results to {typo_check_path}...")
         with open(typo_check_path, 'w', encoding='utf-8', newline='') as f:
             writer = csv.writer(f, delimiter='\t')
-            # Write header with all columns
+            # Write header with all columns including verse match
             writer.writerow(['Line Number', 'Verse Reference', 'Word', 'Is Name?', 'Is Number?', 
-                            'Likely Typo?', 'Closest Match', 'Similarity', 'Full Line'])
+                            'Likely Typo?', 'Closest Match', 'Similarity', 'Verse Match?', 'Full Line'])
             
             # Write data
             for entry in missing_words:
@@ -301,6 +436,7 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typ
                     'Yes' if entry['is_typo'] else 'No',
                     entry['closest_match'],
                     entry['similarity'],
+                    'Yes' if entry.get('verse_match', False) else 'No',
                     entry['full_line']
                 ])
     
@@ -312,8 +448,8 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typ
         print(f"Writing likely typos to {filtered_path}...")
         with open(filtered_path, 'w', encoding='utf-8', newline='') as f:
             writer = csv.writer(f, delimiter='\t')
-            # Write header
-            writer.writerow(['Line Number', 'Verse Reference', 'Word', 'Closest Match', 'Similarity', 'Full Line'])
+            # Write header with verse match column
+            writer.writerow(['Line Number', 'Verse Reference', 'Word', 'Closest Match', 'Similarity', 'Verse Match?', 'Full Line'])
             
             # Write data
             for entry in likely_typos:
@@ -323,6 +459,7 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typ
                     entry['word'],
                     entry['closest_match'],
                     entry['similarity'],
+                    'Yes' if entry.get('verse_match', False) else 'No',
                     entry['full_line']
                 ])
     
@@ -331,6 +468,10 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typ
         print(f"  - Likely proper names: {sum(1 for e in missing_words if e['is_name'])}")
         print(f"  - Likely numbers: {sum(1 for e in missing_words if e['is_number'])}")
         print(f"  - Likely typos: {len(likely_typos)}")
+        if likely_typos:
+            verse_matches = sum(1 for e in likely_typos if e.get('verse_match', False))
+            print(f"    - Matched within verse: {verse_matches}")
+            print(f"    - Matched in broader corpus: {len(likely_typos) - verse_matches}")
     print(f"Results saved to: {output_path}")
     if check_typos:
         print(f"Full typo check results saved to: {typo_check_path}")
@@ -361,6 +502,10 @@ Examples:
                         help='Path to Rahlfs words CSV file (default: rahlfs_words.csv)')
     parser.add_argument('--swete', default='swete_words.csv',
                         help='Path to Swete words CSV file (default: swete_words.csv)')
+    parser.add_argument('--rahlfs-versification', default='rahlfs_versification.csv',
+                        help='Path to Rahlfs versification CSV file (default: rahlfs_versification.csv)')
+    parser.add_argument('--swete-versification', default='swete_versification.csv',
+                        help='Path to Swete versification CSV file (default: swete_versification.csv)')
     parser.add_argument('--output', default='missing_words.tsv',
                         help='Path to output TSV file (default: missing_words.tsv)')
     parser.add_argument('--no-typo-check', action='store_true',
@@ -372,6 +517,8 @@ Examples:
     bible_path = args.bible
     rahlfs_path = args.rahlfs
     swete_path = args.swete
+    rahlfs_vers_path = args.rahlfs_versification
+    swete_vers_path = args.swete_versification
     output_path = args.output
     check_typos = not args.no_typo_check
     
@@ -382,7 +529,32 @@ Examples:
     swete_set = load_word_set(swete_path)
     print(f"Loaded {len(swete_set)} words from Swete")
     
-    process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typos)
+    # Load additional data for verse-specific typo checking
+    rahlfs_words_dict = None
+    swete_words_dict = None
+    rahlfs_verse_map = None
+    swete_verse_map = None
+    rahlfs_sorted_verses = None
+    swete_sorted_verses = None
+    
+    if check_typos:
+        print("Loading word IDs and versification for verse-specific typo checking...")
+        rahlfs_words_dict = load_words_with_ids(rahlfs_path)
+        print(f"Loaded {len(rahlfs_words_dict)} word IDs from Rahlfs")
+        
+        swete_words_dict = load_words_with_ids(swete_path)
+        print(f"Loaded {len(swete_words_dict)} word IDs from Swete")
+        
+        rahlfs_verse_map, rahlfs_sorted_verses = load_versification(rahlfs_vers_path)
+        print(f"Loaded {len(rahlfs_verse_map)} verses from Rahlfs versification")
+        
+        swete_verse_map, swete_sorted_verses = load_versification(swete_vers_path)
+        print(f"Loaded {len(swete_verse_map)} verses from Swete versification")
+    
+    process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typos,
+                      rahlfs_verse_map, swete_verse_map,
+                      rahlfs_sorted_verses, swete_sorted_verses,
+                      rahlfs_words_dict, swete_words_dict)
 
 
 if __name__ == '__main__':
