@@ -3,7 +3,13 @@
 # Lines starting with # are comments and will be ignored
 # Words will be normalized (case-insensitive, diacritics-stripped) for comparison
 
-# Brenton spelling variants
+# Brenton spelling or word variants
 ἐλήφθη
+λήψομαι
 φαγούμεθα
-# ἐνεθυμήθην
+ἐνεθυμήθην
+περιβλέψῃ
+τερεβίνθου
+ἀδελφιδοῦν
+σφυρωτῆρος
+λήψονται

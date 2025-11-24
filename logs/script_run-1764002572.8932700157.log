@@ -1,0 +1,155 @@
+Loading word data...
+Opening file with word IDs: rahlfs_words.csv
+Successfully opened rahlfs_words.csv
+Finished reading rahlfs_words.csv (623693 rows, 623693 word IDs loaded)
+Loaded 623693 word IDs from Rahlfs
+Opening file with word IDs: swete_words.csv
+Successfully opened swete_words.csv
+Finished reading swete_words.csv (609522 rows, 609522 word IDs loaded)
+Loaded 609522 word IDs from Swete
+Deriving normalized word sets...
+Derived 45224 unique words from Rahlfs
+Derived 46292 unique words from Swete
+Opening accepted words file: accepted_words.txt
+Successfully opened accepted_words.txt
+Finished reading accepted_words.txt (11 lines, 5 words loaded)
+Loaded 5 accepted words
+Loading versification for verse-specific typo checking...
+Opening versification file: rahlfs_versification.csv
+Successfully opened rahlfs_versification.csv
+Finished reading rahlfs_versification.csv (30637 rows, 30637 verses loaded)
+Sorting verses from rahlfs_versification.csv...
+Finished sorting 30637 verses
+Loaded 30637 verses from Rahlfs versification
+Opening versification file: swete_versification.csv
+Successfully opened swete_versification.csv
+Finished reading swete_versification.csv (30533 rows, 30533 verses loaded)
+Sorting verses from swete_versification.csv...
+Finished sorting 30533 verses
+Loaded 30533 verses from Swete versification
+Processing Bible file...
+Opening Bible file for reading: Brenton.tex
+Successfully opened Brenton.tex
+Found book: ΓΕΝΕΣΙΣ
+  Checked 100 words, found 56 potential typos so far... (Current: ΓΕΝΕΣΙΣ 25:2)
+  Checked 200 words, found 128 potential typos so far... (Current: ΓΕΝΕΣΙΣ 43:20)
+Found book: ΕΞΟΔΟΣ
+  Checked 300 words, found 191 potential typos so far... (Current: ΕΞΟΔΟΣ 28:21)
+Found book: ΛΕΥΙΤΙΚΟΝ
+  Checked 400 words, found 256 potential typos so far... (Current: ΛΕΥΙΤΙΚΟΝ 22:22)
+Found book: ΑΡΙΘΜΟΙ
+  Checked 500 words, found 316 potential typos so far... (Current: ΑΡΙΘΜΟΙ 17:28)
+Found book: ΔΕΥΤΕΡΟΝΟΜΙΟΝ
+  Checked 600 words, found 370 potential typos so far... (Current: ΔΕΥΤΕΡΟΝΟΜΙΟΝ 1:16)
+  Checked 700 words, found 441 potential typos so far... (Current: ΔΕΥΤΕΡΟΝΟΜΙΟΝ 26:10)
+Found book: ΙΗΣΟΥΣ ΝΑΥΗ
+  Checked 800 words, found 511 potential typos so far... (Current: ΙΗΣΟΥΣ ΝΑΥΗ 13:18)
+  Checked 900 words, found 569 potential typos so far... (Current: ΙΗΣΟΥΣ ΝΑΥΗ 24:26)
+Found book: ΚΡΙΤΑΙ
+Found book: ΡΟΥΘ
+  Checked 1000 words, found 619 potential typos so far... (Current: ΡΟΥΘ 2:16)
+Found book: ΒΑΣΙΛΕΙΩΝ Α
+  Checked 1100 words, found 657 potential typos so far... (Current: ΒΑΣΙΛΕΙΩΝ Α 21:15)
+Found book: ΒΑΣΙΛΕΙΩΝ Β
+  Checked 1200 words, found 716 potential typos so far... (Current: ΒΑΣΙΛΕΙΩΝ Β 14:32)
+Found book: ΒΑΣΙΛΕΙΩΝ Γ
+  Checked 1300 words, found 777 potential typos so far... (Current: ΒΑΣΙΛΕΙΩΝ Γ 2:22)
+  Checked 1400 words, found 836 potential typos so far... (Current: ΒΑΣΙΛΕΙΩΝ Γ 22:1)
+Found book: ΒΑΣΙΛΕΙΩΝ Δ
+  Checked 1500 words, found 898 potential typos so far... (Current: ΒΑΣΙΛΕΙΩΝ Δ 19:12)
+Found book: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α
+  Checked 1600 words, found 965 potential typos so far... (Current: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 3:19)
+  Checked 1700 words, found 1040 potential typos so far... (Current: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 7:40)
+  Checked 1800 words, found 1113 potential typos so far... (Current: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 14:5)
+  Checked 1900 words, found 1194 potential typos so far... (Current: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 25:3)
+Found book: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Β
+  Checked 2000 words, found 1274 potential typos so far... (Current: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Β 11:19)
+Found book: ΕΣΔΡΑΣ
+  Checked 2100 words, found 1337 potential typos so far... (Current: ΕΣΔΡΑΣ 1:9)
+  Checked 2200 words, found 1391 potential typos so far... (Current: ΕΣΔΡΑΣ 6:13)
+Found book: ΝΕΕΜΙΑΣ
+  Checked 2300 words, found 1469 potential typos so far... (Current: ΝΕΕΜΙΑΣ 3:32)
+  Checked 2400 words, found 1525 potential typos so far... (Current: ΝΕΕΜΙΑΣ 7:71)
+Found book: ΕΣΘΗΡ
+  Checked 2500 words, found 1601 potential typos so far... (Current: ΕΣΘΗΡ 8:9)
+Found book: ΙΩΒ
+  Checked 2600 words, found 1661 potential typos so far... (Current: ΙΩΒ 42:17)
+Found book: ΨΑΛΜΟΙ
+  Checked 2700 words, found 1707 potential typos so far... (Current: ΨΑΛΜΟΙ 72:23)
+Found book: ΠΑΡΟΙΜΙΑΙ ΣΑΛΩΜΩΝΤΟΣ
+  Checked 2800 words, found 1764 potential typos so far... (Current: ΠΑΡΟΙΜΙΑΙ ΣΑΛΩΜΩΝΤΟΣ 9:18)
+Found book: ΕΚΚΛΗΣΙΑΣΤΗΣ
+Found book: ΑΣΜΑ
+Found book: ΗΣΑΙΑΣ
+  Checked 2900 words, found 1832 potential typos so far... (Current: ΗΣΑΙΑΣ 15:4)
+  Checked 3000 words, found 1875 potential typos so far... (Current: ΗΣΑΙΑΣ 55:2)
+Found book: ΙΕΡΕΜΙΑΣ
+  Checked 3100 words, found 1909 potential typos so far... (Current: ΙΕΡΕΜΙΑΣ 23:18)
+  Checked 3200 words, found 1963 potential typos so far... (Current: ΙΕΡΕΜΙΑΣ 46:3)
+Found book: ΘΡΗΝΟΙ ΙΕΡΕΜΙΟΥ
+Found book: ΙΕΖΕΚΙΗΛ
+  Checked 3300 words, found 2015 potential typos so far... (Current: ΙΕΖΕΚΙΗΛ 17:9)
+  Checked 3400 words, found 2055 potential typos so far... (Current: ΙΕΖΕΚΙΗΛ 36:7)
+Found book: ΔΑΝΙΗΛ
+  Checked 3500 words, found 2105 potential typos so far... (Current: ΔΑΝΙΗΛ 4:17)
+Found book: ΩΣΗΕ
+Found book: ΙΩΗΛ
+Found book: ΑΜΩΣ
+Found book: ΟΒΔΕΙΟΥ
+Found book: ΙΩΝΑΣ
+Found book: ΜΙΧΑΙΑΣ
+  Checked 3600 words, found 2166 potential typos so far... (Current: ΜΙΧΑΙΑΣ 2:5)
+Found book: ΝΑΟΥΜ
+Found book: ΑΜΒΑΚΟΥΜ
+Found book: ΣΟΦΟΝΙΑΣ
+Found book: ΑΓΓΑΙΟΣ
+Found book: ΖΑΧΑΡΙΑΣ
+Found book: ΜΑΛΑΧΙΑΣ
+Found book: ΕΣΔΡΑΣ Α
+  Checked 3700 words, found 2218 potential typos so far... (Current: ΕΣΔΡΑΣ Α 3:23)
+  Checked 3800 words, found 2273 potential typos so far... (Current: ΕΣΔΡΑΣ Α 8:31)
+Found book: ΤΩΒΙΤ
+Found book: ΙΟΥΔΙΘ
+  Checked 3900 words, found 2357 potential typos so far... (Current: ΙΟΥΔΙΘ 4:4)
+Found book: ΣΟΦΙΑ ΣΑΛΩΜΩΝ
+Found book: ΣΟΦΙΑ ΣΕΙΡΑΧ
+  Checked 4000 words, found 2439 potential typos so far... (Current: ΣΟΦΙΑ ΣΕΙΡΑΧ 12:18)
+Found book: ΒΑΡΟΥΧ
+Found book: ΕΠΙΣΤΟΛΗ ΙΕΡΕΜΙΟΥ
+  Checked 4100 words, found 2510 potential typos so far... (Current: ΕΠΙΣΤΟΛΗ ΙΕΡΕΜΙΟΥ 1:43)
+Found book: ΣΩΣΑΝΝΑ
+Found book: ΒΗΛ ΚΑΙ ΔΡΑΚΩΝ
+Found book: ΜΑΚΚΑΒΑΙΩΝ Α
+  Checked 4200 words, found 2573 potential typos so far... (Current: ΜΑΚΚΑΒΑΙΩΝ Α 10:33)
+Found book: ΜΑΚΚΑΒΑΙΩΝ Β
+  Checked 4300 words, found 2647 potential typos so far... (Current: ΜΑΚΚΑΒΑΙΩΝ Β 4:41)
+  Checked 4400 words, found 2723 potential typos so far... (Current: ΜΑΚΚΑΒΑΙΩΝ Β 14:43)
+Found book: ΜΑΚΚΑΒΑΙΩΝ Γ
+Found book: ΜΑΚΚΑΒΑΙΩΝ Δ
+  Checked 4500 words, found 2794 potential typos so far... (Current: ΜΑΚΚΑΒΑΙΩΝ Δ 1:33)
+  Checked 4600 words, found 2871 potential typos so far... (Current: ΜΑΚΚΑΒΑΙΩΝ Δ 13:9)
+Found book: ΠΡΟΣΕΥΧΗ ΜΑΝΑΣΣΗ ΥΙΟΥ ΕΖΕΚΙΟΥ
+
+Writing results to missing_words.tsv...
+Opening file for writing: missing_words.tsv
+Successfully opened missing_words.tsv for writing
+Finished writing 4651 rows to missing_words.tsv
+Writing full typo check results to missing_words_typo_check.tsv...
+Opening file for writing: missing_words_typo_check.tsv
+Successfully opened missing_words_typo_check.tsv for writing
+Finished writing 4651 rows to missing_words_typo_check.tsv
+Writing likely typos to missing_words_likely_typos.tsv...
+Opening file for writing: missing_words_likely_typos.tsv
+Successfully opened missing_words_likely_typos.tsv for writing
+Finished writing 1819 rows to missing_words_likely_typos.tsv
+
+Complete! Found 4651 missing words.
+  - Likely proper names: 1515
+  - Likely numbers: 325
+  - Likely typos: 1819
+    - Matched within verse: 1434
+    - Matched within area (±2 verses): 48
+    - Matched in broader corpus: 337
+Results saved to: missing_words.tsv
+Full typo check results saved to: missing_words_typo_check.tsv
+Filtered typos saved to: missing_words_likely_typos.tsv

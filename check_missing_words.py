@@ -14,6 +14,17 @@ from book_code_mappings import (
     convert_brenton_reference_to_swete
 )
 
+# Module-level global variables for loaded data
+RAHLFS_WORDS_DICT = {}  # word_id -> {'normalized': str, 'original': str}
+SWETE_WORDS_DICT = {}   # word_id -> {'normalized': str, 'original': str}
+RAHLFS_WORDS = {}       # normalized -> original (derived from RAHLFS_WORDS_DICT)
+SWETE_WORDS = {}        # normalized -> original (derived from SWETE_WORDS_DICT)
+RAHLFS_VERSE_MAP = {}   # verse_ref -> word_id
+SWETE_VERSE_MAP = {}    # verse_ref -> word_id
+RAHLFS_SORTED_VERSES = []  # [(verse_ref, word_id), ...] sorted by word_id
+SWETE_SORTED_VERSES = []   # [(verse_ref, word_id), ...] sorted by word_id
+ACCEPTED_WORDS = set()  # set of normalized accepted words
+
 
 def normalize_text(text):
     """Normalize Greek text using NFC normalization."""
@@ -33,30 +44,6 @@ def strip_diacritics(text):
     )
     # Normalize back to NFC for consistent comparison
     return unicodedata.normalize('NFC', stripped)
-
-
-def load_word_set(filepath):
-    """Load words from CSV file into a set with normalized and stripped versions."""
-    print(f"Opening file for reading: {filepath}")
-    words = set()
-    try:
-        with open(filepath, 'r', encoding='utf-8') as f:
-            print(f"Successfully opened {filepath}")
-            reader = csv.reader(f, delimiter='\t')
-            row_count = 0
-            for row in reader:
-                row_count += 1
-                if len(row) >= 2:
-                    # Rahlfs has 3 columns (num, num, word), Swete has 2 (num, word)
-                    # Use the last column which is always the word
-                    word = normalize_text(row[-1])
-                    # Store both case-insensitive and diacritic-stripped version
-                    normalized = strip_diacritics(word.lower())
-                    words.add(normalized)
-            print(f"Finished reading {filepath} ({row_count} rows processed)")
-    except Exception as e:
-        print(f"Error loading {filepath}: {e}")
-    return words
 
 
 def load_accepted_words(filepath):
@@ -82,10 +69,27 @@ def load_accepted_words(filepath):
     return words
 
 
+def derive_word_set(words_dict):
+    """Derive normalized->original mapping from word_id dictionary.
+    words_dict maps word_id -> {'normalized': str, 'original': str}.
+    Returns dict mapping normalized -> original.
+    """
+    word_set = {}
+    for word_data in words_dict.values():
+        normalized = word_data['normalized']
+        original = word_data['original']
+        # Keep first occurrence (prefer earlier instances)
+        if normalized not in word_set:
+            word_set[normalized] = original
+    return word_set
+
+
 def load_words_with_ids(filepath):
-    """Load words from CSV file with their word IDs for verse-specific lookups."""
+    """Load words from CSV file with their word IDs for verse-specific lookups.
+    Returns dict mapping word_id -> {'normalized': str, 'original': str}.
+    """
     print(f"Opening file with word IDs: {filepath}")
-    words_dict = {}  # word_id -> normalized_word
+    words_dict = {}  # word_id -> {'normalized': word, 'original': word}
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             print(f"Successfully opened {filepath}")
@@ -97,7 +101,10 @@ def load_words_with_ids(filepath):
                     word_id = int(row[0])
                     word = normalize_text(row[-1])
                     normalized = strip_diacritics(word.lower())
-                    words_dict[word_id] = normalized
+                    words_dict[word_id] = {
+                        'normalized': normalized,
+                        'original': word.lower()
+                    }
             print(f"Finished reading {filepath} ({row_count} rows, {len(words_dict)} word IDs loaded)")
     except Exception as e:
         print(f"Error loading {filepath} with IDs: {e}")
@@ -178,36 +185,44 @@ def is_likely_number_word(word):
     return False
 
 
-def find_closest_word(word, word_set, max_distance=2):
-    """Find the closest matching word in the set within max_distance edits."""
+def find_closest_word(word, word_dict, max_distance=2):
+    """Find the closest matching word in the dict within max_distance edits.
+    word_dict maps normalized -> original (with diacritics).
+    Returns the original word with diacritics.
+    """
     normalized = strip_diacritics(word.lower())
-    best_match = None
+    best_match_normalized = None
     best_ratio = 0
     
     # Only check words of similar length (within 2 characters)
     target_len = len(normalized)
     
-    for candidate in word_set:
-        if abs(len(candidate) - target_len) > 2:
+    for candidate_normalized in word_dict.keys():
+        if abs(len(candidate_normalized) - target_len) > 2:
             continue
             
         # Calculate similarity ratio
-        ratio = SequenceMatcher(None, normalized, candidate).ratio()
+        ratio = SequenceMatcher(None, normalized, candidate_normalized).ratio()
         
         # If very similar (>0.8 similarity), it might be a typo
         if ratio > best_ratio:
             best_ratio = ratio
-            best_match = candidate
+            best_match_normalized = candidate_normalized
     
     # Return match only if it's very close (likely a typo)
-    if best_ratio >= 0.85:
-        return best_match, best_ratio
+    if best_ratio >= 0.85 and best_match_normalized:
+        # Return original form with diacritics
+        return word_dict[best_match_normalized], best_ratio
     return None, 0
 
 
 def get_verse_words(verse_ref, verse_map, sorted_verses, words_dict):
-    """Get all words for a specific verse using the versification mapping."""
-    verse_words = set()
+    """Get all words for a specific verse using the versification mapping.
+    words_dict maps word_id -> {'normalized': str, 'original': str}.
+    Returns dict mapping normalized -> original for words in this verse.
+    NOTE: This helper still takes parameters since it's used internally with different data sources.
+    """
+    verse_words = {}  # normalized -> original
     
     # Find start word ID for this verse
     if verse_ref not in verse_map:
@@ -232,14 +247,18 @@ def get_verse_words(verse_ref, verse_map, sorted_verses, words_dict):
     # Extract words in this ID range
     for word_id in range(start_id, end_id + 1):
         if word_id in words_dict:
-            verse_words.add(words_dict[word_id])
+            word_data = words_dict[word_id]
+            verse_words[word_data['normalized']] = word_data['original']
     
     return verse_words
 
 
 def get_area_words(verse_ref, verse_map, sorted_verses, words_dict, verse_range=2):
-    """Get all words from surrounding verses (±verse_range verses)."""
-    area_words = set()
+    """Get all words from surrounding verses (±verse_range verses).
+    words_dict maps word_id -> {'normalized': str, 'original': str}.
+    Returns dict mapping normalized -> original for words in this area.
+    """
+    area_words = {}  # normalized -> original
     
     # Find the current verse index in sorted list
     if verse_ref not in verse_map:
@@ -270,18 +289,16 @@ def get_area_words(verse_ref, verse_map, sorted_verses, words_dict, verse_range=
     # Extract all words in this ID range
     for word_id in range(start_word_id, end_word_id + 1):
         if word_id in words_dict:
-            area_words.add(words_dict[word_id])
+            word_data = words_dict[word_id]
+            area_words[word_data['normalized']] = word_data['original']
     
     return area_words
 
 
-def is_likely_typo(word, rahlfs_set, swete_set, 
-                   brenton_book=None, brenton_ch=None, brenton_vs=None,
-                   rahlfs_verse_map=None, swete_verse_map=None,
-                   rahlfs_sorted_verses=None, swete_sorted_verses=None,
-                   rahlfs_words_dict=None, swete_words_dict=None):
+def is_likely_typo(word, brenton_book=None, brenton_ch=None, brenton_vs=None):
     """
-    Check if word is likely a typo by finding very similar words in the sets.
+    Check if word is likely a typo by finding very similar words.
+    Uses global data structures (RAHLFS_WORDS_DICT, SWETE_WORDS_DICT, etc.).
     First checks verse-specific words, then area (±2 verses), then falls back to broader corpus.
     Returns (is_typo, closest_match, similarity_ratio, verse_match, area_match)
     """
@@ -289,15 +306,15 @@ def is_likely_typo(word, rahlfs_set, swete_set,
     area_match = False
     
     # First try verse-specific search if we have the necessary data
-    if all([brenton_book, brenton_ch, brenton_vs, rahlfs_verse_map, swete_verse_map, 
-            rahlfs_sorted_verses, swete_sorted_verses,
-            rahlfs_words_dict, swete_words_dict]):
+    if all([brenton_book, brenton_ch, brenton_vs, RAHLFS_VERSE_MAP, SWETE_VERSE_MAP, 
+            RAHLFS_SORTED_VERSES, SWETE_SORTED_VERSES,
+            RAHLFS_WORDS_DICT, SWETE_WORDS_DICT]):
         try:
             rahlfs_ref = convert_brenton_reference_to_rahlfs(brenton_book, brenton_ch, brenton_vs)
             swete_ref = convert_brenton_reference_to_swete(brenton_book, brenton_ch, brenton_vs)
             
-            rahlfs_verse_words = get_verse_words(rahlfs_ref, rahlfs_verse_map, rahlfs_sorted_verses, rahlfs_words_dict)
-            swete_verse_words = get_verse_words(swete_ref, swete_verse_map, swete_sorted_verses, swete_words_dict)
+            rahlfs_verse_words = get_verse_words(rahlfs_ref, RAHLFS_VERSE_MAP, RAHLFS_SORTED_VERSES, RAHLFS_WORDS_DICT)
+            swete_verse_words = get_verse_words(swete_ref, SWETE_VERSE_MAP, SWETE_SORTED_VERSES, SWETE_WORDS_DICT)
             
             if rahlfs_verse_words or swete_verse_words:
                 # Check verse-specific words first
@@ -311,8 +328,8 @@ def is_likely_typo(word, rahlfs_set, swete_set,
                     return True, best_match, best_ratio, True, False
             
             # If not found in exact verse, check surrounding area (±2 verses)
-            rahlfs_area_words = get_area_words(rahlfs_ref, rahlfs_verse_map, rahlfs_sorted_verses, rahlfs_words_dict, verse_range=2)
-            swete_area_words = get_area_words(swete_ref, swete_verse_map, swete_sorted_verses, swete_words_dict, verse_range=2)
+            rahlfs_area_words = get_area_words(rahlfs_ref, RAHLFS_VERSE_MAP, RAHLFS_SORTED_VERSES, RAHLFS_WORDS_DICT, verse_range=2)
+            swete_area_words = get_area_words(swete_ref, SWETE_VERSE_MAP, SWETE_SORTED_VERSES, SWETE_WORDS_DICT, verse_range=2)
             
             if rahlfs_area_words or swete_area_words:
                 # Check area words
@@ -328,9 +345,9 @@ def is_likely_typo(word, rahlfs_set, swete_set,
             # If conversion or verse lookup fails, continue to broad search
             pass
     
-    # Fall back to broad corpus search
-    closest_r, ratio_r = find_closest_word(word, rahlfs_set)
-    closest_s, ratio_s = find_closest_word(word, swete_set)
+    # Fall back to broad corpus search - use pre-derived global word sets
+    closest_r, ratio_r = find_closest_word(word, RAHLFS_WORDS)
+    closest_s, ratio_s = find_closest_word(word, SWETE_WORDS)
     
     best_ratio = max(ratio_r, ratio_s)
     best_match = closest_r if ratio_r > ratio_s else closest_s
@@ -341,32 +358,20 @@ def is_likely_typo(word, rahlfs_set, swete_set,
     return False, None, 0, False, False
 
 
-def is_word_in_sets(word, rahlfs_set, swete_set):
-    """Check if word exists in either word set (case-insensitive, diacritic-stripped)."""
+def is_word_in_sets(word):
+    """Check if word exists in either word dict (case-insensitive, diacritic-stripped).
+    Uses global RAHLFS_WORDS and SWETE_WORDS (pre-derived normalized->original mappings).
+    """
     normalized = strip_diacritics(word.lower())
     
     # First, try the word as-is
-    if normalized in rahlfs_set or normalized in swete_set:
+    if normalized in RAHLFS_WORDS or normalized in SWETE_WORDS:
         return True
     
     # Second, try with movable ν added at the end
     # This handles cases where Brenton drops the movable nu
     normalized_with_nu = normalized + 'ν'
-    if normalized_with_nu in rahlfs_set or normalized_with_nu in swete_set:
-        return True
-    
-    return False
-    """Check if word exists in either word set (case-insensitive, diacritic-stripped)."""
-    normalized = strip_diacritics(word.lower())
-    
-    # First, try the word as-is
-    if normalized in rahlfs_set or normalized in swete_set:
-        return True
-    
-    # Second, try with movable ν added at the end
-    # This handles cases where Brenton drops the movable nu
-    normalized_with_nu = normalized + 'ν'
-    if normalized_with_nu in rahlfs_set or normalized_with_nu in swete_set:
+    if normalized_with_nu in RAHLFS_WORDS or normalized_with_nu in SWETE_WORDS:
         return True
     
     return False
@@ -402,12 +407,10 @@ def extract_verse_number(line):
     return None
 
 
-def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typos=True,
-                       rahlfs_verse_map=None, swete_verse_map=None,
-                       rahlfs_sorted_verses=None, swete_sorted_verses=None,
-                       rahlfs_words_dict=None, swete_words_dict=None,
-                       accepted_words=None):
-    """Process the Bible file and log missing words."""
+def process_bible_file(bible_path, output_path, check_typos=True):
+    """Process the Bible file and log missing words.
+    Uses global data structures (RAHLFS_WORDS_DICT, SWETE_WORDS_DICT, ACCEPTED_WORDS, etc.).
+    """
     
     current_book = None
     current_chapter = None
@@ -453,12 +456,12 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typ
             if greek_words:
                 for word in greek_words:
                     # First check if word is in accepted words list (skip if accepted)
-                    if accepted_words:
+                    if ACCEPTED_WORDS:
                         normalized_word = strip_diacritics(word.lower())
-                        if normalized_word in accepted_words:
+                        if normalized_word in ACCEPTED_WORDS:
                             continue
                     
-                    if not is_word_in_sets(word, rahlfs_set, swete_set):
+                    if not is_word_in_sets(word):
                         # Build verse reference
                         verse_ref = "Unknown"
                         if current_book and current_chapter and current_verse:
@@ -477,11 +480,7 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typ
                                 print(f"  Checked {words_checked} words, found {typos_found} potential typos so far... (Current: {verse_ref})")
                             
                             is_typo, closest_match, similarity, verse_match, area_match = is_likely_typo(
-                                word, rahlfs_set, swete_set,
-                                current_book, current_chapter, current_verse,
-                                rahlfs_verse_map, swete_verse_map,
-                                rahlfs_sorted_verses, swete_sorted_verses,
-                                rahlfs_words_dict, swete_words_dict
+                                word, current_book, current_chapter, current_verse
                             )
                             
                             if is_typo:
@@ -598,6 +597,10 @@ def process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typ
 
 def main():
     """Main entry point."""
+    global RAHLFS_WORDS_DICT, SWETE_WORDS_DICT, RAHLFS_WORDS, SWETE_WORDS
+    global RAHLFS_VERSE_MAP, SWETE_VERSE_MAP
+    global RAHLFS_SORTED_VERSES, SWETE_SORTED_VERSES, ACCEPTED_WORDS
+    
     parser = argparse.ArgumentParser(
         description='Check for Greek words in Bible file that are not found in reference word lists.',
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -635,51 +638,40 @@ Examples:
     
     # File paths
     bible_path = args.bible
-    rahlfs_path = args.rahlfs
-    swete_path = args.swete
-    rahlfs_vers_path = args.rahlfs_versification
-    swete_vers_path = args.swete_versification
     output_path = args.output
     check_typos = not args.no_typo_check
     
-    print("Loading word sets...")
-    rahlfs_set = load_word_set(rahlfs_path)
-    print(f"Loaded {len(rahlfs_set)} words from Rahlfs")
+    print("Loading word data...")
     
-    swete_set = load_word_set(swete_path)
-    print(f"Loaded {len(swete_set)} words from Swete")
+    # Load word IDs into global variables (single CSV read per file)
+    RAHLFS_WORDS_DICT = load_words_with_ids(args.rahlfs)
+    print(f"Loaded {len(RAHLFS_WORDS_DICT)} word IDs from Rahlfs")
     
-    accepted_words = load_accepted_words(args.accepted_words)
-    if accepted_words:
-        print(f"Loaded {len(accepted_words)} accepted words")
+    SWETE_WORDS_DICT = load_words_with_ids(args.swete)
+    print(f"Loaded {len(SWETE_WORDS_DICT)} word IDs from Swete")
     
-    # Load additional data for verse-specific typo checking
-    rahlfs_words_dict = None
-    swete_words_dict = None
-    rahlfs_verse_map = None
-    swete_verse_map = None
-    rahlfs_sorted_verses = None
-    swete_sorted_verses = None
+    # Derive normalized->original mappings once at startup
+    print("Deriving normalized word sets...")
+    RAHLFS_WORDS = derive_word_set(RAHLFS_WORDS_DICT)
+    print(f"Derived {len(RAHLFS_WORDS)} unique words from Rahlfs")
     
+    SWETE_WORDS = derive_word_set(SWETE_WORDS_DICT)
+    print(f"Derived {len(SWETE_WORDS)} unique words from Swete")
+    
+    ACCEPTED_WORDS = load_accepted_words(args.accepted_words)
+    if ACCEPTED_WORDS:
+        print(f"Loaded {len(ACCEPTED_WORDS)} accepted words")
+    
+    # Load versification data for verse-specific typo checking
     if check_typos:
-        print("Loading word IDs and versification for verse-specific typo checking...")
-        rahlfs_words_dict = load_words_with_ids(rahlfs_path)
-        print(f"Loaded {len(rahlfs_words_dict)} word IDs from Rahlfs")
+        print("Loading versification for verse-specific typo checking...")
+        RAHLFS_VERSE_MAP, RAHLFS_SORTED_VERSES = load_versification(args.rahlfs_versification)
+        print(f"Loaded {len(RAHLFS_VERSE_MAP)} verses from Rahlfs versification")
         
-        swete_words_dict = load_words_with_ids(swete_path)
-        print(f"Loaded {len(swete_words_dict)} word IDs from Swete")
-        
-        rahlfs_verse_map, rahlfs_sorted_verses = load_versification(rahlfs_vers_path)
-        print(f"Loaded {len(rahlfs_verse_map)} verses from Rahlfs versification")
-        
-        swete_verse_map, swete_sorted_verses = load_versification(swete_vers_path)
-        print(f"Loaded {len(swete_verse_map)} verses from Swete versification")
+        SWETE_VERSE_MAP, SWETE_SORTED_VERSES = load_versification(args.swete_versification)
+        print(f"Loaded {len(SWETE_VERSE_MAP)} verses from Swete versification")
     
-    process_bible_file(bible_path, rahlfs_set, swete_set, output_path, check_typos,
-                      rahlfs_verse_map, swete_verse_map,
-                      rahlfs_sorted_verses, swete_sorted_verses,
-                      rahlfs_words_dict, swete_words_dict,
-                      accepted_words)
+    process_bible_file(bible_path, output_path, check_typos)
 
 
 if __name__ == '__main__':
