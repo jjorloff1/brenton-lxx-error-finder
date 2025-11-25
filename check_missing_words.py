@@ -24,6 +24,7 @@ SWETE_VERSE_MAP = {}    # verse_ref -> word_id
 RAHLFS_SORTED_VERSES = []  # [(verse_ref, word_id), ...] sorted by word_id
 SWETE_SORTED_VERSES = []   # [(verse_ref, word_id), ...] sorted by word_id
 ACCEPTED_WORDS = set()  # set of normalized accepted words
+ALREADY_EXAMINED = {}  # dict mapping (verse_ref, normalized_word) -> corrected_word
 
 
 def normalize_text(text):
@@ -67,6 +68,35 @@ def load_accepted_words(filepath):
     except Exception as e:
         print(f"Error loading accepted words from {filepath}: {e}")
     return words
+
+
+def load_already_examined(filepath):
+    """Load already examined word changes from a TSV file.
+    Returns dict mapping (verse_ref, normalized_word) -> corrected_word.
+    """
+    print(f"Opening already examined file: {filepath}")
+    examined = {}
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            print(f"Successfully opened {filepath}")
+            reader = csv.reader(f, delimiter='\t')
+            row_count = 0
+            for row in reader:
+                row_count += 1
+                if len(row) >= 3:
+                    verse_ref = normalize_text(row[0].strip())
+                    original_word = normalize_text(row[1].strip())
+                    corrected_word = normalize_text(row[2].strip())
+                    # Normalize and strip diacritics for comparison
+                    normalized_word = strip_diacritics(original_word.lower())
+                    key = (verse_ref, normalized_word)
+                    examined[key] = corrected_word
+            print(f"Finished reading {filepath} ({row_count} rows, {len(examined)} word changes loaded)")
+    except FileNotFoundError:
+        print(f"Note: Already examined file '{filepath}' not found. Continuing without it.")
+    except Exception as e:
+        print(f"Error loading already examined from {filepath}: {e}")
+    return examined
 
 
 def derive_word_set(words_dict):
@@ -185,18 +215,42 @@ def is_likely_number_word(word):
     return False
 
 
-def find_closest_word(word, word_dict, max_distance=2):
+def find_closest_word(word, word_dict):
     """Find the closest matching word in the dict within max_distance edits.
     word_dict maps normalized -> original (with diacritics).
     Returns the original word with diacritics.
+    
+    Args:
+        word: The word to match
+        word_dict: Dictionary mapping normalized -> original words
     """
     normalized = strip_diacritics(word.lower())
-    best_match_normalized = None
-    best_ratio = 0
+
+    best_match_normalized, best_ratio = find_best_match(word_dict, normalized)
     
+    # Return match only if it's very close (likely a typo)
+    if best_ratio >= 0.85 and best_match_normalized:
+        # Return original form with diacritics
+        return word_dict[best_match_normalized], best_ratio
+    else:
+        # try adding ν if the word ends with a movable-nu-eligible ending
+        # Movable ν can appear after: -ε, -ι
+        if normalized.endswith('ε') or normalized.endswith('ι'):
+            normalized_with_nu = normalized + 'ν'
+
+            best_match_normalized, best_ratio = find_best_match(word_dict, normalized_with_nu, best_ratio)            
+            
+            # Check if adding ν improved the match to above threshold
+            if best_ratio >= 0.85 and best_match_normalized:
+                return word_dict[best_match_normalized], best_ratio
+    
+    return None, 0
+
+def find_best_match(word_dict, normalized, current_best_ratio = 0):
     # Only check words of similar length (within 2 characters)
     target_len = len(normalized)
     
+    best_match_normalized = None
     for candidate_normalized in word_dict.keys():
         if abs(len(candidate_normalized) - target_len) > 2:
             continue
@@ -205,15 +259,10 @@ def find_closest_word(word, word_dict, max_distance=2):
         ratio = SequenceMatcher(None, normalized, candidate_normalized).ratio()
         
         # If very similar (>0.8 similarity), it might be a typo
-        if ratio > best_ratio:
-            best_ratio = ratio
+        if ratio > current_best_ratio:
+            current_best_ratio = ratio
             best_match_normalized = candidate_normalized
-    
-    # Return match only if it's very close (likely a typo)
-    if best_ratio >= 0.85 and best_match_normalized:
-        # Return original form with diacritics
-        return word_dict[best_match_normalized], best_ratio
-    return None, 0
+    return best_match_normalized,current_best_ratio
 
 
 def get_verse_words(verse_ref, verse_map, sorted_verses, words_dict):
@@ -317,7 +366,7 @@ def is_likely_typo(word, brenton_book=None, brenton_ch=None, brenton_vs=None):
             swete_verse_words = get_verse_words(swete_ref, SWETE_VERSE_MAP, SWETE_SORTED_VERSES, SWETE_WORDS_DICT)
             
             if rahlfs_verse_words or swete_verse_words:
-                # Check verse-specific words first
+                # Check verse-specific words first (with movable nu handling)
                 closest_r, ratio_r = find_closest_word(word, rahlfs_verse_words)
                 closest_s, ratio_s = find_closest_word(word, swete_verse_words)
                 
@@ -332,7 +381,7 @@ def is_likely_typo(word, brenton_book=None, brenton_ch=None, brenton_vs=None):
             swete_area_words = get_area_words(swete_ref, SWETE_VERSE_MAP, SWETE_SORTED_VERSES, SWETE_WORDS_DICT, verse_range=2)
             
             if rahlfs_area_words or swete_area_words:
-                # Check area words
+                # Check area words (with movable nu handling)
                 closest_r, ratio_r = find_closest_word(word, rahlfs_area_words)
                 closest_s, ratio_s = find_closest_word(word, swete_area_words)
                 
@@ -459,6 +508,14 @@ def process_bible_file(bible_path, output_path, check_typos=True):
                     if ACCEPTED_WORDS:
                         normalized_word = strip_diacritics(word.lower())
                         if normalized_word in ACCEPTED_WORDS:
+                            continue
+                    
+                    # Check if this word has already been examined in this verse
+                    if ALREADY_EXAMINED and current_book and current_chapter and current_verse:
+                        verse_ref = f"{current_book} {current_chapter}:{current_verse}"
+                        normalized_word = strip_diacritics(word.lower())
+                        key = (verse_ref, normalized_word)
+                        if key in ALREADY_EXAMINED:
                             continue
                     
                     if not is_word_in_sets(word):
@@ -599,7 +656,7 @@ def main():
     """Main entry point."""
     global RAHLFS_WORDS_DICT, SWETE_WORDS_DICT, RAHLFS_WORDS, SWETE_WORDS
     global RAHLFS_VERSE_MAP, SWETE_VERSE_MAP
-    global RAHLFS_SORTED_VERSES, SWETE_SORTED_VERSES, ACCEPTED_WORDS
+    global RAHLFS_SORTED_VERSES, SWETE_SORTED_VERSES, ACCEPTED_WORDS, ALREADY_EXAMINED
     
     parser = argparse.ArgumentParser(
         description='Check for Greek words in Bible file that are not found in reference word lists.',
@@ -631,6 +688,8 @@ Examples:
                         help='Path to output TSV file (default: missing_words.tsv)')
     parser.add_argument('--accepted-words', default='accepted_words.txt',
                         help='Path to accepted words file (default: accepted_words.txt)')
+    parser.add_argument('--already-examined', default='word_changes.tsv',
+                        help='Path to already examined word changes file (default: word_changes.tsv)')
     parser.add_argument('--no-typo-check', action='store_true',
                         help='Disable typo checking for faster processing')
     
@@ -661,6 +720,10 @@ Examples:
     ACCEPTED_WORDS = load_accepted_words(args.accepted_words)
     if ACCEPTED_WORDS:
         print(f"Loaded {len(ACCEPTED_WORDS)} accepted words")
+    
+    ALREADY_EXAMINED = load_already_examined(args.already_examined)
+    if ALREADY_EXAMINED:
+        print(f"Loaded {len(ALREADY_EXAMINED)} already examined word changes")
     
     # Load versification data for verse-specific typo checking
     if check_typos:
