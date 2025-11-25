@@ -5,6 +5,7 @@ These are legitimate textual/dialectal variants that should NOT be flagged as er
 """
 
 import unicodedata
+from itertools import product
 
 def strip_accents(text):
     """Remove Greek accents for pattern matching."""
@@ -28,8 +29,6 @@ def generate_positional_variations(text, pattern1, pattern2):
     if pattern1 not in text:
         return {text}
     
-    variations = set()
-    
     # Find all occurrences
     positions = []
     start = 0
@@ -44,12 +43,12 @@ def generate_positional_variations(text, pattern1, pattern2):
         return {text}
     
     # Generate all combinations (2^n where n is number of occurrences)
-    from itertools import product
+    variations = set()
     for combo in product([False, True], repeat=len(positions)):
         # Build the variation
         result = list(text)
         offset = 0
-        for i, (pos, should_replace) in enumerate(zip(positions, combo)):
+        for pos, should_replace in zip(positions, combo):
             if should_replace:
                 # Replace pattern1 with pattern2 at this position
                 adjusted_pos = pos + offset
@@ -60,212 +59,148 @@ def generate_positional_variations(text, pattern1, pattern2):
     
     return variations
 
-# ============================================================================
-# MORPHOLOGICAL VARIATIONS (Verb Forms)
-# ============================================================================
 
-# Lambda Stem Variations (λαμβάνω and compounds)
-# All forms valid in Greek - since we strip accents, only need unaccented versions
-LAMBDA_FUTURE_PATTERNS = [
-    ('ληψ', 'λημψ'),      # Future stems: λήψομαι ↔ λήμψομαι, κατάληψιν ↔ κατάλημψιν
-    ('ληπ', 'λημπ'),      # Present/aorist stems: ἐπίληπτον ↔ ἐπίλημπτον
-    ('ληφ', 'λημφ'),      # Aorist passive stems: ληφθῆναι ↔ λημφθῆναι, Ληφθήτω ↔ Λημφθήτω
-]
+def apply_pattern_bidirectional(text, pattern1, pattern2):
+    """Apply pattern replacement in both directions."""
+    results = {text}
+    if pattern1 in text:
+        results.add(text.replace(pattern1, pattern2))
+    if pattern2 in text:
+        results.add(text.replace(pattern2, pattern1))
+    return results
 
-# Compounds of λαμβάνω with lambda future variation
-LAMBDA_COMPOUNDS = [
-    'ἀναλήψ',    'ἀναλημψ',      # take up
-    'ἀντιλήψ',   'ἀντιλημψ',     # take hold of, help
-    'ἐπιλήψ',    'ἐπιλημψ',      # seize, take hold
-    'καταλήψ',   'καταλημψ',     # seize, overtake
-    'μεταλήψ',   'μεταλημψ',     # partake
-    'παραλήψ',   'παραλημψ',     # receive, take
-    'περιλήψ',   'περιλημψ',     # embrace, comprehend
-    'προκαταλήψ', 'προκαταλημψ', # seize beforehand
-    'προλήψ',    'προλημψ',      # anticipate
-    'συλλήψ',    'συλλημψ',      # conceive, seize
-    'συμπαραλήψ', 'συμπαραλημψ', # take along with
-    'συμπεριλήψ', 'συμπεριλημψ', # include with
-    'συναντιλήψ', 'συναντιλημψ', # help together
-    'ὑπολήψ',    'ὑπολημψ',      # suppose, take up
-]
 
-# Aorist Passive (λήφθη vs λήμφθη vs ληφθη)
-AORIST_PASSIVE_LAMBDA = [
-    ('ληφθ', 'λημφθ'),    # ἐλήφθη ↔ ἐλήμφθη
-    ('λήφθ', 'λήμφθ'),    
-    ('ληψθ', 'λημψθ'),    # Alternative forms
-]
+def check_pattern_match(word1_norm, word2_norm, patterns):
+    """
+    Check if two normalized words differ only by one of the given patterns.
+    Patterns can be tuples of (pattern1, pattern2) or (pattern1, pattern2, pattern3).
+    """
+    for pattern_group in patterns:
+        if len(pattern_group) == 2:
+            p1, p2 = pattern_group
+            if (p1 in word1_norm or p2 in word1_norm) and (p1 in word2_norm or p2 in word2_norm):
+                if word1_norm.replace(p1, p2) == word2_norm or word2_norm.replace(p2, p1) == word1_norm:
+                    return True
+        elif len(pattern_group) == 3:
+            p1, p2, p3 = pattern_group
+            # Check all pairwise combinations
+            for pa, pb in [(p1, p2), (p1, p3), (p2, p3)]:
+                if (pa in word1_norm or pb in word1_norm) and (pa in word2_norm or pb in word2_norm):
+                    if word1_norm.replace(pa, pb) == word2_norm or word2_norm.replace(pb, pa) == word1_norm:
+                        return True
+    return False
+
 
 # ============================================================================
-# DESTRUCTION VERBS (ὀλοθρ- vs ὀλεθρ-)
+# ALL VARIATION PATTERNS - Organized by Category
 # ============================================================================
 
-# Both roots exist in Greek manuscripts
-DESTRUCTION_VERB_VARIATIONS = [
-    ('ολοθρ', 'ολεθρ'),         # General stem (no accents)
-    ('ολοθρευ', 'ολεθρευ'),     # ὀλοθρεύω ↔ ὀλεθρεύω
-    ('ξολοθρ', 'ξολεθρ'),       # ἐξολοθρεύω ↔ ἐξολεθρεύω (no accents)
-    ('ξωλοθρ', 'ξωλεθρ'),       # Intensive form (no accents)
-]
+# Dictionary mapping pattern types to their pattern lists
+VARIATION_PATTERNS = {
+    'lambda_future': [
+        ('ληψ', 'λημψ'),      # Future stems: λήψομαι ↔ λήμψομαι
+        ('ληπ', 'λημπ'),      # Present/aorist stems: ἐπίληπτον ↔ ἐπίλημπτον
+        ('ληφ', 'λημφ'),      # Aorist passive stems: ληφθῆναι ↔ λημφθῆναι
+    ],
+    
+    'lambda_compounds': [
+        ('ἀναλήψ', 'ἀναλημψ'), ('ἀντιλήψ', 'ἀντιλημψ'), ('ἐπιλήψ', 'ἐπιλημψ'),
+        ('καταλήψ', 'καταλημψ'), ('μεταλήψ', 'μεταλημψ'), ('παραλήψ', 'παραλημψ'),
+        ('περιλήψ', 'περιλημψ'), ('προκαταλήψ', 'προκαταλημψ'), ('προλήψ', 'προλημψ'),
+        ('συλλήψ', 'συλλημψ'), ('συμπαραλήψ', 'συμπαραλημψ'), ('συμπεριλήψ', 'συμπεριλημψ'),
+        ('συναντιλήψ', 'συναντιλημψ'), ('ὑπολήψ', 'ὑπολημψ'),
+    ],
+    
+    'aorist_passive_lambda': [
+        ('ληφθ', 'λημφθ'), ('λήφθ', 'λήμφθ'), ('ληψθ', 'λημψθ'),
+    ],
+    
+    'destruction': [
+        ('ολοθρ', 'ολεθρ'), ('ολοθρευ', 'ολεθρευ'),
+        ('ξολοθρ', 'ξολεθρ'), ('ξωλοθρ', 'ξωλεθρ'),
+    ],
+    
+    'loan': [
+        ('δανε', 'δανι'), ('δανειζ', 'δανιζ'), ('δανεισ', 'δανισ'),
+    ],
+    
+    'generation': [
+        ('γεννημ', 'γενημ'), ('γεννηματ', 'γενηματ'), ('εννημ', 'ενημ'),
+    ],
+    
+    'command': [
+        ('ἐντελλ', 'ἀντελλ'), ('ἐντελ', 'ἐντλ'),
+    ],
+    
+    'circumcision': [
+        ('περιτεμεσθ', 'περιτεμνεσθ'), ('περιτεμε', 'περιτεμνε'),
+    ],
+    
+    'vowel_contraction': [
+        ('εω', 'ω'), ('οε', 'ου'), ('αε', 'α'), ('αο', 'ω'), ('εε', 'ει'),
+    ],
+    
+    'diphthong': [
+        ('ει', 'ι'), ('οι', 'υ'), ('αι', 'ε'),
+    ],
+    
+    'ablaut': [
+        ('ε', 'η'), ('ο', 'ω'), ('α', 'η'),
+    ],
+    
+    'aorist_vowel': [
+        ('φειλ', 'φηλ'), ('ειλ', 'ηλ'),
+    ],
+    
+    'aorist_consonant': [
+        ('θη', 'ση'),
+    ],
+    
+    'consonant_cluster': [
+        ('π', 'μπ'), ('β', 'μβ'),
+    ],
+    
+    'compound_prefix': [
+        ('προσ', 'προ'), ('κατα', 'κατ', 'καθ'), ('ἀπο', 'ἀπ', 'ἀφ'),
+        ('ἐπι', 'ἐπ', 'ἐφ'), ('συν', 'συμ'), ('συν', 'συλ'),
+        ('συν', 'συγ'), ('συν', 'συσ'),
+    ],
+    
+    'dialectal': [
+        ('ρρ', 'ρ'), ('λλ', 'λ'), ('σσ', 'σ'), ('ττ', 'τ'),
+    ],
+    
+    'participle': [
+        ('ουσ', 'οντ'), ('ων', 'οντ'), ('ομεν', 'ωμεν'),
+    ],
+}
 
-# ============================================================================
-# LOAN/BORROW VERBS (δανε- vs δανι-)
-# ============================================================================
-
-LOAN_VERB_VARIATIONS = [
-    ('δανε', 'δανι'),           # δανείζω ↔ δανίζω
-    ('δανειζ', 'δανιζ'),
-    ('δανεισ', 'δανισ'),
-]
-
-# ============================================================================
-# GENERATION/PRODUCE WORDS (γενν- vs γενη-)
-# ============================================================================
-
-# Double nu vs single nu with eta
-GENERATION_VARIATIONS = [
-    ('γεννημ', 'γενημ'),        # γέννημα ↔ γένημα (produce, fruit)
-    ('γεννηματ', 'γενηματ'),    # γεννήματος ↔ γενήματος
-    ('εννημ', 'ενημ'),          # Pattern without initial gamma
-]
-
-# ============================================================================
-# COMMAND VERBS (ἐντέλλ- variations)
-# ============================================================================
-
-COMMAND_VERB_VARIATIONS = [
-    ('ἐντελλ', 'ἀντελλ'),       # ἐντέλλομαι ↔ ἀντέλλομαι (less common)
-    ('ἐντελ', 'ἐντλ'),          # Occasional contraction
-]
-
-# ============================================================================
-# CIRCUMCISION VERBS
-# ============================================================================
-
-CIRCUMCISION_VARIATIONS = [
-    ('περιτεμεσθ', 'περιτεμνεσθ'),  # infinitive variations
-    ('περιτεμε', 'περιτεμνε'),
-]
-
-# ============================================================================
-# VOWEL CONTRACTIONS AND VARIATIONS
-# ============================================================================
-
-# Omega vs omicron-epsilon in various contexts
-VOWEL_CONTRACTIONS = [
-    ('εω', 'ω'),                # Standard contraction
-    ('οε', 'ου'),               # Contraction
-    ('αε', 'α'),                # Contraction
-    ('αο', 'ω'),                # Contraction
-    ('εε', 'ει'),               # Contraction
-]
-
-# Diphthong variations
-DIPHTHONG_VARIATIONS = [
-    ('ει', 'ι'),                # ει ↔ ι (iotacism in later Greek) - δανείζω ↔ δανίζω
-    ('οι', 'υ'),                # οι ↔ υ (rare)
-    ('αι', 'ε'),                # αι ↔ ε (in some dialects)
-]
-
-# Long vs short vowel (ablaut)
-ABLAUT_VARIATIONS = [
-    ('ε', 'η'),                 # Short vs long e
-    ('ο', 'ω'),                 # Short vs long o
-    ('α', 'η'),                 # In some contexts
-]
-
-# ============================================================================
-# VERB STEM VARIATIONS
-# ============================================================================
-
-# Aorist forms with vowel variation
-AORIST_VOWEL_VARIATIONS = [
-    ('φειλ', 'φηλ'),            # ἀφείλετο ↔ ἀφήλετο (rare)
-    ('ειλ', 'ηλ'),              # In aorist middle forms
-]
-
-# Sigma vs theta in aorists
-AORIST_CONSONANT_VARIATIONS = [
-    ('θη', 'ση'),               # Passive aorist variations
-]
-
-# Consonant cluster variations
-CONSONANT_CLUSTER_VARIATIONS = [
-    ('π', 'μπ'),                # π ↔ μπ: ἐπίληπτον ↔ ἐπίλημπτον
-    ('β', 'μβ'),                # β ↔ μβ (similar pattern)
-]
-
-# ============================================================================
-# COMPOUND VERB PREFIX VARIATIONS
-# ============================================================================
-
-# Vowel elision/crasis in compounds
-COMPOUND_PREFIX_VARIATIONS = [
-    ('προσ', 'προ'),            # Before consonants
-    ('κατα', 'κατ', 'καθ'),     # Before vowels/aspirates
-    ('ἀπο', 'ἀπ', 'ἀφ'),        # Before vowels/aspirates
-    ('ἐπι', 'ἐπ', 'ἐφ'),        # Before vowels/aspirates
-    ('συν', 'συμ'),             # Assimilation: συν → συμ before labials (μ, β, π, φ, ψ)
-    ('συν', 'συλ'),             # Assimilation: συν → συλ before λ
-    ('συν', 'συγ'),             # Assimilation: συν → συγ before velars (γ, κ, χ, ξ)
-    ('συν', 'συσ'),             # Assimilation: συν → συς before σ (συνσείω → συσσείω)
-    # ('συνσ', 'συσ'),            # Direct: συνσ → συσ (double sigma reduction)
-]
-
-# ============================================================================
-# PARTICIPLE VARIATIONS
-# ============================================================================
-
-# Different participial endings
-PARTICIPLE_VARIATIONS = [
-    ('ουσ', 'οντ'),             # Present active participle
-    ('ων', 'οντ'),              # Masculine forms
-    ('ομεν', 'ωμεν'),           # Subjunctive vs indicative
-]
-
-# ============================================================================
-# SPECIFIC WORD VARIATIONS
-# ============================================================================
-
-# Words with attested variant spellings
+# Specific word variants (not pattern-based)
 SPECIFIC_WORD_VARIANTS = {
-    # Monetary terms
     'δίδραγμον': ['διδραχμον', 'δίδραχμον'],
-    
-    # Jewelry
     'ψέλλιον': ['ψέλιον', 'ψελλιον'],
-    
-    # Chimera/torrent variations (χιμ- vs χειμ-)
     'χιμάρρο': ['χειμάρρο', 'χειμάῤῥο', 'χιμάῤῥο'],
-    
-    # Early rain (πρώϊμον vs πρόϊμον)
     'πρώϊμον': ['πρόϊμον', 'πρόιμον', 'πρωϊμον'],
-    
-    # Pelican variations
     'πελακάν': ['πελεκάν'],
-    
-    # Abomination
     'βδέλυμα': ['βδέλυγμα'],
-    
-    # Bearer/nurse (τροφο- variations)
-    'τροφοφορ': ['τροπο φορ'],  # Compound variation
-    
-    # Enmity/opposition
+    'τροφοφορ': ['τροπο φορ'],
     'ἐξεναντί': ['ἐναντί'],
 }
 
-# ============================================================================
-# SYSTEMATIC LETTER CONFUSIONS (Not errors, but dialectal)
-# ============================================================================
-
-# These are attested variations in different manuscript traditions
-DIALECTAL_LETTER_VARIATIONS = [
-    ('ρρ', 'ρ'),                # Single vs double rho
-    ('λλ', 'λ'),                # Single vs double lambda
-    ('σσ', 'σ'),                # Single vs double sigma
-    ('ττ', 'τ'),                # Single vs double tau
-]
+# Pattern type groupings for semantic organization
+PATTERN_GROUPS = {
+    'lambda_future': ['lambda_future', 'lambda_compounds', 'aorist_passive_lambda'],
+    'destruction_verb': ['destruction'],
+    'generation_word': ['generation'],
+    'loan_verb': ['loan'],
+    'command_verb': ['command'],
+    'circumcision_verb': ['circumcision'],
+    'vowel_variation': ['vowel_contraction', 'diphthong', 'ablaut'],
+    'aorist_variation': ['aorist_passive_lambda', 'aorist_vowel', 'aorist_consonant', 'consonant_cluster'],
+    'dialectal_consonant': ['dialectal'],
+    'compound_variation': ['compound_prefix'],
+    'participle_variation': ['participle'],
+}
 
 # ============================================================================
 # HELPER FUNCTIONS
@@ -276,24 +211,9 @@ def has_lambda_future_variation(word1, word2):
     word1_norm = strip_accents(word1.lower())
     word2_norm = strip_accents(word2.lower())
     
-    for pattern1, pattern2 in LAMBDA_FUTURE_PATTERNS:
-        if pattern1 in word1_norm and pattern2 in word2_norm:
-            # Check if substituting one pattern for other makes them match
-            if word1_norm.replace(pattern1, pattern2) == word2_norm:
-                return True
-            if word2_norm.replace(pattern2, pattern1) == word1_norm:
-                return True
-    
-    # Check compound variations
-    for i in range(0, len(LAMBDA_COMPOUNDS), 2):
-        comp1 = LAMBDA_COMPOUNDS[i]
-        comp2 = LAMBDA_COMPOUNDS[i + 1]
-        if comp1 in word1_norm and comp2 in word2_norm:
-            if word1_norm.replace(comp1, comp2) == word2_norm:
-                return True
-            if word2_norm.replace(comp2, comp1) == word1_norm:
-                return True
-    
+    for pattern_type in PATTERN_GROUPS['lambda_future']:
+        if check_pattern_match(word1_norm, word2_norm, VARIATION_PATTERNS[pattern_type]):
+            return True
     return False
 
 
@@ -301,32 +221,14 @@ def has_destruction_verb_variation(word1, word2):
     """Check if two words differ only in destruction verb stem."""
     word1_norm = strip_accents(word1.lower())
     word2_norm = strip_accents(word2.lower())
-    
-    for pattern1, pattern2 in DESTRUCTION_VERB_VARIATIONS:
-        if (pattern1 in word1_norm or pattern2 in word1_norm) and \
-           (pattern1 in word2_norm or pattern2 in word2_norm):
-            if word1_norm.replace(pattern1, pattern2) == word2_norm:
-                return True
-            if word2_norm.replace(pattern2, pattern1) == word1_norm:
-                return True
-    
-    return False
+    return check_pattern_match(word1_norm, word2_norm, VARIATION_PATTERNS['destruction'])
 
 
 def has_generation_variation(word1, word2):
     """Check if two words differ only in generation/produce word stem."""
     word1_norm = strip_accents(word1.lower())
     word2_norm = strip_accents(word2.lower())
-    
-    for pattern1, pattern2 in GENERATION_VARIATIONS:
-        if (pattern1 in word1_norm or pattern2 in word1_norm) and \
-           (pattern1 in word2_norm or pattern2 in word2_norm):
-            if word1_norm.replace(pattern1, pattern2) == word2_norm:
-                return True
-            if word2_norm.replace(pattern2, pattern1) == word1_norm:
-                return True
-    
-    return False
+    return check_pattern_match(word1_norm, word2_norm, VARIATION_PATTERNS['generation'])
 
 
 def is_likely_legitimate_variation(word1, word2):
@@ -336,73 +238,90 @@ def is_likely_legitimate_variation(word1, word2):
     
     Returns (is_variation, variation_type) tuple.
     """
-    # First try the fast, specific pattern checks
-    if has_lambda_future_variation(word1, word2):
-        return (True, "lambda_future")
-    
-    if has_destruction_verb_variation(word1, word2):
-        return (True, "destruction_verb")
-    
-    if has_generation_variation(word1, word2):
-        return (True, "generation_word")
-    
-    # Check loan verb variations
     word1_norm = strip_accents(word1.lower())
     word2_norm = strip_accents(word2.lower())
-    for pattern1, pattern2 in LOAN_VERB_VARIATIONS:
-        if pattern1 in word1_norm and pattern2 in word2_norm:
-            if word1_norm.replace(pattern1, pattern2) == word2_norm:
-                return (True, "loan_verb")
     
-    # Check command verb variations
-    for pattern1, pattern2 in COMMAND_VERB_VARIATIONS:
-        if pattern1 in word1_norm and pattern2 in word2_norm:
-            if word1_norm.replace(pattern1, pattern2) == word2_norm:
-                return (True, "command_verb")
+    # Check each pattern group
+    pattern_type_map = {
+        'lambda_future': 'lambda_future',
+        'lambda_compounds': 'lambda_future',
+        'aorist_passive_lambda': 'lambda_future',
+        'destruction': 'destruction_verb',
+        'generation': 'generation_word',
+        'loan': 'loan_verb',
+        'command': 'command_verb',
+        'circumcision': 'circumcision_verb',
+        'vowel_contraction': 'vowel_contraction',
+        'diphthong': 'diphthong_variation',
+        'ablaut': 'ablaut',
+        'aorist_vowel': 'aorist_vowel',
+        'aorist_consonant': 'aorist_consonant',
+        'dialectal': 'dialectal_consonant',
+        'consonant_cluster': 'consonant_cluster',
+        'compound_prefix': 'compound_prefix',
+        'participle': 'participle',
+    }
     
-    # Check circumcision variations
-    for pattern1, pattern2 in CIRCUMCISION_VARIATIONS:
-        if pattern1 in word1_norm and pattern2 in word2_norm:
-            if word1_norm.replace(pattern1, pattern2) == word2_norm:
-                return (True, "circumcision_verb")
-    
-    # Check vowel contractions
-    for pattern1, pattern2 in VOWEL_CONTRACTIONS:
-        if pattern1 in word1_norm and pattern2 in word2_norm:
-            if word1_norm.replace(pattern1, pattern2) == word2_norm:
-                return (True, "vowel_contraction")
-    
-    # Check diphthong variations
-    for pattern1, pattern2 in DIPHTHONG_VARIATIONS:
-        if pattern1 in word1_norm and pattern2 in word2_norm:
-            if word1_norm.replace(pattern1, pattern2) == word2_norm:
-                return (True, "diphthong_variation")
-    
-    # Check ablaut variations
-    for pattern1, pattern2 in ABLAUT_VARIATIONS:
-        if pattern1 in word1_norm and pattern2 in word2_norm:
-            if word1_norm.replace(pattern1, pattern2) == word2_norm:
-                return (True, "ablaut")
-    
-    # Check dialectal letter variations
-    for pattern1, pattern2 in DIALECTAL_LETTER_VARIATIONS:
-        if pattern1 in word1_norm and pattern2 in word2_norm:
-            if word1_norm.replace(pattern1, pattern2) == word2_norm:
-                return (True, "dialectal_consonant")
-    
-    # Check consonant cluster variations
-    for pattern1, pattern2 in CONSONANT_CLUSTER_VARIATIONS:
-        if pattern1 in word1_norm and pattern2 in word2_norm:
-            if word1_norm.replace(pattern1, pattern2) == word2_norm:
-                return (True, "consonant_cluster")
+    for pattern_key, return_type in pattern_type_map.items():
+        if check_pattern_match(word1_norm, word2_norm, VARIATION_PATTERNS[pattern_key]):
+            return (True, return_type)
     
     # Generate all variations of word1 and see if word2 is among them
-    # This is a more comprehensive check that handles combinations
+    # This handles complex combined variations
     all_variations = set(generate_variation_list(word1, "all"))
     if word2_norm in all_variations:
         return (True, "combined_variation")
     
     return (False, None)
+
+
+def apply_all_patterns_from_list(current_variations, pattern_key, bidirectional=True, positional=False):
+    """
+    Apply all patterns from a given pattern key to current variations.
+    
+    Args:
+        current_variations: Set of current word variations
+        pattern_key: Key in VARIATION_PATTERNS to apply
+        bidirectional: If True, apply patterns in both directions
+        positional: If True, use positional variation for ει↔ι pattern
+    
+    Returns:
+        Set of new variations after applying patterns
+    """
+    new_variations = set()
+    patterns = VARIATION_PATTERNS[pattern_key]
+    
+    for var in current_variations:
+        new_variations.add(var)
+        for pattern_group in patterns:
+            if len(pattern_group) == 2:
+                p1, p2 = pattern_group
+                # Special handling for ει↔ι with positional variations
+                if positional and pattern_key == 'diphthong' and ((p1 == 'ει' and p2 == 'ι') or (p1 == 'ι' and p2 == 'ει')):
+                    if 'ει' in var:
+                        new_variations.update(generate_positional_variations(var, 'ει', 'ι'))
+                    if 'ι' in var:
+                        new_variations.update(generate_positional_variations(var, 'ι', 'ει'))
+                else:
+                    # Standard bidirectional replacement
+                    if p1 in var:
+                        new_variations.add(var.replace(p1, p2))
+                    if bidirectional and p2 in var:
+                        new_variations.add(var.replace(p2, p1))
+            elif len(pattern_group) == 3:
+                p1, p2, p3 = pattern_group
+                # Apply all pairwise replacements
+                if p1 in var:
+                    new_variations.add(var.replace(p1, p2))
+                    new_variations.add(var.replace(p1, p3))
+                if p2 in var:
+                    new_variations.add(var.replace(p2, p1))
+                    new_variations.add(var.replace(p2, p3))
+                if p3 in var:
+                    new_variations.add(var.replace(p3, p1))
+                    new_variations.add(var.replace(p3, p2))
+    
+    return new_variations
 
 
 def generate_variation_list(base_word, variation_type="all"):
@@ -416,235 +335,46 @@ def generate_variation_list(base_word, variation_type="all"):
     Returns:
         List of possible variant spellings (normalized, without accents)
     """
-    variations = set()
     word_norm = strip_accents(base_word.lower())
-    variations.add(word_norm)
-    
-    # We'll build variations iteratively to handle combinations
     current_variations = {word_norm}
     
-    if variation_type in ["lambda_future", "all"]:
-        # Lambda future variations
-        new_variations = set()
-        for var in current_variations:
-            new_variations.add(var)
-            for pattern1, pattern2 in LAMBDA_FUTURE_PATTERNS:
-                if pattern1 in var:
-                    new_variations.add(var.replace(pattern1, pattern2))
-                if pattern2 in var:
-                    new_variations.add(var.replace(pattern2, pattern1))
-        current_variations = new_variations
+    # Map variation types to pattern keys
+    type_to_patterns = {
+        'lambda_future': ['lambda_future', 'lambda_compounds', 'aorist_passive_lambda'],
+        'destruction': ['destruction'],
+        'generation': ['generation'],
+        'loan': ['loan'],
+        'command': ['command'],
+        'circumcision': ['circumcision'],
+        'vowel': ['vowel_contraction', 'diphthong', 'ablaut'],
+        'aorist': ['aorist_passive_lambda', 'aorist_vowel', 'aorist_consonant', 'consonant_cluster'],
+        'dialectal': ['dialectal'],
+        'compound': ['compound_prefix'],
+        'participle': ['participle'],
+    }
+    
+    # Determine which patterns to apply
+    if variation_type == "all":
+        patterns_to_apply = list(VARIATION_PATTERNS.keys())
+    elif variation_type in type_to_patterns:
+        patterns_to_apply = type_to_patterns[variation_type]
+    else:
+        patterns_to_apply = []
+    
+    # Apply each pattern group
+    for pattern_key in patterns_to_apply:
+        if pattern_key not in VARIATION_PATTERNS:
+            continue
         
-        # Lambda compound variations
-        new_variations = set()
-        for var in current_variations:
-            new_variations.add(var)
-            for i in range(0, len(LAMBDA_COMPOUNDS), 2):
-                comp1 = LAMBDA_COMPOUNDS[i]
-                comp2 = LAMBDA_COMPOUNDS[i + 1]
-                if comp1 in var:
-                    new_variations.add(var.replace(comp1, comp2))
-                if comp2 in var:
-                    new_variations.add(var.replace(comp2, comp1))
-        current_variations = new_variations
-    
-    if variation_type in ["destruction", "all"]:
-        # Destruction verb variations
-        new_variations = set()
-        for var in current_variations:
-            new_variations.add(var)
-            for pattern1, pattern2 in DESTRUCTION_VERB_VARIATIONS:
-                if pattern1 in var:
-                    new_variations.add(var.replace(pattern1, pattern2))
-                if pattern2 in var:
-                    new_variations.add(var.replace(pattern2, pattern1))
-        current_variations = new_variations
-    
-    if variation_type in ["generation", "all"]:
-        # Generation word variations
-        new_variations = set()
-        for var in current_variations:
-            new_variations.add(var)
-            for pattern1, pattern2 in GENERATION_VARIATIONS:
-                if pattern1 in var:
-                    new_variations.add(var.replace(pattern1, pattern2))
-                if pattern2 in var:
-                    new_variations.add(var.replace(pattern2, pattern1))
-        current_variations = new_variations
-    
-    if variation_type in ["loan", "all"]:
-        # Loan verb variations
-        new_variations = set()
-        for var in current_variations:
-            new_variations.add(var)
-            for pattern1, pattern2 in LOAN_VERB_VARIATIONS:
-                if pattern1 in var:
-                    new_variations.add(var.replace(pattern1, pattern2))
-                if pattern2 in var:
-                    new_variations.add(var.replace(pattern2, pattern1))
-        current_variations = new_variations
-    
-    if variation_type in ["command", "all"]:
-        # Command verb variations
-        new_variations = set()
-        for var in current_variations:
-            new_variations.add(var)
-            for pattern1, pattern2 in COMMAND_VERB_VARIATIONS:
-                if pattern1 in var:
-                    new_variations.add(var.replace(pattern1, pattern2))
-                if pattern2 in var:
-                    new_variations.add(var.replace(pattern2, pattern1))
-        current_variations = new_variations
-    
-    if variation_type in ["circumcision", "all"]:
-        # Circumcision variations
-        new_variations = set()
-        for var in current_variations:
-            new_variations.add(var)
-            for pattern1, pattern2 in CIRCUMCISION_VARIATIONS:
-                if pattern1 in var:
-                    new_variations.add(var.replace(pattern1, pattern2))
-                if pattern2 in var:
-                    new_variations.add(var.replace(pattern2, pattern1))
-        current_variations = new_variations
-    
-    if variation_type in ["vowel", "all"]:
-        # Vowel contractions
-        new_variations = set()
-        for var in current_variations:
-            new_variations.add(var)
-            for pattern1, pattern2 in VOWEL_CONTRACTIONS:
-                if pattern1 in var:
-                    new_variations.add(var.replace(pattern1, pattern2))
-                if pattern2 in var:
-                    new_variations.add(var.replace(pattern2, pattern1))
-        current_variations = new_variations
-        
-        # Diphthong variations (special handling for ει↔ι to allow independent replacements)
-        new_variations = set()
-        for var in current_variations:
-            new_variations.add(var)
-            for pattern1, pattern2 in DIPHTHONG_VARIATIONS:
-                # Check if this is the ει↔ι pattern (either direction)
-                if (pattern1 == 'ει' and pattern2 == 'ι') or (pattern1 == 'ι' and pattern2 == 'ει'):
-                    # Use positional variation for ει↔ι to handle each occurrence independently
-                    # Generate variations in BOTH directions
-                    if 'ει' in var:
-                        new_variations.update(generate_positional_variations(var, 'ει', 'ι'))
-                    if 'ι' in var:
-                        new_variations.update(generate_positional_variations(var, 'ι', 'ει'))
-                else:
-                    # Use simple replacement for other diphthongs
-                    if pattern1 in var:
-                        new_variations.add(var.replace(pattern1, pattern2))
-                    if pattern2 in var:
-                        new_variations.add(var.replace(pattern2, pattern1))
-        current_variations = new_variations
-        
-        # Ablaut variations
-        new_variations = set()
-        for var in current_variations:
-            new_variations.add(var)
-            for pattern1, pattern2 in ABLAUT_VARIATIONS:
-                if pattern1 in var:
-                    new_variations.add(var.replace(pattern1, pattern2))
-                if pattern2 in var:
-                    new_variations.add(var.replace(pattern2, pattern1))
-        current_variations = new_variations
-    
-    if variation_type in ["aorist", "all"]:
-        # Aorist passive lambda
-        new_variations = set()
-        for var in current_variations:
-            new_variations.add(var)
-            for pattern1, pattern2 in AORIST_PASSIVE_LAMBDA:
-                if pattern1 in var:
-                    new_variations.add(var.replace(pattern1, pattern2))
-                if pattern2 in var:
-                    new_variations.add(var.replace(pattern2, pattern1))
-        current_variations = new_variations
-        
-        # Aorist vowel variations
-        new_variations = set()
-        for var in current_variations:
-            new_variations.add(var)
-            for pattern1, pattern2 in AORIST_VOWEL_VARIATIONS:
-                if pattern1 in var:
-                    new_variations.add(var.replace(pattern1, pattern2))
-                if pattern2 in var:
-                    new_variations.add(var.replace(pattern2, pattern1))
-        current_variations = new_variations
-        
-        # Aorist consonant variations
-        new_variations = set()
-        for var in current_variations:
-            new_variations.add(var)
-            for pattern1, pattern2 in AORIST_CONSONANT_VARIATIONS:
-                if pattern1 in var:
-                    new_variations.add(var.replace(pattern1, pattern2))
-                if pattern2 in var:
-                    new_variations.add(var.replace(pattern2, pattern1))
-        current_variations = new_variations
-        
-        # Consonant cluster variations
-        new_variations = set()
-        for var in current_variations:
-            new_variations.add(var)
-            for pattern1, pattern2 in CONSONANT_CLUSTER_VARIATIONS:
-                if pattern1 in var:
-                    new_variations.add(var.replace(pattern1, pattern2))
-                if pattern2 in var:
-                    new_variations.add(var.replace(pattern2, pattern1))
-        current_variations = new_variations
-    
-    if variation_type in ["dialectal", "all"]:
-        # Dialectal letter variations (double vs single consonants)
-        new_variations = set()
-        for var in current_variations:
-            new_variations.add(var)
-            for pattern1, pattern2 in DIALECTAL_LETTER_VARIATIONS:
-                if pattern1 in var:
-                    new_variations.add(var.replace(pattern1, pattern2))
-                if pattern2 in var:
-                    new_variations.add(var.replace(pattern2, pattern1))
-        current_variations = new_variations
-    
-    if variation_type in ["compound", "all"]:
-        # Compound prefix variations
-        new_variations = set()
-        for var in current_variations:
-            new_variations.add(var)
-            for prefix_group in COMPOUND_PREFIX_VARIATIONS:
-                if len(prefix_group) == 2:
-                    p1, p2 = prefix_group
-                    if p1 in var:
-                        new_variations.add(var.replace(p1, p2))
-                    if p2 in var:
-                        new_variations.add(var.replace(p2, p1))
-                elif len(prefix_group) == 3:
-                    p1, p2, p3 = prefix_group
-                    if p1 in var:
-                        new_variations.add(var.replace(p1, p2))
-                        new_variations.add(var.replace(p1, p3))
-                    if p2 in var:
-                        new_variations.add(var.replace(p2, p1))
-                        new_variations.add(var.replace(p2, p3))
-                    if p3 in var:
-                        new_variations.add(var.replace(p3, p1))
-                        new_variations.add(var.replace(p3, p2))
-        current_variations = new_variations
-    
-    if variation_type in ["participle", "all"]:
-        # Participle variations
-        new_variations = set()
-        for var in current_variations:
-            new_variations.add(var)
-            for pattern1, pattern2 in PARTICIPLE_VARIATIONS:
-                if pattern1 in var:
-                    new_variations.add(var.replace(pattern1, pattern2))
-                if pattern2 in var:
-                    new_variations.add(var.replace(pattern2, pattern1))
-        current_variations = new_variations
+        # Special handling for diphthong patterns (positional variations for ει↔ι)
+        if pattern_key == 'diphthong':
+            current_variations = apply_all_patterns_from_list(
+                current_variations, pattern_key, bidirectional=True, positional=True
+            )
+        else:
+            current_variations = apply_all_patterns_from_list(
+                current_variations, pattern_key, bidirectional=True
+            )
     
     # Add variations with movable nu
     final_variations = set(current_variations)

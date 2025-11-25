@@ -266,7 +266,7 @@ def find_closest_word(word, word_dict):
     best_match_normalized, best_ratio = find_best_match(word_dict, normalized)
     
     # Return match only if it's very close (likely a typo)
-    if best_ratio >= 0.85 and best_match_normalized:
+    if best_ratio >= 0.80 and best_match_normalized:
         # Return original form with diacritics
         return word_dict[best_match_normalized], best_ratio
     else:
@@ -278,7 +278,7 @@ def find_closest_word(word, word_dict):
             best_match_normalized, best_ratio = find_best_match(word_dict, normalized_with_nu, best_ratio)            
             
             # Check if adding ν improved the match to above threshold
-            if best_ratio >= 0.85 and best_match_normalized:
+            if best_ratio >= 0.80 and best_match_normalized:
                 return word_dict[best_match_normalized], best_ratio
     
     return None, 0
@@ -449,7 +449,7 @@ def is_likely_typo(word, brenton_book=None, brenton_ch=None, brenton_vs=None):
                 best_ratio = max(ratio_r, ratio_s)
                 best_match = closest_r if ratio_r > ratio_s else closest_s
                 
-                if best_ratio >= 0.85:
+                if best_ratio >= 0.80:
                     return True, best_match, best_ratio, True, False, False
             
             # If not found in exact verse, check surrounding area (±2 verses)
@@ -473,7 +473,7 @@ def is_likely_typo(word, brenton_book=None, brenton_ch=None, brenton_vs=None):
                 best_ratio = max(ratio_r, ratio_s)
                 best_match = closest_r if ratio_r > ratio_s else closest_s
                 
-                if best_ratio >= 0.85:
+                if best_ratio >= 0.80:
                     return True, best_match, best_ratio, False, True, False
         except Exception:
             # If conversion or verse lookup fails, continue to broad search
@@ -486,8 +486,8 @@ def is_likely_typo(word, brenton_book=None, brenton_ch=None, brenton_vs=None):
     best_ratio = max(ratio_r, ratio_s)
     best_match = closest_r if ratio_r > ratio_s else closest_s
     
-    # If we found a very close match (85%+ similar), it's likely a typo
-    if best_ratio >= 0.85:
+    # If we found a very close match (80%+ similar), it's likely a typo
+    if best_ratio >= 0.80:
         return True, best_match, best_ratio, False, False, False
     return False, None, 0, False, False, False
 
