@@ -26,6 +26,7 @@ The script performs verse-specific checking, looking first in the exact verse, t
 ├── check_missing_words.py           # Main analysis script
 ├── compare-brenton-swete.py         # Additional comparison script
 ├── accepted_words.txt               # Manually verified words to skip
+├── word_corrections.tsv             # Previously identified errors and their corrections
 ├── rahlfs_words.csv                 # Word list from Rahlfs edition
 ├── rahlfs_versification.csv         # Verse reference mappings (Rahlfs)
 ├── swete_words.csv                  # Word list from Swete edition
@@ -158,6 +159,20 @@ The `accepted_words.txt` file contains words that have been manually verified as
 - One word per line
 - Lines starting with `#` are comments
 - Words should match the normalized form (lowercase, diacritics stripped)
+
+## Word Corrections
+
+The `word_corrections.tsv` file tracks previously identified and corrected errors. This file allows the script to skip words that have already been examined and corrected, preventing duplicate work. Format:
+- Tab-separated values (TSV)
+- Three columns: Verse Reference, Incorrect Word, Corrected Word
+- Example: `ΓΕΝΕΣΙΣ 5:10	ἑπτκόσια	ἑπτακόσια`
+- Special entries can use `ALL` for verse reference to apply across all verses
+
+To add corrections:
+1. Review output files (especially `missing_words_likely_typos.tsv`)
+2. Verify the error and identify the correct word
+3. Add entry to `word_corrections.tsv` in the format: `verse_ref	incorrect_word	correct_word`
+4. Rerun the script to skip already-corrected words
 
 ## Contributing
 

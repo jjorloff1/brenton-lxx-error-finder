@@ -688,8 +688,8 @@ Examples:
                         help='Path to output TSV file (default: missing_words.tsv)')
     parser.add_argument('--accepted-words', default='accepted_words.txt',
                         help='Path to accepted words file (default: accepted_words.txt)')
-    parser.add_argument('--already-examined', default='word_changes.tsv',
-                        help='Path to already examined word changes file (default: word_changes.tsv)')
+    parser.add_argument('--already-examined', default='word_corrections.tsv',
+                        help='Path to already examined word changes file (default: word_corrections.tsv)')
     parser.add_argument('--no-typo-check', action='store_true',
                         help='Disable typo checking for faster processing')
     
