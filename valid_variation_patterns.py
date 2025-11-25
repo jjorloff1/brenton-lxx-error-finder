@@ -279,6 +279,7 @@ def is_likely_legitimate_variation(word1, word2):
     
     Returns (is_variation, variation_type) tuple.
     """
+    # First try the fast, specific pattern checks
     if has_lambda_future_variation(word1, word2):
         return (True, "lambda_future")
     
@@ -308,6 +309,36 @@ def is_likely_legitimate_variation(word1, word2):
             if word1_norm.replace(pattern1, pattern2) == word2_norm:
                 return (True, "circumcision_verb")
     
+    # Check vowel contractions
+    for pattern1, pattern2 in VOWEL_CONTRACTIONS:
+        if pattern1 in word1_norm and pattern2 in word2_norm:
+            if word1_norm.replace(pattern1, pattern2) == word2_norm:
+                return (True, "vowel_contraction")
+    
+    # Check diphthong variations
+    for pattern1, pattern2 in DIPHTHONG_VARIATIONS:
+        if pattern1 in word1_norm and pattern2 in word2_norm:
+            if word1_norm.replace(pattern1, pattern2) == word2_norm:
+                return (True, "diphthong_variation")
+    
+    # Check ablaut variations
+    for pattern1, pattern2 in ABLAUT_VARIATIONS:
+        if pattern1 in word1_norm and pattern2 in word2_norm:
+            if word1_norm.replace(pattern1, pattern2) == word2_norm:
+                return (True, "ablaut")
+    
+    # Check dialectal letter variations
+    for pattern1, pattern2 in DIALECTAL_LETTER_VARIATIONS:
+        if pattern1 in word1_norm and pattern2 in word2_norm:
+            if word1_norm.replace(pattern1, pattern2) == word2_norm:
+                return (True, "dialectal_consonant")
+    
+    # Generate all variations of word1 and see if word2 is among them
+    # This is a more comprehensive check that handles combinations
+    all_variations = set(generate_variation_list(word1, "all"))
+    if word2_norm in all_variations:
+        return (True, "combined_variation")
+    
     return (False, None)
 
 
@@ -320,45 +351,226 @@ def generate_variation_list(base_word, variation_type="all"):
         variation_type: Type of variation ("lambda_future", "all", etc.)
     
     Returns:
-        List of possible variant spellings
+        List of possible variant spellings (normalized, without accents)
     """
-    variations = set([base_word])
+    variations = set()
     word_norm = strip_accents(base_word.lower())
+    variations.add(word_norm)
+    
+    # We'll build variations iteratively to handle combinations
+    current_variations = {word_norm}
     
     if variation_type in ["lambda_future", "all"]:
         # Lambda future variations
-        for pattern1, pattern2 in LAMBDA_FUTURE_PATTERNS:
-            if pattern1 in word_norm:
-                variations.add(word_norm.replace(pattern1, pattern2))
-            if pattern2 in word_norm:
-                variations.add(word_norm.replace(pattern2, pattern1))
+        new_variations = set()
+        for var in current_variations:
+            new_variations.add(var)
+            for pattern1, pattern2 in LAMBDA_FUTURE_PATTERNS:
+                if pattern1 in var:
+                    new_variations.add(var.replace(pattern1, pattern2))
+                if pattern2 in var:
+                    new_variations.add(var.replace(pattern2, pattern1))
+        current_variations = new_variations
         
         # Lambda compound variations
-        for i in range(0, len(LAMBDA_COMPOUNDS), 2):
-            comp1 = LAMBDA_COMPOUNDS[i]
-            comp2 = LAMBDA_COMPOUNDS[i + 1]
-            if comp1 in word_norm:
-                variations.add(word_norm.replace(comp1, comp2))
-            if comp2 in word_norm:
-                variations.add(word_norm.replace(comp2, comp1))
+        new_variations = set()
+        for var in current_variations:
+            new_variations.add(var)
+            for i in range(0, len(LAMBDA_COMPOUNDS), 2):
+                comp1 = LAMBDA_COMPOUNDS[i]
+                comp2 = LAMBDA_COMPOUNDS[i + 1]
+                if comp1 in var:
+                    new_variations.add(var.replace(comp1, comp2))
+                if comp2 in var:
+                    new_variations.add(var.replace(comp2, comp1))
+        current_variations = new_variations
     
     if variation_type in ["destruction", "all"]:
         # Destruction verb variations
-        for pattern1, pattern2 in DESTRUCTION_VERB_VARIATIONS:
-            if pattern1 in word_norm:
-                variations.add(word_norm.replace(pattern1, pattern2))
-            if pattern2 in word_norm:
-                variations.add(word_norm.replace(pattern2, pattern1))
+        new_variations = set()
+        for var in current_variations:
+            new_variations.add(var)
+            for pattern1, pattern2 in DESTRUCTION_VERB_VARIATIONS:
+                if pattern1 in var:
+                    new_variations.add(var.replace(pattern1, pattern2))
+                if pattern2 in var:
+                    new_variations.add(var.replace(pattern2, pattern1))
+        current_variations = new_variations
     
     if variation_type in ["generation", "all"]:
         # Generation word variations
-        for pattern1, pattern2 in GENERATION_VARIATIONS:
-            if pattern1 in word_norm:
-                variations.add(word_norm.replace(pattern1, pattern2))
-            if pattern2 in word_norm:
-                variations.add(word_norm.replace(pattern2, pattern1))
+        new_variations = set()
+        for var in current_variations:
+            new_variations.add(var)
+            for pattern1, pattern2 in GENERATION_VARIATIONS:
+                if pattern1 in var:
+                    new_variations.add(var.replace(pattern1, pattern2))
+                if pattern2 in var:
+                    new_variations.add(var.replace(pattern2, pattern1))
+        current_variations = new_variations
     
-    return list(variations)
+    if variation_type in ["loan", "all"]:
+        # Loan verb variations
+        new_variations = set()
+        for var in current_variations:
+            new_variations.add(var)
+            for pattern1, pattern2 in LOAN_VERB_VARIATIONS:
+                if pattern1 in var:
+                    new_variations.add(var.replace(pattern1, pattern2))
+                if pattern2 in var:
+                    new_variations.add(var.replace(pattern2, pattern1))
+        current_variations = new_variations
+    
+    if variation_type in ["command", "all"]:
+        # Command verb variations
+        new_variations = set()
+        for var in current_variations:
+            new_variations.add(var)
+            for pattern1, pattern2 in COMMAND_VERB_VARIATIONS:
+                if pattern1 in var:
+                    new_variations.add(var.replace(pattern1, pattern2))
+                if pattern2 in var:
+                    new_variations.add(var.replace(pattern2, pattern1))
+        current_variations = new_variations
+    
+    if variation_type in ["circumcision", "all"]:
+        # Circumcision variations
+        new_variations = set()
+        for var in current_variations:
+            new_variations.add(var)
+            for pattern1, pattern2 in CIRCUMCISION_VARIATIONS:
+                if pattern1 in var:
+                    new_variations.add(var.replace(pattern1, pattern2))
+                if pattern2 in var:
+                    new_variations.add(var.replace(pattern2, pattern1))
+        current_variations = new_variations
+    
+    if variation_type in ["vowel", "all"]:
+        # Vowel contractions
+        new_variations = set()
+        for var in current_variations:
+            new_variations.add(var)
+            for pattern1, pattern2 in VOWEL_CONTRACTIONS:
+                if pattern1 in var:
+                    new_variations.add(var.replace(pattern1, pattern2))
+                if pattern2 in var:
+                    new_variations.add(var.replace(pattern2, pattern1))
+        current_variations = new_variations
+        
+        # Diphthong variations
+        new_variations = set()
+        for var in current_variations:
+            new_variations.add(var)
+            for pattern1, pattern2 in DIPHTHONG_VARIATIONS:
+                if pattern1 in var:
+                    new_variations.add(var.replace(pattern1, pattern2))
+                if pattern2 in var:
+                    new_variations.add(var.replace(pattern2, pattern1))
+        current_variations = new_variations
+        
+        # Ablaut variations
+        new_variations = set()
+        for var in current_variations:
+            new_variations.add(var)
+            for pattern1, pattern2 in ABLAUT_VARIATIONS:
+                if pattern1 in var:
+                    new_variations.add(var.replace(pattern1, pattern2))
+                if pattern2 in var:
+                    new_variations.add(var.replace(pattern2, pattern1))
+        current_variations = new_variations
+    
+    if variation_type in ["aorist", "all"]:
+        # Aorist passive lambda
+        new_variations = set()
+        for var in current_variations:
+            new_variations.add(var)
+            for pattern1, pattern2 in AORIST_PASSIVE_LAMBDA:
+                if pattern1 in var:
+                    new_variations.add(var.replace(pattern1, pattern2))
+                if pattern2 in var:
+                    new_variations.add(var.replace(pattern2, pattern1))
+        current_variations = new_variations
+        
+        # Aorist vowel variations
+        new_variations = set()
+        for var in current_variations:
+            new_variations.add(var)
+            for pattern1, pattern2 in AORIST_VOWEL_VARIATIONS:
+                if pattern1 in var:
+                    new_variations.add(var.replace(pattern1, pattern2))
+                if pattern2 in var:
+                    new_variations.add(var.replace(pattern2, pattern1))
+        current_variations = new_variations
+        
+        # Aorist consonant variations
+        new_variations = set()
+        for var in current_variations:
+            new_variations.add(var)
+            for pattern1, pattern2 in AORIST_CONSONANT_VARIATIONS:
+                if pattern1 in var:
+                    new_variations.add(var.replace(pattern1, pattern2))
+                if pattern2 in var:
+                    new_variations.add(var.replace(pattern2, pattern1))
+        current_variations = new_variations
+    
+    if variation_type in ["dialectal", "all"]:
+        # Dialectal letter variations (double vs single consonants)
+        new_variations = set()
+        for var in current_variations:
+            new_variations.add(var)
+            for pattern1, pattern2 in DIALECTAL_LETTER_VARIATIONS:
+                if pattern1 in var:
+                    new_variations.add(var.replace(pattern1, pattern2))
+                if pattern2 in var:
+                    new_variations.add(var.replace(pattern2, pattern1))
+        current_variations = new_variations
+    
+    if variation_type in ["compound", "all"]:
+        # Compound prefix variations
+        new_variations = set()
+        for var in current_variations:
+            new_variations.add(var)
+            for prefix_group in COMPOUND_PREFIX_VARIATIONS:
+                if len(prefix_group) == 2:
+                    p1, p2 = prefix_group
+                    if p1 in var:
+                        new_variations.add(var.replace(p1, p2))
+                    if p2 in var:
+                        new_variations.add(var.replace(p2, p1))
+                elif len(prefix_group) == 3:
+                    p1, p2, p3 = prefix_group
+                    if p1 in var:
+                        new_variations.add(var.replace(p1, p2))
+                        new_variations.add(var.replace(p1, p3))
+                    if p2 in var:
+                        new_variations.add(var.replace(p2, p1))
+                        new_variations.add(var.replace(p2, p3))
+                    if p3 in var:
+                        new_variations.add(var.replace(p3, p1))
+                        new_variations.add(var.replace(p3, p2))
+        current_variations = new_variations
+    
+    if variation_type in ["participle", "all"]:
+        # Participle variations
+        new_variations = set()
+        for var in current_variations:
+            new_variations.add(var)
+            for pattern1, pattern2 in PARTICIPLE_VARIATIONS:
+                if pattern1 in var:
+                    new_variations.add(var.replace(pattern1, pattern2))
+                if pattern2 in var:
+                    new_variations.add(var.replace(pattern2, pattern1))
+        current_variations = new_variations
+    
+    # Add variations with movable nu
+    final_variations = set(current_variations)
+    for var in current_variations:
+        if var.endswith('ε') or var.endswith('ι'):
+            final_variations.add(var + 'ν')
+        elif var.endswith('εν') or var.endswith('ιν'):
+            final_variations.add(var[:-1])
+    
+    return list(final_variations)
 
 
 if __name__ == '__main__':

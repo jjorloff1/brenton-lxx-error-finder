@@ -13,6 +13,7 @@ from book_code_mappings import (
     convert_brenton_reference_to_rahlfs,
     convert_brenton_reference_to_swete
 )
+from valid_variation_patterns import generate_variation_list, strip_accents as strip_accents_vvp
 
 # Module-level global variables for loaded data
 RAHLFS_WORDS_DICT = {}  # word_id -> {'normalized': str, 'original': str}
@@ -380,15 +381,45 @@ def get_area_words(verse_ref, verse_map, sorted_verses, words_dict, verse_range=
     return area_words
 
 
+def has_legitimate_variation_in_verse(word, verse_words):
+    """
+    Check if any legitimate spelling variation of word exists in verse_words.
+    
+    Args:
+        word: The Brenton word to check
+        verse_words: Dictionary mapping normalized -> original for words in the verse
+    
+    Returns:
+        (has_variation, matched_word, variation_count) tuple
+        - has_variation: True if a variation was found
+        - matched_word: The original form (with diacritics) from verse_words that matched
+        - variation_count: Number of variations generated
+    """
+    if not verse_words:
+        return False, None, 0
+    
+    # Generate all legitimate variations of the word
+    variations = generate_variation_list(word, "all")
+    
+    # Check if any variation exists in the verse words
+    for variation in variations:
+        if variation in verse_words:
+            return True, verse_words[variation], len(variations)
+    
+    return False, None, len(variations)
+
+
 def is_likely_typo(word, brenton_book=None, brenton_ch=None, brenton_vs=None):
     """
     Check if word is likely a typo by finding very similar words.
     Uses global data structures (RAHLFS_WORDS_DICT, SWETE_WORDS_DICT, etc.).
-    First checks verse-specific words, then area (±2 verses), then falls back to broader corpus.
-    Returns (is_typo, closest_match, similarity_ratio, verse_match, area_match)
+    First checks verse-specific words for legitimate variations, then exact matches,
+    then area (±2 verses), then falls back to broader corpus.
+    Returns (is_typo, closest_match, similarity_ratio, verse_match, area_match, legitimate_variation)
     """
     verse_match = False
     area_match = False
+    legitimate_variation = False
     
     # First try verse-specific search if we have the necessary data
     if all([brenton_book, brenton_ch, brenton_vs, RAHLFS_VERSE_MAP, SWETE_VERSE_MAP, 
@@ -402,7 +433,16 @@ def is_likely_typo(word, brenton_book=None, brenton_ch=None, brenton_vs=None):
             swete_verse_words = get_verse_words(swete_ref, SWETE_VERSE_MAP, SWETE_SORTED_VERSES, SWETE_WORDS_DICT)
             
             if rahlfs_verse_words or swete_verse_words:
-                # Check verse-specific words first (with movable nu handling)
+                # First check for legitimate spelling variations in the verse
+                has_var_r, matched_r, var_count_r = has_legitimate_variation_in_verse(word, rahlfs_verse_words)
+                has_var_s, matched_s, var_count_s = has_legitimate_variation_in_verse(word, swete_verse_words)
+                
+                if has_var_r or has_var_s:
+                    # Found a legitimate variation - not a typo!
+                    best_match = matched_r if has_var_r else matched_s
+                    return False, best_match, 1.0, True, False, True
+                
+                # Check verse-specific words for typos (with movable nu handling)
                 closest_r, ratio_r = find_closest_word(word, rahlfs_verse_words)
                 closest_s, ratio_s = find_closest_word(word, swete_verse_words)
                 
@@ -410,14 +450,23 @@ def is_likely_typo(word, brenton_book=None, brenton_ch=None, brenton_vs=None):
                 best_match = closest_r if ratio_r > ratio_s else closest_s
                 
                 if best_ratio >= 0.85:
-                    return True, best_match, best_ratio, True, False
+                    return True, best_match, best_ratio, True, False, False
             
             # If not found in exact verse, check surrounding area (±2 verses)
             rahlfs_area_words = get_area_words(rahlfs_ref, RAHLFS_VERSE_MAP, RAHLFS_SORTED_VERSES, RAHLFS_WORDS_DICT, verse_range=2)
             swete_area_words = get_area_words(swete_ref, SWETE_VERSE_MAP, SWETE_SORTED_VERSES, SWETE_WORDS_DICT, verse_range=2)
             
             if rahlfs_area_words or swete_area_words:
-                # Check area words (with movable nu handling)
+                # Check for legitimate variations in the area
+                has_var_r, matched_r, var_count_r = has_legitimate_variation_in_verse(word, rahlfs_area_words)
+                has_var_s, matched_s, var_count_s = has_legitimate_variation_in_verse(word, swete_area_words)
+                
+                if has_var_r or has_var_s:
+                    # Found a legitimate variation in the area - not a typo!
+                    best_match = matched_r if has_var_r else matched_s
+                    return False, best_match, 1.0, False, True, True
+                
+                # Check area words for typos (with movable nu handling)
                 closest_r, ratio_r = find_closest_word(word, rahlfs_area_words)
                 closest_s, ratio_s = find_closest_word(word, swete_area_words)
                 
@@ -425,7 +474,7 @@ def is_likely_typo(word, brenton_book=None, brenton_ch=None, brenton_vs=None):
                 best_match = closest_r if ratio_r > ratio_s else closest_s
                 
                 if best_ratio >= 0.85:
-                    return True, best_match, best_ratio, False, True
+                    return True, best_match, best_ratio, False, True, False
         except Exception:
             # If conversion or verse lookup fails, continue to broad search
             pass
@@ -439,8 +488,8 @@ def is_likely_typo(word, brenton_book=None, brenton_ch=None, brenton_vs=None):
     
     # If we found a very close match (85%+ similar), it's likely a typo
     if best_ratio >= 0.85:
-        return True, best_match, best_ratio, False, False
-    return False, None, 0, False, False
+        return True, best_match, best_ratio, False, False, False
+    return False, None, 0, False, False, False
 
 
 def is_word_in_sets(word):
@@ -572,14 +621,14 @@ def process_bible_file(bible_path, output_path, check_typos=True):
                             if words_checked % 100 == 0:
                                 print(f"  Checked {words_checked} words, found {typos_found} potential typos so far... (Current: {verse_ref})")
                             
-                            is_typo, closest_match, similarity, verse_match, area_match = is_likely_typo(
+                            is_typo, closest_match, similarity, verse_match, area_match, legitimate_variation = is_likely_typo(
                                 word, current_book, current_chapter, current_verse
                             )
                             
                             if is_typo:
                                 typos_found += 1
                         else:
-                            is_typo, closest_match, similarity, verse_match, area_match = False, None, 0, False, False
+                            is_typo, closest_match, similarity, verse_match, area_match, legitimate_variation = False, None, 0, False, False, False
                         
                         missing_words.append({
                             'line_num': line_num,
@@ -592,7 +641,8 @@ def process_bible_file(bible_path, output_path, check_typos=True):
                             'closest_match': closest_match if closest_match else '',
                             'similarity': f"{similarity:.2f}" if similarity > 0 else '',
                             'verse_match': verse_match,
-                            'area_match': area_match
+                            'area_match': area_match,
+                            'legitimate_variation': legitimate_variation
                         })
     
     # Write results to log file
@@ -622,9 +672,10 @@ def process_bible_file(bible_path, output_path, check_typos=True):
         with open(typo_check_path, 'w', encoding='utf-8', newline='') as f:
             print(f"Successfully opened {typo_check_path} for writing")
             writer = csv.writer(f, delimiter='\t')
-            # Write header with all columns including verse match and area match
+            # Write header with all columns including verse match, area match, and legitimate variation
             writer.writerow(['Line Number', 'Verse Reference', 'Word', 'Is Name?', 'Is Number?', 
-                            'Likely Typo?', 'Closest Match', 'Similarity', 'Verse Match?', 'Area Match?', 'Full Line'])
+                            'Likely Typo?', 'Closest Match', 'Similarity', 'Verse Match?', 'Area Match?', 
+                            'Legitimate Variation?', 'Full Line'])
             
             # Write data
             for entry in missing_words:
@@ -639,14 +690,17 @@ def process_bible_file(bible_path, output_path, check_typos=True):
                     entry['similarity'],
                     'Yes' if entry.get('verse_match', False) else 'No',
                     'Yes' if entry.get('area_match', False) else 'No',
+                    'Yes' if entry.get('legitimate_variation', False) else 'No',
                     entry['full_line']
                 ])
             print(f"Finished writing {len(missing_words)} rows to {typo_check_path}")
     
-    # Create a filtered file with likely typos only
+    # Create a filtered file with likely typos only (excluding legitimate variations)
     if check_typos:
         filtered_path = output_path.replace('.tsv', '_likely_typos.tsv')
-        likely_typos = [e for e in missing_words if e['is_typo'] and not e['is_name'] and not e['is_number']]
+        likely_typos = [e for e in missing_words 
+                       if e['is_typo'] and not e['is_name'] and not e['is_number'] 
+                       and not e.get('legitimate_variation', False)]
         
         print(f"Writing likely typos to {filtered_path}...")
         print(f"Opening file for writing: {filtered_path}")
@@ -669,11 +723,46 @@ def process_bible_file(bible_path, output_path, check_typos=True):
                     entry['full_line']
                 ])
             print(f"Finished writing {len(likely_typos)} rows to {filtered_path}")
+        
+        # Create a separate file for legitimate variations found
+        variations_path = output_path.replace('.tsv', '_legitimate_variations.tsv')
+        legitimate_variations = [e for e in missing_words if e.get('legitimate_variation', False)]
+        
+        if legitimate_variations:
+            print(f"Writing legitimate variations to {variations_path}...")
+            print(f"Opening file for writing: {variations_path}")
+            with open(variations_path, 'w', encoding='utf-8', newline='') as f:
+                print(f"Successfully opened {variations_path} for writing")
+                writer = csv.writer(f, delimiter='\t')
+                writer.writerow(['Line Number', 'Verse Reference', 'Word', 'Matched Variation', 'Verse Match?', 'Area Match?', 'Full Line'])
+                
+                for entry in legitimate_variations:
+                    writer.writerow([
+                        entry['line_num'],
+                        entry['verse_ref'],
+                        entry['word'],
+                        entry['closest_match'],
+                        'Yes' if entry.get('verse_match', False) else 'No',
+                        'Yes' if entry.get('area_match', False) else 'No',
+                        entry['full_line']
+                    ])
+                print(f"Finished writing {len(legitimate_variations)} rows to {variations_path}")
     
     print(f"\nComplete! Found {len(missing_words)} missing words.")
     if check_typos:
         print(f"  - Likely proper names: {sum(1 for e in missing_words if e['is_name'])}")
         print(f"  - Likely numbers: {sum(1 for e in missing_words if e['is_number'])}")
+        print(f"  - Legitimate variations: {sum(1 for e in missing_words if e.get('legitimate_variation', False))}")
+        legitimate_variations = [e for e in missing_words if e.get('legitimate_variation', False)]
+        if legitimate_variations:
+            verse_var = sum(1 for e in legitimate_variations if e.get('verse_match', False))
+            area_var = sum(1 for e in legitimate_variations if e.get('area_match', False))
+            print(f"    - Found in verse: {verse_var}")
+            print(f"    - Found in area (±2 verses): {area_var}")
+        
+        likely_typos = [e for e in missing_words 
+                       if e['is_typo'] and not e['is_name'] and not e['is_number'] 
+                       and not e.get('legitimate_variation', False)]
         print(f"  - Likely typos: {len(likely_typos)}")
         if likely_typos:
             verse_matches = sum(1 for e in likely_typos if e.get('verse_match', False))
@@ -686,6 +775,8 @@ def process_bible_file(bible_path, output_path, check_typos=True):
     if check_typos:
         print(f"Full typo check results saved to: {typo_check_path}")
         print(f"Filtered typos saved to: {filtered_path}")
+        if legitimate_variations:
+            print(f"Legitimate variations saved to: {variations_path}")
 
 
 def main():
