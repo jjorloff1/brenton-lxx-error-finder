@@ -177,16 +177,52 @@ def load_versification(filepath):
 
 def extract_greek_words(line):
     """Extract Greek words from a line, excluding LaTeX commands."""
-    # Remove LaTeX commands and their contents
+    words = []
+    
+    # Check for \lettrine macro at the beginning of a book
+    # There are two patterns:
+    # 1. With \textcolor: \lettrine[...]{\textcolor{...}{Φ}}{ΙΛΟΣΟΦΩΤΑΤΟΝ}
+    # 2. Without \textcolor: \lettrine[...]{Κ}{ΑΙ}
+    
+    # Try pattern with \textcolor first (more specific)
+    lettrine_pattern_textcolor = r'\\lettrine\[[^\]]*\]\{\\textcolor\{[^}]+\}\{([^}]+)\}\}\{([^}]*)\}'
+    lettrine_match = re.search(lettrine_pattern_textcolor, line)
+    
+    if not lettrine_match:
+        # Try simple pattern without \textcolor
+        lettrine_pattern_simple = r'\\lettrine\[[^\]]*\]\{([^}]+)\}\{([^}]*)\}'
+        lettrine_match = re.search(lettrine_pattern_simple, line)
+    
+    if lettrine_match:
+        # Extract the first character
+        first_char = lettrine_match.group(1)
+        # Extract the rest of the word from the second group
+        rest_of_word = lettrine_match.group(2)
+        
+        # Combine and lowercase the first word
+        if rest_of_word.strip():
+            first_word = (first_char + rest_of_word).lower()
+        else:
+            # Single character word
+            first_word = first_char.lower()
+        
+        words.append(normalize_text(first_word))
+        
+        # Remove the \lettrine command from the line for further processing
+        line = line[:lettrine_match.start()] + line[lettrine_match.end():]
+    
+    # Remove remaining LaTeX commands and their contents
     line = re.sub(r'\\[a-zA-Z]+\{[^}]*\}', '', line)
     line = re.sub(r'\\[a-zA-Z]+', '', line)
     
     # Match Greek words (unicode Greek range)
     # Greek range: \u0370-\u03FF (basic Greek), \u1F00-\u1FFF (extended Greek)
     greek_pattern = r'[\u0370-\u03FF\u1F00-\u1FFF]+'
-    words = re.findall(greek_pattern, line)
+    remaining_words = re.findall(greek_pattern, line)
     
-    return [normalize_text(word) for word in words]
+    words.extend([normalize_text(word) for word in remaining_words])
+    
+    return words
 
 
 def is_likely_proper_name(word):

@@ -191,3 +191,10 @@ This project is for academic and research purposes, analyzing public domain Sept
 - Brenton's Septuagint translation
 - Rahlfs-Hanhart Septuaginta edition
 - Swete's Old Testament in Greek edition
+
+## TODO:
+- [ ] Review missing_words_likely_typos.tsv and either accept or correct each word
+- [ ] Review proper nouns for corrections
+   - Likley errors in proper nowns Κυπιον, Δαρίδ, Ἑλλήμων
+- [ ] Update script to make sure latex isn't getting in the way of words at the beginning of sentences (i.e. ΠΡΟΣΕΥΧΗ ΜΑΝΑΣΣΗ ΥΙΟΥ ΕΖΕΚΙΟΥ 1:1	ΥΡΙΕ)
+- [ ] Create script that will apply corrections to the separate source files (latex)
