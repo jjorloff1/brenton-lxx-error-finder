@@ -13,16 +13,63 @@ def strip_accents(text):
     # Filter out combining marks (accents)
     return ''.join(c for c in nfd if unicodedata.category(c) != 'Mn')
 
+
+def generate_positional_variations(text, pattern1, pattern2):
+    """
+    Generate variations where each occurrence of pattern1 can independently
+    be replaced with pattern2 or left as is.
+    
+    For example, with 'ειει' and pattern ει→ι, generates:
+    - ειει (no change)
+    - ιει (first changed)
+    - ειι (second changed)
+    - ιι (both changed)
+    """
+    if pattern1 not in text:
+        return {text}
+    
+    variations = set()
+    
+    # Find all occurrences
+    positions = []
+    start = 0
+    while True:
+        pos = text.find(pattern1, start)
+        if pos == -1:
+            break
+        positions.append(pos)
+        start = pos + 1  # Allow overlapping matches
+    
+    if not positions:
+        return {text}
+    
+    # Generate all combinations (2^n where n is number of occurrences)
+    from itertools import product
+    for combo in product([False, True], repeat=len(positions)):
+        # Build the variation
+        result = list(text)
+        offset = 0
+        for i, (pos, should_replace) in enumerate(zip(positions, combo)):
+            if should_replace:
+                # Replace pattern1 with pattern2 at this position
+                adjusted_pos = pos + offset
+                result[adjusted_pos:adjusted_pos+len(pattern1)] = list(pattern2)
+                offset += len(pattern2) - len(pattern1)
+        
+        variations.add(''.join(result))
+    
+    return variations
+
 # ============================================================================
 # MORPHOLOGICAL VARIATIONS (Verb Forms)
 # ============================================================================
 
-# Lambda Future Stems (λήψ- vs λήμψ-)
-# Both forms are valid in Greek for the future of λαμβάνω and compounds
+# Lambda Stem Variations (λαμβάνω and compounds)
+# All forms valid in Greek - since we strip accents, only need unaccented versions
 LAMBDA_FUTURE_PATTERNS = [
-    ('λήψ', 'λημψ'),      # Simple forms: λήψομαι ↔ λήμψομαι
-    ('λήψ', 'λήμψ'),      # Alternative with breathing
-    ('ληψ', 'λημψ'),      # Without diacritics for comparison
+    ('ληψ', 'λημψ'),      # Future stems: λήψομαι ↔ λήμψομαι, κατάληψιν ↔ κατάλημψιν
+    ('ληπ', 'λημπ'),      # Present/aorist stems: ἐπίληπτον ↔ ἐπίλημπτον
+    ('ληφ', 'λημφ'),      # Aorist passive stems: ληφθῆναι ↔ λημφθῆναι, Ληφθήτω ↔ Λημφθήτω
 ]
 
 # Compounds of λαμβάνω with lambda future variation
@@ -116,7 +163,7 @@ VOWEL_CONTRACTIONS = [
 
 # Diphthong variations
 DIPHTHONG_VARIATIONS = [
-    ('ει', 'ι'),                # ει ↔ ι (iotacism in later Greek)
+    ('ει', 'ι'),                # ει ↔ ι (iotacism in later Greek) - δανείζω ↔ δανίζω
     ('οι', 'υ'),                # οι ↔ υ (rare)
     ('αι', 'ε'),                # αι ↔ ε (in some dialects)
 ]
@@ -143,6 +190,12 @@ AORIST_CONSONANT_VARIATIONS = [
     ('θη', 'ση'),               # Passive aorist variations
 ]
 
+# Consonant cluster variations
+CONSONANT_CLUSTER_VARIATIONS = [
+    ('π', 'μπ'),                # π ↔ μπ: ἐπίληπτον ↔ ἐπίλημπτον
+    ('β', 'μβ'),                # β ↔ μβ (similar pattern)
+]
+
 # ============================================================================
 # COMPOUND VERB PREFIX VARIATIONS
 # ============================================================================
@@ -153,7 +206,11 @@ COMPOUND_PREFIX_VARIATIONS = [
     ('κατα', 'κατ', 'καθ'),     # Before vowels/aspirates
     ('ἀπο', 'ἀπ', 'ἀφ'),        # Before vowels/aspirates
     ('ἐπι', 'ἐπ', 'ἐφ'),        # Before vowels/aspirates
-    ('συν', 'συ', 'συμ'),       # Assimilation before different consonants
+    ('συν', 'συμ'),             # Assimilation: συν → συμ before labials (μ, β, π, φ, ψ)
+    ('συν', 'συλ'),             # Assimilation: συν → συλ before λ
+    ('συν', 'συγ'),             # Assimilation: συν → συγ before velars (γ, κ, χ, ξ)
+    ('συν', 'συσ'),             # Assimilation: συν → συς before σ (συνσείω → συσσείω)
+    # ('συνσ', 'συσ'),            # Direct: συνσ → συσ (double sigma reduction)
 ]
 
 # ============================================================================
@@ -333,6 +390,12 @@ def is_likely_legitimate_variation(word1, word2):
             if word1_norm.replace(pattern1, pattern2) == word2_norm:
                 return (True, "dialectal_consonant")
     
+    # Check consonant cluster variations
+    for pattern1, pattern2 in CONSONANT_CLUSTER_VARIATIONS:
+        if pattern1 in word1_norm and pattern2 in word2_norm:
+            if word1_norm.replace(pattern1, pattern2) == word2_norm:
+                return (True, "consonant_cluster")
+    
     # Generate all variations of word1 and see if word2 is among them
     # This is a more comprehensive check that handles combinations
     all_variations = set(generate_variation_list(word1, "all"))
@@ -457,15 +520,25 @@ def generate_variation_list(base_word, variation_type="all"):
                     new_variations.add(var.replace(pattern2, pattern1))
         current_variations = new_variations
         
-        # Diphthong variations
+        # Diphthong variations (special handling for ει↔ι to allow independent replacements)
         new_variations = set()
         for var in current_variations:
             new_variations.add(var)
             for pattern1, pattern2 in DIPHTHONG_VARIATIONS:
-                if pattern1 in var:
-                    new_variations.add(var.replace(pattern1, pattern2))
-                if pattern2 in var:
-                    new_variations.add(var.replace(pattern2, pattern1))
+                # Check if this is the ει↔ι pattern (either direction)
+                if (pattern1 == 'ει' and pattern2 == 'ι') or (pattern1 == 'ι' and pattern2 == 'ει'):
+                    # Use positional variation for ει↔ι to handle each occurrence independently
+                    # Generate variations in BOTH directions
+                    if 'ει' in var:
+                        new_variations.update(generate_positional_variations(var, 'ει', 'ι'))
+                    if 'ι' in var:
+                        new_variations.update(generate_positional_variations(var, 'ι', 'ει'))
+                else:
+                    # Use simple replacement for other diphthongs
+                    if pattern1 in var:
+                        new_variations.add(var.replace(pattern1, pattern2))
+                    if pattern2 in var:
+                        new_variations.add(var.replace(pattern2, pattern1))
         current_variations = new_variations
         
         # Ablaut variations
@@ -507,6 +580,17 @@ def generate_variation_list(base_word, variation_type="all"):
         for var in current_variations:
             new_variations.add(var)
             for pattern1, pattern2 in AORIST_CONSONANT_VARIATIONS:
+                if pattern1 in var:
+                    new_variations.add(var.replace(pattern1, pattern2))
+                if pattern2 in var:
+                    new_variations.add(var.replace(pattern2, pattern1))
+        current_variations = new_variations
+        
+        # Consonant cluster variations
+        new_variations = set()
+        for var in current_variations:
+            new_variations.add(var)
+            for pattern1, pattern2 in CONSONANT_CLUSTER_VARIATIONS:
                 if pattern1 in var:
                     new_variations.add(var.replace(pattern1, pattern2))
                 if pattern2 in var:
