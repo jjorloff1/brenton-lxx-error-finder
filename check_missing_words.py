@@ -48,6 +48,26 @@ def strip_diacritics(text):
     return unicodedata.normalize('NFC', stripped)
 
 
+def normalize_for_comparison(text):
+    """Normalize text for comparison purposes.
+    - Strips spaces (for compound word matching)
+    - Replaces ς with σ when not at the end of the word
+    """
+    # Remove spaces
+    text = text.replace(' ', '')
+    
+    # Replace ς with σ when it's not the last character
+    # Process from left to right, checking if ς is followed by more characters
+    result = []
+    for i, char in enumerate(text):
+        if char == 'ς' and i < len(text) - 1:
+            result.append('σ')
+        else:
+            result.append(char)
+    
+    return ''.join(result)
+
+
 def load_accepted_words(filepath):
     """Load accepted words from a text file (one word per line)."""
     print(f"Opening accepted words file: {filepath}")
@@ -285,15 +305,19 @@ def find_closest_word(word, word_dict):
 
 def find_best_match(word_dict, normalized, current_best_ratio = 0):
     # Only check words of similar length (within 2 characters)
-    target_len = len(normalized)
+    # Normalize the search term for comparison
+    normalized_for_comp = normalize_for_comparison(normalized)
+    target_len = len(normalized_for_comp)
     
     best_match_normalized = None
     for candidate_normalized in word_dict.keys():
-        if abs(len(candidate_normalized) - target_len) > 2:
+        # Normalize candidate for comparison (handles spaces and ς/σ)
+        candidate_for_comp = normalize_for_comparison(candidate_normalized)
+        if abs(len(candidate_for_comp) - target_len) > 2:
             continue
             
         # Calculate similarity ratio
-        ratio = SequenceMatcher(None, normalized, candidate_normalized).ratio()
+        ratio = SequenceMatcher(None, normalized_for_comp, candidate_for_comp).ratio()
         
         # If very similar (>0.8 similarity), it might be a typo
         if ratio > current_best_ratio:
@@ -302,17 +326,50 @@ def find_best_match(word_dict, normalized, current_best_ratio = 0):
     return best_match_normalized,current_best_ratio
 
 
+def get_words_by_id_range(start_word_id, end_word_id, words_dict):
+    """Extract words in a given word ID range, including compound combinations.
+    
+    Args:
+        start_word_id: Starting word ID (inclusive)
+        end_word_id: Ending word ID (inclusive)
+        words_dict: Dictionary mapping word_id -> {'normalized': str, 'original': str}
+    
+    Returns:
+        Dictionary mapping normalized -> original for words in this range,
+        including compound combinations of consecutive words.
+    """
+    result_words = {}  # normalized -> original
+    words_in_order = []
+    
+    # Extract words in this ID range and track order
+    for word_id in range(start_word_id, end_word_id + 1):
+        if word_id in words_dict:
+            word_data = words_dict[word_id]
+            result_words[word_data['normalized']] = word_data['original']
+            words_in_order.append(word_data)
+    
+    # Add compound combinations of consecutive words
+    for i in range(len(words_in_order) - 1):
+        word1 = words_in_order[i]
+        word2 = words_in_order[i + 1]
+        combined_normalized = word1['normalized'] + word2['normalized']
+        # Preserve space in the original form
+        combined_original = word1['original'] + ' ' + word2['original']
+        result_words[combined_normalized] = combined_original
+    
+    return result_words
+
+
 def get_verse_words(verse_ref, verse_map, sorted_verses, words_dict):
     """Get all words for a specific verse using the versification mapping.
     words_dict maps word_id -> {'normalized': str, 'original': str}.
     Returns dict mapping normalized -> original for words in this verse.
+    Also includes compound combinations of consecutive words (e.g., word1+word2).
     NOTE: This helper still takes parameters since it's used internally with different data sources.
     """
-    verse_words = {}  # normalized -> original
-    
     # Find start word ID for this verse
     if verse_ref not in verse_map:
-        return verse_words
+        return {}
     
     start_id = verse_map[verse_ref]
     
@@ -330,25 +387,18 @@ def get_verse_words(verse_ref, verse_map, sorted_verses, words_dict):
         # Last verse - use maximum word ID
         end_id = max(words_dict.keys()) if words_dict else start_id
     
-    # Extract words in this ID range
-    for word_id in range(start_id, end_id + 1):
-        if word_id in words_dict:
-            word_data = words_dict[word_id]
-            verse_words[word_data['normalized']] = word_data['original']
-    
-    return verse_words
+    return get_words_by_id_range(start_id, end_id, words_dict)
 
 
-def get_area_words(verse_ref, verse_map, sorted_verses, words_dict, verse_range=2):
+def get_area_words(verse_ref, verse_map, sorted_verses, words_dict, verse_range=20):
     """Get all words from surrounding verses (±verse_range verses).
     words_dict maps word_id -> {'normalized': str, 'original': str}.
     Returns dict mapping normalized -> original for words in this area.
+    Also includes compound combinations of consecutive words (e.g., word1+word2).
     """
-    area_words = {}  # normalized -> original
-    
     # Find the current verse index in sorted list
     if verse_ref not in verse_map:
-        return area_words
+        return {}
     
     current_idx = None
     for i, (v_ref, v_id) in enumerate(sorted_verses):
@@ -357,7 +407,7 @@ def get_area_words(verse_ref, verse_map, sorted_verses, words_dict, verse_range=
             break
     
     if current_idx is None:
-        return area_words
+        return {}
     
     # Get range of verses (current ± verse_range)
     start_verse_idx = max(0, current_idx - verse_range)
@@ -372,13 +422,31 @@ def get_area_words(verse_ref, verse_map, sorted_verses, words_dict, verse_range=
     else:
         end_word_id = max(words_dict.keys()) if words_dict else start_word_id
     
-    # Extract all words in this ID range
-    for word_id in range(start_word_id, end_word_id + 1):
-        if word_id in words_dict:
-            word_data = words_dict[word_id]
-            area_words[word_data['normalized']] = word_data['original']
+    return get_words_by_id_range(start_word_id, end_word_id, words_dict)
+
+
+def check_words_in_both_sources(word, rahlfs_words, swete_words, check_func):
+    """
+    Helper to check word in both Rahlfs and Swete word sources.
     
-    return area_words
+    Args:
+        word: The word to check
+        rahlfs_words: Dictionary of Rahlfs words
+        swete_words: Dictionary of Swete words
+        check_func: Function to call with (word, word_dict) that returns (found, match, score)
+    
+    Returns:
+        (found, best_match, best_score) tuple
+    """
+    found_r, match_r, score_r = check_func(word, rahlfs_words)
+    found_s, match_s, score_s = check_func(word, swete_words)
+    
+    if found_r or found_s:
+        best_match = match_r if (found_r and score_r >= score_s) else match_s
+        best_score = max(score_r, score_s)
+        return True, best_match, best_score
+    
+    return False, None, 0
 
 
 def has_legitimate_variation_in_verse(word, verse_words):
@@ -402,11 +470,40 @@ def has_legitimate_variation_in_verse(word, verse_words):
     variations = generate_variation_list(word, "all")
     
     # Check if any variation exists in the verse words
+    # Normalize both for comparison (handles spaces and ς/σ)
     for variation in variations:
-        if variation in verse_words:
-            return True, verse_words[variation], len(variations)
+        variation_normalized = normalize_for_comparison(variation)
+        for normalized_key, original_value in verse_words.items():
+            key_normalized = normalize_for_comparison(normalized_key)
+            if variation_normalized == key_normalized:
+                return True, original_value, len(variations)
     
     return False, None, len(variations)
+
+
+def check_legitimate_variations_in_scope(word, rahlfs_words, swete_words):
+    """
+    Check for legitimate variations in both Rahlfs and Swete word sources.
+    
+    Returns:
+        (found, matched_word, score) tuple
+    """
+    return check_words_in_both_sources(word, rahlfs_words, swete_words, has_legitimate_variation_in_verse)
+
+
+def check_typos_in_scope(word, rahlfs_words, swete_words):
+    """
+    Check for typos in both Rahlfs and Swete word sources.
+    
+    Returns:
+        (found, matched_word, similarity_ratio) tuple
+    """
+    def find_typo(w, word_dict):
+        closest, ratio = find_closest_word(w, word_dict)
+        found = ratio >= 0.80
+        return found, closest, ratio
+    
+    return check_words_in_both_sources(word, rahlfs_words, swete_words, find_typo)
 
 
 def is_likely_typo(word, brenton_book=None, brenton_ch=None, brenton_vs=None):
@@ -414,7 +511,8 @@ def is_likely_typo(word, brenton_book=None, brenton_ch=None, brenton_vs=None):
     Check if word is likely a typo by finding very similar words.
     Uses global data structures (RAHLFS_WORDS_DICT, SWETE_WORDS_DICT, etc.).
     First checks verse-specific words for legitimate variations, then exact matches,
-    then area (±2 verses), then falls back to broader corpus.
+    then area (±20 verses), then falls back to broader corpus.
+    Compound words are automatically checked since get_verse_words includes them.
     Returns (is_typo, closest_match, similarity_ratio, verse_match, area_match, legitimate_variation)
     """
     verse_match = False
@@ -433,61 +531,44 @@ def is_likely_typo(word, brenton_book=None, brenton_ch=None, brenton_vs=None):
             swete_verse_words = get_verse_words(swete_ref, SWETE_VERSE_MAP, SWETE_SORTED_VERSES, SWETE_WORDS_DICT)
             
             if rahlfs_verse_words or swete_verse_words:
-                # First check for legitimate spelling variations in the verse
-                has_var_r, matched_r, var_count_r = has_legitimate_variation_in_verse(word, rahlfs_verse_words)
-                has_var_s, matched_s, var_count_s = has_legitimate_variation_in_verse(word, swete_verse_words)
+                # Check for legitimate spelling variations in the verse
+                has_var, best_match, _ = check_legitimate_variations_in_scope(word, rahlfs_verse_words, swete_verse_words)
                 
-                if has_var_r or has_var_s:
+                if has_var:
                     # Found a legitimate variation - not a typo!
-                    best_match = matched_r if has_var_r else matched_s
                     return False, best_match, 1.0, True, False, True
                 
-                # Check verse-specific words for typos (with movable nu handling)
-                closest_r, ratio_r = find_closest_word(word, rahlfs_verse_words)
-                closest_s, ratio_s = find_closest_word(word, swete_verse_words)
+                # Check verse-specific words for typos
+                is_typo, best_match, best_ratio = check_typos_in_scope(word, rahlfs_verse_words, swete_verse_words)
                 
-                best_ratio = max(ratio_r, ratio_s)
-                best_match = closest_r if ratio_r > ratio_s else closest_s
-                
-                if best_ratio >= 0.80:
+                if is_typo:
                     return True, best_match, best_ratio, True, False, False
             
-            # If not found in exact verse, check surrounding area (±2 verses)
-            rahlfs_area_words = get_area_words(rahlfs_ref, RAHLFS_VERSE_MAP, RAHLFS_SORTED_VERSES, RAHLFS_WORDS_DICT, verse_range=2)
-            swete_area_words = get_area_words(swete_ref, SWETE_VERSE_MAP, SWETE_SORTED_VERSES, SWETE_WORDS_DICT, verse_range=2)
+            # If not found in exact verse, check surrounding area (±20 verses)
+            rahlfs_area_words = get_area_words(rahlfs_ref, RAHLFS_VERSE_MAP, RAHLFS_SORTED_VERSES, RAHLFS_WORDS_DICT, verse_range=20)
+            swete_area_words = get_area_words(swete_ref, SWETE_VERSE_MAP, SWETE_SORTED_VERSES, SWETE_WORDS_DICT, verse_range=20)
             
             if rahlfs_area_words or swete_area_words:
                 # Check for legitimate variations in the area
-                has_var_r, matched_r, var_count_r = has_legitimate_variation_in_verse(word, rahlfs_area_words)
-                has_var_s, matched_s, var_count_s = has_legitimate_variation_in_verse(word, swete_area_words)
+                has_var, best_match, _ = check_legitimate_variations_in_scope(word, rahlfs_area_words, swete_area_words)
                 
-                if has_var_r or has_var_s:
+                if has_var:
                     # Found a legitimate variation in the area - not a typo!
-                    best_match = matched_r if has_var_r else matched_s
                     return False, best_match, 1.0, False, True, True
                 
-                # Check area words for typos (with movable nu handling)
-                closest_r, ratio_r = find_closest_word(word, rahlfs_area_words)
-                closest_s, ratio_s = find_closest_word(word, swete_area_words)
+                # Check area words for typos
+                is_typo, best_match, best_ratio = check_typos_in_scope(word, rahlfs_area_words, swete_area_words)
                 
-                best_ratio = max(ratio_r, ratio_s)
-                best_match = closest_r if ratio_r > ratio_s else closest_s
-                
-                if best_ratio >= 0.80:
+                if is_typo:
                     return True, best_match, best_ratio, False, True, False
         except Exception:
             # If conversion or verse lookup fails, continue to broad search
             pass
     
     # Fall back to broad corpus search - use pre-derived global word sets
-    closest_r, ratio_r = find_closest_word(word, RAHLFS_WORDS)
-    closest_s, ratio_s = find_closest_word(word, SWETE_WORDS)
+    is_typo, best_match, best_ratio = check_typos_in_scope(word, RAHLFS_WORDS, SWETE_WORDS)
     
-    best_ratio = max(ratio_r, ratio_s)
-    best_match = closest_r if ratio_r > ratio_s else closest_s
-    
-    # If we found a very close match (80%+ similar), it's likely a typo
-    if best_ratio >= 0.80:
+    if is_typo:
         return True, best_match, best_ratio, False, False, False
     return False, None, 0, False, False, False
 
@@ -758,7 +839,7 @@ def process_bible_file(bible_path, output_path, check_typos=True):
             verse_var = sum(1 for e in legitimate_variations if e.get('verse_match', False))
             area_var = sum(1 for e in legitimate_variations if e.get('area_match', False))
             print(f"    - Found in verse: {verse_var}")
-            print(f"    - Found in area (±2 verses): {area_var}")
+            print(f"    - Found in area (±20 verses): {area_var}")
         
         likely_typos = [e for e in missing_words 
                        if e['is_typo'] and not e['is_name'] and not e['is_number'] 
@@ -769,7 +850,7 @@ def process_bible_file(bible_path, output_path, check_typos=True):
             area_matches = sum(1 for e in likely_typos if e.get('area_match', False))
             corpus_matches = len(likely_typos) - verse_matches - area_matches
             print(f"    - Matched within verse: {verse_matches}")
-            print(f"    - Matched within area (±2 verses): {area_matches}")
+            print(f"    - Matched within area (±20 verses): {area_matches}")
             print(f"    - Matched in broader corpus: {corpus_matches}")
     print(f"Results saved to: {output_path}")
     if check_typos:

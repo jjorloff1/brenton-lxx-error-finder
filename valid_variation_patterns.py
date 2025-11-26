@@ -103,41 +103,22 @@ VARIATION_PATTERNS = {
         ('ληφ', 'λημφ'),      # Aorist passive stems: ληφθῆναι ↔ λημφθῆναι
     ],
     
-    'lambda_compounds': [
-        ('ἀναλήψ', 'ἀναλημψ'), ('ἀντιλήψ', 'ἀντιλημψ'), ('ἐπιλήψ', 'ἐπιλημψ'),
-        ('καταλήψ', 'καταλημψ'), ('μεταλήψ', 'μεταλημψ'), ('παραλήψ', 'παραλημψ'),
-        ('περιλήψ', 'περιλημψ'), ('προκαταλήψ', 'προκαταλημψ'), ('προλήψ', 'προλημψ'),
-        ('συλλήψ', 'συλλημψ'), ('συμπαραλήψ', 'συμπαραλημψ'), ('συμπεριλήψ', 'συμπεριλημψ'),
-        ('συναντιλήψ', 'συναντιλημψ'), ('ὑπολήψ', 'ὑπολημψ'),
-    ],
-    
-    'aorist_passive_lambda': [
-        ('ληφθ', 'λημφθ'), ('λήφθ', 'λήμφθ'), ('ληψθ', 'λημψθ'),
-    ],
     
     'destruction': [
-        ('ολοθρ', 'ολεθρ'), ('ολοθρευ', 'ολεθρευ'),
+        ('ολοθρ', 'ολεθρ'), ('ολοθρευ', 'ολεθρευ'), ('ὠλόθρευ', 'ὠλέθρευ'),
         ('ξολοθρ', 'ξολεθρ'), ('ξωλοθρ', 'ξωλεθρ'),
     ],
     
-    'loan': [
-        ('δανε', 'δανι'), ('δανειζ', 'δανιζ'), ('δανεισ', 'δανισ'),
-    ],
-    
     'generation': [
-        ('γεννημ', 'γενημ'), ('γεννηματ', 'γενηματ'), ('εννημ', 'ενημ'),
-    ],
-    
-    'command': [
-        ('ἐντελλ', 'ἀντελλ'), ('ἐντελ', 'ἐντλ'),
+        ('γεννη', 'γενη')
     ],
     
     'circumcision': [
-        ('περιτεμεσθ', 'περιτεμνεσθ'), ('περιτεμε', 'περιτεμνε'),
+        ('τεμ', 'τεμν')
     ],
     
     'vowel_contraction': [
-        ('εω', 'ω'), ('οε', 'ου'), ('αε', 'α'), ('αο', 'ω'), ('εε', 'ει'),
+        ('εω', 'ω'), ('οε', 'ου'), ('αε', 'α'), ('αο', 'ω'), ('εε', 'ει'), ('η', 'ει'),
     ],
     
     'diphthong': [
@@ -167,7 +148,7 @@ VARIATION_PATTERNS = {
     ],
     
     'dialectal': [
-        ('ρρ', 'ρ'), ('λλ', 'λ'), ('σσ', 'σ'), ('ττ', 'τ'),
+        ('ρρ', 'ρ'), ('λλ', 'λ'), ('σσ', 'σ'), ('ττ', 'τ'), ('ττ', 'σσ'), ('ν', 'νν'),
     ],
     
     'participle': [
@@ -189,14 +170,12 @@ SPECIFIC_WORD_VARIANTS = {
 
 # Pattern type groupings for semantic organization
 PATTERN_GROUPS = {
-    'lambda_future': ['lambda_future', 'lambda_compounds', 'aorist_passive_lambda'],
+    'lambda_future': ['lambda_future'],
     'destruction_verb': ['destruction'],
     'generation_word': ['generation'],
-    'loan_verb': ['loan'],
-    'command_verb': ['command'],
     'circumcision_verb': ['circumcision'],
     'vowel_variation': ['vowel_contraction', 'diphthong', 'ablaut'],
-    'aorist_variation': ['aorist_passive_lambda', 'aorist_vowel', 'aorist_consonant', 'consonant_cluster'],
+    'aorist_variation': ['aorist_vowel', 'aorist_consonant', 'consonant_cluster'],
     'dialectal_consonant': ['dialectal'],
     'compound_variation': ['compound_prefix'],
     'participle_variation': ['participle'],
@@ -244,12 +223,8 @@ def is_likely_legitimate_variation(word1, word2):
     # Check each pattern group
     pattern_type_map = {
         'lambda_future': 'lambda_future',
-        'lambda_compounds': 'lambda_future',
-        'aorist_passive_lambda': 'lambda_future',
         'destruction': 'destruction_verb',
         'generation': 'generation_word',
-        'loan': 'loan_verb',
-        'command': 'command_verb',
         'circumcision': 'circumcision_verb',
         'vowel_contraction': 'vowel_contraction',
         'diphthong': 'diphthong_variation',
@@ -295,7 +270,8 @@ def apply_all_patterns_from_list(current_variations, pattern_key, bidirectional=
         new_variations.add(var)
         for pattern_group in patterns:
             if len(pattern_group) == 2:
-                p1, p2 = pattern_group
+                # Strip accents from patterns to match the stripped word
+                p1, p2 = strip_accents(pattern_group[0]), strip_accents(pattern_group[1])
                 # Special handling for ει↔ι with positional variations
                 if positional and pattern_key == 'diphthong' and ((p1 == 'ει' and p2 == 'ι') or (p1 == 'ι' and p2 == 'ει')):
                     if 'ει' in var:
@@ -309,7 +285,8 @@ def apply_all_patterns_from_list(current_variations, pattern_key, bidirectional=
                     if bidirectional and p2 in var:
                         new_variations.add(var.replace(p2, p1))
             elif len(pattern_group) == 3:
-                p1, p2, p3 = pattern_group
+                # Strip accents from patterns to match the stripped word
+                p1, p2, p3 = strip_accents(pattern_group[0]), strip_accents(pattern_group[1]), strip_accents(pattern_group[2])
                 # Apply all pairwise replacements
                 if p1 in var:
                     new_variations.add(var.replace(p1, p2))
@@ -340,14 +317,12 @@ def generate_variation_list(base_word, variation_type="all"):
     
     # Map variation types to pattern keys
     type_to_patterns = {
-        'lambda_future': ['lambda_future', 'lambda_compounds', 'aorist_passive_lambda'],
+        'lambda_future': ['lambda_future'],
         'destruction': ['destruction'],
         'generation': ['generation'],
-        'loan': ['loan'],
-        'command': ['command'],
         'circumcision': ['circumcision'],
         'vowel': ['vowel_contraction', 'diphthong', 'ablaut'],
-        'aorist': ['aorist_passive_lambda', 'aorist_vowel', 'aorist_consonant', 'consonant_cluster'],
+        'aorist': ['aorist_vowel', 'aorist_consonant', 'consonant_cluster'],
         'dialectal': ['dialectal'],
         'compound': ['compound_prefix'],
         'participle': ['participle'],

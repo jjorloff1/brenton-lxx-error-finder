@@ -1,0 +1,64 @@
+Loading word data...
+Opening file with word IDs: rahlfs_words.csv
+Successfully opened rahlfs_words.csv
+Finished reading rahlfs_words.csv (623693 rows, 623693 word IDs loaded)
+Loaded 623693 word IDs from Rahlfs
+Opening file with word IDs: swete_words.csv
+Successfully opened swete_words.csv
+Finished reading swete_words.csv (609522 rows, 609522 word IDs loaded)
+Loaded 609522 word IDs from Swete
+Deriving normalized word sets...
+Derived 45224 unique words from Rahlfs
+Derived 46292 unique words from Swete
+Opening accepted words file: accepted_words.txt
+Successfully opened accepted_words.txt
+Finished reading accepted_words.txt (175 lines, 157 words loaded)
+Loaded 157 accepted words
+Opening already examined file: word_corrections.tsv
+Successfully opened word_corrections.tsv
+Finished reading word_corrections.tsv (77 rows, 77 word changes loaded)
+Loaded 77 already examined word changes
+Loading versification for verse-specific typo checking...
+Opening versification file: rahlfs_versification.csv
+Successfully opened rahlfs_versification.csv
+Finished reading rahlfs_versification.csv (30637 rows, 30637 verses loaded)
+Sorting verses from rahlfs_versification.csv...
+Finished sorting 30637 verses
+Loaded 30637 verses from Rahlfs versification
+Opening versification file: swete_versification.csv
+Successfully opened swete_versification.csv
+Finished reading swete_versification.csv (30533 rows, 30533 verses loaded)
+Sorting verses from swete_versification.csv...
+Finished sorting 30533 verses
+Loaded 30533 verses from Swete versification
+Processing Bible file...
+Opening Bible file for reading: Brenton.tex
+Successfully opened Brenton.tex
+Found book: ΓΕΝΕΣΙΣ
+  Checked 100 words, found 52 potential typos so far... (Current: ΓΕΝΕΣΙΣ 36:11)
+Found book: ΕΞΟΔΟΣ
+Found book: ΛΕΥΙΤΙΚΟΝ
+  Checked 200 words, found 81 potential typos so far... (Current: ΛΕΥΙΤΙΚΟΝ 11:35)
+Found book: ΑΡΙΘΜΟΙ
+  Checked 300 words, found 112 potential typos so far... (Current: ΑΡΙΘΜΟΙ 29:16)
+Found book: ΔΕΥΤΕΡΟΝΟΜΙΟΝ
+  Checked 400 words, found 160 potential typos so far... (Current: ΔΕΥΤΕΡΟΝΟΜΙΟΝ 12:29)
+Found book: ΙΗΣΟΥΣ ΝΑΥΗ
+  Checked 500 words, found 200 potential typos so far... (Current: ΙΗΣΟΥΣ ΝΑΥΗ 9:23)
+  Checked 600 words, found 254 potential typos so far... (Current: ΙΗΣΟΥΣ ΝΑΥΗ 19:30)
+Found book: ΚΡΙΤΑΙ
+  Checked 700 words, found 286 potential typos so far... (Current: ΚΡΙΤΑΙ 19:8)
+Found book: ΡΟΥΘ
+Found book: ΒΑΣΙΛΕΙΩΝ Α
+  Checked 800 words, found 313 potential typos so far... (Current: ΒΑΣΙΛΕΙΩΝ Α 17:42)
+Found book: ΒΑΣΙΛΕΙΩΝ Β
+  Checked 900 words, found 359 potential typos so far... (Current: ΒΑΣΙΛΕΙΩΝ Β 12:25)
+Found book: ΒΑΣΙΛΕΙΩΝ Γ
+  Checked 1000 words, found 402 potential typos so far... (Current: ΒΑΣΙΛΕΙΩΝ Γ 1:38)
+  Checked 1100 words, found 458 potential typos so far... (Current: ΒΑΣΙΛΕΙΩΝ Γ 21:33)
+Found book: ΒΑΣΙΛΕΙΩΝ Δ
+  Checked 1200 words, found 512 potential typos so far... (Current: ΒΑΣΙΛΕΙΩΝ Δ 19:24)
+Found book: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α
+  Checked 1300 words, found 580 potential typos so far... (Current: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 3:22)
+  Checked 1400 words, found 659 potential typos so far... (Current: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 8:4)
+  Checked 1500 words, found 730 potential typos so far... (Current: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 14:7)
