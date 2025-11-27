@@ -780,7 +780,7 @@ def process_bible_file(bible_path, output_path, check_typos=True):
     if check_typos:
         filtered_path = output_path.replace('.tsv', '_likely_typos.tsv')
         likely_typos = [e for e in missing_words 
-                       if e['is_typo'] and not e['is_name'] and not e['is_number'] 
+                       if e['is_typo'] and not e['is_number'] 
                        and not e.get('legitimate_variation', False)]
         
         print(f"Writing likely typos to {filtered_path}...")
@@ -842,7 +842,7 @@ def process_bible_file(bible_path, output_path, check_typos=True):
             print(f"    - Found in area (±20 verses): {area_var}")
         
         likely_typos = [e for e in missing_words 
-                       if e['is_typo'] and not e['is_name'] and not e['is_number'] 
+                       if e['is_typo'] and not e['is_number'] 
                        and not e.get('legitimate_variation', False)]
         print(f"  - Likely typos: {len(likely_typos)}")
         if likely_typos:
