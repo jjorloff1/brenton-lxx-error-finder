@@ -53,3 +53,6 @@ htmlcov/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+
+# Large file
+septuagint and apochrypha - version 1900 brenton.pdf
