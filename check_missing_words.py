@@ -828,7 +828,36 @@ def process_bible_file(bible_path, output_path, check_typos=True):
                         entry['full_line']
                     ])
                 print(f"Finished writing {len(legitimate_variations)} rows to {variations_path}")
-    
+
+        # Create a file for unmatched words (not legitimate variations, not confirmed numbers)
+        # These are words that need manual review
+        unmatched_path = output_path.replace('.tsv', '_unmatched.tsv')
+        unmatched = [e for e in missing_words
+                    if not e.get('legitimate_variation', False)
+                    and not e['is_number']]
+
+        if unmatched:
+            print(f"Writing unmatched words to {unmatched_path}...")
+            print(f"Opening file for writing: {unmatched_path}")
+            with open(unmatched_path, 'w', encoding='utf-8', newline='') as f:
+                print(f"Successfully opened {unmatched_path} for writing")
+                writer = csv.writer(f, delimiter='\t')
+                writer.writerow(['Line Number', 'Verse Reference', 'Word', 'Is Name?',
+                                'Likely Typo?', 'Closest Match', 'Similarity', 'Full Line'])
+
+                for entry in unmatched:
+                    writer.writerow([
+                        entry['line_num'],
+                        entry['verse_ref'],
+                        entry['word'],
+                        'Yes' if entry['is_name'] else 'No',
+                        'Yes' if entry['is_typo'] else 'No',
+                        entry['closest_match'],
+                        entry['similarity'],
+                        entry['full_line']
+                    ])
+                print(f"Finished writing {len(unmatched)} rows to {unmatched_path}")
+
     print(f"\nComplete! Found {len(missing_words)} missing words.")
     if check_typos:
         print(f"  - Likely proper names: {sum(1 for e in missing_words if e['is_name'])}")
@@ -852,12 +881,18 @@ def process_bible_file(bible_path, output_path, check_typos=True):
             print(f"    - Matched within verse: {verse_matches}")
             print(f"    - Matched within area (±20 verses): {area_matches}")
             print(f"    - Matched in broader corpus: {corpus_matches}")
+        unmatched = [e for e in missing_words
+                    if not e.get('legitimate_variation', False)
+                    and not e['is_number']]
+        print(f"  - Unmatched (need review): {len(unmatched)}")
     print(f"Results saved to: {output_path}")
     if check_typos:
         print(f"Full typo check results saved to: {typo_check_path}")
         print(f"Filtered typos saved to: {filtered_path}")
         if legitimate_variations:
             print(f"Legitimate variations saved to: {variations_path}")
+        if unmatched:
+            print(f"Unmatched words saved to: {unmatched_path}")
 
 
 def main():

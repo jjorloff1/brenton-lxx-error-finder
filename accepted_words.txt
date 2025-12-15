@@ -18,9 +18,13 @@
 ΔΗΣ
 
 # Incorrect words represented, corrected, but need to skip
+# These either appear multiple times, their verse reference is off,
+# or the actual change was larger than just the word itself.
 γἱοὶ
 νἱοὶ
 νἱῶν
+Ἀβισὰλ
+ᾖρν
 μον
 λέγεν
 τῶς
