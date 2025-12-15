@@ -255,13 +255,7 @@ def is_likely_proper_name(word):
 def is_likely_number_word(word):
     """Check if word appears to be a number/numeral."""
     # Greek number words often contain these patterns
-    number_patterns = [
-        'ἑκατό', 'χίλι', 'μύρι',  # hundred, thousand, myriad
-        'δέκα', 'εἴκοσι', 'τριάκοντα', 'τεσσαράκοντα', 'πεντήκοντα',
-        'ἑξήκοντα', 'ἑβδομήκοντα', 'ὀγδοήκοντα', 'ἐνενήκοντα', 'ἐννενήκοντα', 'ἐννεήκοντα',
-        'πρῶτο', 'δεύτερο', 'τρίτο', 'τέταρτο', 'πέμπτο',
-        'διακόσι', 'τριακόσι', 'τετρακόσι', 'πεντακόσι', 'ἑξακόσι', 'ἑπτακόσι', 'ὀκτακόσι', 'ἐννακόσι'
-    ]
+    number_patterns = []
     word_lower = word.lower()
     word_stripped = strip_diacritics(word_lower)
     
