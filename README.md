@@ -195,4 +195,4 @@ This project is for academic and research purposes, analyzing public domain Sept
 ## TODO:
 - [x] Review missing_words_likely_typos.tsv and either accept or correct each word
 - [x] Update script to make sure latex isn't getting in the way of words at the beginning of sentences (i.e. ΠΡΟΣΕΥΧΗ ΜΑΝΑΣΣΗ ΥΙΟΥ ΕΖΕΚΙΟΥ 1:1	ΥΡΙΕ)
-- [ ] Create script that will apply corrections to the separate source files (latex)
+- [x] Create script that will apply corrections to the separate source files (latex)

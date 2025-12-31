@@ -2,7 +2,7 @@
 CORRECTION LOG
 ================================================================================
 
-Total corrections applied: 771
+Total corrections applied: 770
 Corrections not found: 3
 Corrections at unexpected locations: 3
 
@@ -689,12 +689,6 @@ File: 1KI_src.tex, Line 486
   Location: Chapter 12, Verse 24l
   Notes: rahlf
 
-File: 1KI_src.tex, Line 684
-  TSV Line: 206
-  Reference: ΒΑΣΙΛΕΙΩΝ Γ 18:29
-  Changed: 'προεφήτευον' -> 'ἐπροφήτευον'
-  Location: Chapter 18, Verse 29
-
 File: 1KI_src.tex, Line 80
   TSV Line: 196
   Reference: ΒΑΣΙΛΕΙΩΝ Γ 2:23
@@ -758,7 +752,7 @@ File: 1KI_src.tex, Line 728
 File: 1KI_src.tex, Line 200
   TSV Line: 198
   Reference: ΒΑΣΙΛΕΙΩΝ Γ 5:25
-  Changed: 'εἴκος' -> 'εἴκοςι'
+  Changed: 'εἴκος' -> 'εἴκοσι'
   Location: Chapter 5, Verse 25
 
 File: 1KI_src.tex, Line 209
@@ -814,7 +808,7 @@ File: 1MA_src.tex, Line 548
 File: 1MA_src.tex, Line 257
   TSV Line: 490
   Reference: ΜΑΚΚΑΒΑΙΩΝ Α 4:57
-  Changed: 'ἐνεκαίνισν' -> 'ἐνεκαίνισαν\'
+  Changed: 'ἐνεκαίνισν' -> 'ἐνεκαίνισαν'
   Location: Chapter 4, Verse 57
 
 File: 1MA_src.tex, Line 492
@@ -2387,8 +2381,9 @@ File: DEU_src.tex, Line 77
 File: DEU_src.tex, Line 158
   TSV Line: 117
   Reference: ΔΕΥΤΕΡΟΝΟΜΙΟΝ 4:40
-  Changed: 'ἀντέλλομαί' -> 'ἐντέλλομαί rahlf'
+  Changed: 'ἀντέλλομαί' -> 'ἐντέλλομαί'
   Location: Chapter 4, Verse 40
+  Notes: rahlf
 
 File: DEU_src.tex, Line 762
   TSV Line: 137
@@ -3737,7 +3732,7 @@ File: LEV_src.tex, Line 255
 File: LEV_src.tex, Line 211
   TSV Line: 43
   Reference: ΛΕΥΙΤΙΚΟΝ 8:29
-  Changed: 'προσέῤῥνεν' -> 'προσέρρανεν'
+  Changed: 'προσέῤῥνεν' -> 'προσέῤῥανεν'
   Location: Chapter 8, Verse 29
 
 File: LEV_src.tex, Line 360
@@ -3899,7 +3894,7 @@ File: NEH_src.tex, Line 284
 File: NEH_src.tex, Line 349
   TSV Line: 301
   Reference: ΝΕΕΜΙΑΣ 12:21
-  Changed: 'Ἰσδεϊοὺ' -> 'Ἰεδεϊου'
+  Changed: 'Ἰσδεϊοὺ' -> 'Ἰεδεϊοὺ'
   Location: Chapter 12, Verse 21
 
 File: NEH_src.tex, Line 340
@@ -4618,7 +4613,7 @@ File: SNG_src.tex, Line 54
 File: SNG_src.tex, Line 16
   TSV Line: 613
   Reference: ΑΣΜΑ 1:13
-  Changed: 'ἀυαμέσου' -> 'ἀυαμέσον'
+  Changed: 'ἀυαμέσου' -> 'ἀναμέσον'
   Location: Chapter 1, Verse 13
 
 File: SNG_src.tex, Line 12
@@ -4673,7 +4668,7 @@ File: TOB_src.tex, Line 9
 File: WIS_src.tex, Line 19
   TSV Line: 467
   Reference: ΣΟΦΙΑ ΣΑΛΩΜΩΝ 1:16
-  Changed: 'ἡγησάμεμοι' -> 'ἡγησάμενοι '
+  Changed: 'ἡγησάμεμοι' -> 'ἡγησάμενοι'
   Location: Chapter 1, Verse 16
   Notes: rahlf
 
@@ -4728,7 +4723,7 @@ SUMMARY BY FILE
 
 1CH_src.tex: 92 corrections
 1ES_src.tex: 18 corrections
-1KI_src.tex: 18 corrections
+1KI_src.tex: 17 corrections
 1MA_src.tex: 12 corrections
 1SA_src.tex: 73 corrections
 2CH_src.tex: 16 corrections
