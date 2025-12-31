@@ -803,25 +803,24 @@ def process_bible_file(bible_path, output_path, check_typos=True):
         variations_path = output_path.replace('.tsv', '_legitimate_variations.tsv')
         legitimate_variations = [e for e in missing_words if e.get('legitimate_variation', False)]
         
-        if legitimate_variations:
-            print(f"Writing legitimate variations to {variations_path}...")
-            print(f"Opening file for writing: {variations_path}")
-            with open(variations_path, 'w', encoding='utf-8', newline='') as f:
-                print(f"Successfully opened {variations_path} for writing")
-                writer = csv.writer(f, delimiter='\t')
-                writer.writerow(['Line Number', 'Verse Reference', 'Word', 'Matched Variation', 'Verse Match?', 'Area Match?', 'Full Line'])
-                
-                for entry in legitimate_variations:
-                    writer.writerow([
-                        entry['line_num'],
-                        entry['verse_ref'],
-                        entry['word'],
-                        entry['closest_match'],
-                        'Yes' if entry.get('verse_match', False) else 'No',
-                        'Yes' if entry.get('area_match', False) else 'No',
-                        entry['full_line']
-                    ])
-                print(f"Finished writing {len(legitimate_variations)} rows to {variations_path}")
+        print(f"Writing legitimate variations to {variations_path}...")
+        print(f"Opening file for writing: {variations_path}")
+        with open(variations_path, 'w', encoding='utf-8', newline='') as f:
+            print(f"Successfully opened {variations_path} for writing")
+            writer = csv.writer(f, delimiter='\t')
+            writer.writerow(['Line Number', 'Verse Reference', 'Word', 'Matched Variation', 'Verse Match?', 'Area Match?', 'Full Line'])
+
+            for entry in legitimate_variations:
+                writer.writerow([
+                    entry['line_num'],
+                    entry['verse_ref'],
+                    entry['word'],
+                    entry['closest_match'],
+                    'Yes' if entry.get('verse_match', False) else 'No',
+                    'Yes' if entry.get('area_match', False) else 'No',
+                    entry['full_line']
+                ])
+            print(f"Finished writing {len(legitimate_variations)} rows to {variations_path}")
 
         # Create a file for unmatched words (not legitimate variations, not confirmed numbers)
         # These are words that need manual review
@@ -830,27 +829,26 @@ def process_bible_file(bible_path, output_path, check_typos=True):
                     if not e.get('legitimate_variation', False)
                     and not e['is_number']]
 
-        if unmatched:
-            print(f"Writing unmatched words to {unmatched_path}...")
-            print(f"Opening file for writing: {unmatched_path}")
-            with open(unmatched_path, 'w', encoding='utf-8', newline='') as f:
-                print(f"Successfully opened {unmatched_path} for writing")
-                writer = csv.writer(f, delimiter='\t')
-                writer.writerow(['Line Number', 'Verse Reference', 'Word', 'Is Name?',
-                                'Likely Typo?', 'Closest Match', 'Similarity', 'Full Line'])
+        print(f"Writing unmatched words to {unmatched_path}...")
+        print(f"Opening file for writing: {unmatched_path}")
+        with open(unmatched_path, 'w', encoding='utf-8', newline='') as f:
+            print(f"Successfully opened {unmatched_path} for writing")
+            writer = csv.writer(f, delimiter='\t')
+            writer.writerow(['Line Number', 'Verse Reference', 'Word', 'Is Name?',
+                            'Likely Typo?', 'Closest Match', 'Similarity', 'Full Line'])
 
-                for entry in unmatched:
-                    writer.writerow([
-                        entry['line_num'],
-                        entry['verse_ref'],
-                        entry['word'],
-                        'Yes' if entry['is_name'] else 'No',
-                        'Yes' if entry['is_typo'] else 'No',
-                        entry['closest_match'],
-                        entry['similarity'],
-                        entry['full_line']
-                    ])
-                print(f"Finished writing {len(unmatched)} rows to {unmatched_path}")
+            for entry in unmatched:
+                writer.writerow([
+                    entry['line_num'],
+                    entry['verse_ref'],
+                    entry['word'],
+                    'Yes' if entry['is_name'] else 'No',
+                    'Yes' if entry['is_typo'] else 'No',
+                    entry['closest_match'],
+                    entry['similarity'],
+                    entry['full_line']
+                ])
+            print(f"Finished writing {len(unmatched)} rows to {unmatched_path}")
 
     print(f"\nComplete! Found {len(missing_words)} missing words.")
     if check_typos:
@@ -883,10 +881,8 @@ def process_bible_file(bible_path, output_path, check_typos=True):
     if check_typos:
         print(f"Full typo check results saved to: {typo_check_path}")
         print(f"Filtered typos saved to: {filtered_path}")
-        if legitimate_variations:
-            print(f"Legitimate variations saved to: {variations_path}")
-        if unmatched:
-            print(f"Unmatched words saved to: {unmatched_path}")
+        print(f"Legitimate variations saved to: {variations_path}")
+        print(f"Unmatched words saved to: {unmatched_path}")
 
 
 def main():
