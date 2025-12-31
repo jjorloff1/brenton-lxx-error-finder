@@ -329,8 +329,8 @@ def main():
     base_dir = Path(__file__).parent
     source_dir = base_dir / "grcbrent_xetex_original"
     output_dir = base_dir / "grcbrent_xetex_corrected"
-    tsv_path = base_dir / "word_corrections.tsv"
-    log_path = base_dir / "correction_log.txt"
+    tsv_path = base_dir.parent / "word_corrections.tsv"  # TSV is in parent directory (shared)
+    log_path = output_dir / "correction_log.txt"  # Log goes in output directory
 
     # Create output directory
     output_dir.mkdir(exist_ok=True)

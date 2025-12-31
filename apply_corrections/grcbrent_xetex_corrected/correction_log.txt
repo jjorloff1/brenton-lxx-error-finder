@@ -3,8 +3,8 @@ CORRECTION LOG
 ================================================================================
 
 Total corrections applied: 770
-Corrections not found: 3
-Corrections at unexpected locations: 3
+Corrections not found: 0
+Corrections at unexpected locations: 0
 
 --------------------------------------------------------------------------------
 SUCCESSFUL CORRECTIONS
@@ -1474,18 +1474,6 @@ File: 2KI_src.tex, Line 242
   Changed: 'παιφήτης' -> 'προφήτης'
   Location: Chapter 9, Verse 4
 
-File: 2KI_src.tex, Line 643
-  TSV Line: 221
-  Reference: ΒΑΣΙΛΕΙΩΝ Δ 9:34
-  Changed: 'θυλάτηρ' -> 'θυγάτηρ'
-  Location: Chapter 22, Verse 1 [UNEXPECTED: expected ΒΑΣΙΛΕΙΩΝ Δ 9:34, found at Chapter 22, Verse 1]
-
-File: 2KI_src.tex, Line 273
-  TSV Line: 221
-  Reference: ΒΑΣΙΛΕΙΩΝ Δ 9:34
-  Changed: 'θυλάτηρ' -> 'θυγάτηρ'
-  Location: Chapter 9, Verse 34
-
 File: 2KI_src.tex, Line 297
   TSV Line: 222
   Reference: ΒΑΣΙΛΕΙΩΝ Δ 10:20
@@ -1593,6 +1581,18 @@ File: 2KI_src.tex, Line 248
   Reference: ALL
   Changed: 'Ἰσζράελ' -> 'Ἰεζράελ'
   Location: Chapter 9, Verse 10
+
+File: 2KI_src.tex, Line 643
+  TSV Line: 221
+  Reference: ALL
+  Changed: 'θυλάτηρ' -> 'θυγάτηρ'
+  Location: Chapter 22, Verse 1
+
+File: 2KI_src.tex, Line 273
+  TSV Line: 221
+  Reference: ALL
+  Changed: 'θυλάτηρ' -> 'θυγάτηρ'
+  Location: Chapter 9, Verse 34
 
 File: 2KI_src.tex, Line 686
   TSV Line: 241
@@ -2352,18 +2352,6 @@ File: DEU_src.tex, Line 182
   Changed: 'ὑποζύγιόνσου' -> 'ὑποζύγιόν σου'
   Location: Chapter 5, Verse 14
 
-File: DEU_src.tex, Line 34
-  TSV Line: 111
-  Reference: ΔΕΥΤΕΡΟΝΟΜΙΟΝ 1:30
-  Changed: 'τροφοφορήσαι' -> 'τροφοφορήσει'
-  Location: Chapter 1, Verse 31 [UNEXPECTED: expected ΔΕΥΤΕΡΟΝΟΜΙΟΝ 1:30, found at Chapter 1, Verse 31]
-
-File: DEU_src.tex, Line 33
-  TSV Line: 111
-  Reference: ΔΕΥΤΕΡΟΝΟΜΙΟΝ 1:30
-  Changed: 'τροφοφορήσαι' -> 'τροφοφορήσει'
-  Location: Chapter 1, Verse 30
-
 File: DEU_src.tex, Line 620
   TSV Line: 132
   Reference: ΔΕΥΤΕΡΟΝΟΜΙΟΝ 22:19
@@ -2522,6 +2510,20 @@ File: DEU_src.tex, Line 439
   Reference: ΔΕΥΤΕΡΟΝΟΜΙΟΝ 14:26
   Changed: 'ἐτ' -> 'ἐπ'
   Location: Chapter 14, Verse 26
+
+File: DEU_src.tex, Line 34
+  TSV Line: 112
+  Reference: ALL
+  Changed: 'τροφοφορήσαι' -> 'τροφοφορήσει'
+  Location: Chapter 1, Verse 31
+  Notes: ΔΕΥΤΕΡΟΝΟΜΙΟΝ 1:31: vaticanus
+
+File: DEU_src.tex, Line 33
+  TSV Line: 112
+  Reference: ALL
+  Changed: 'τροφοφορήσαι' -> 'τροφοφορήσει'
+  Location: Chapter 1, Verse 30
+  Notes: ΔΕΥΤΕΡΟΝΟΜΙΟΝ 1:31: vaticanus
 
 File: DEU_src.tex, Line 439
   TSV Line: 127
@@ -3663,18 +3665,6 @@ File: JOS_src.tex, Line 123
   Changed: 'Ἀγγὰ' -> 'Ἀλλὰ'
   Location: Chapter 6, Verse 18
 
-File: JOS_src.tex, Line 296
-  TSV Line: 150
-  Reference: ΙΗΣΟΥΣ ΝΑΥΗ 12:3
-  Changed: 'Ἄραβ' -> 'Ἄραβα'
-  Location: Chapter 12, Verse 8 [UNEXPECTED: expected ΙΗΣΟΥΣ ΝΑΥΗ 12:3, found at Chapter 12, Verse 8]
-
-File: JOS_src.tex, Line 291
-  TSV Line: 150
-  Reference: ΙΗΣΟΥΣ ΝΑΥΗ 12:3
-  Changed: 'Ἄραβ' -> 'Ἄραβα'
-  Location: Chapter 12, Verse 3
-
 File: JOS_src.tex, Line 194
   TSV Line: 147
   Reference: ΙΗΣΟΥΣ ΝΑΥΗ 9:2d
@@ -3698,6 +3688,18 @@ File: JOS_src.tex, Line 91
   Reference: ALL
   Changed: 'νἱῶν' -> 'υἱῶν'
   Location: Chapter 5, Verse 1
+
+File: JOS_src.tex, Line 296
+  TSV Line: 150
+  Reference: ALL
+  Changed: 'Ἄραβ' -> 'Ἄραβα'
+  Location: Chapter 12, Verse 8
+
+File: JOS_src.tex, Line 291
+  TSV Line: 150
+  Reference: ALL
+  Changed: 'Ἄραβ' -> 'Ἄραβα'
+  Location: Chapter 12, Verse 3
 
 File: JOS_src.tex, Line 452
   TSV Line: 159
@@ -4696,26 +4698,6 @@ File: WIS_src.tex, Line 43
   Reference: ΣΟΦΙΑ ΣΑΛΩΜΩΝ 2:23
   Changed: 'ἀτόν' -> 'αὐτόν'
   Location: Chapter 2, Verse 23
-
---------------------------------------------------------------------------------
-CORRECTIONS NOT FOUND
---------------------------------------------------------------------------------
-
-TSV Line 239: ΒΑΣΙΛΕΙΩΝ Δ 22:1
-  Expected in: 2KI_src.tex
-  Looking for: 'θυλάτηρ'
-  Correction: 'θυγάτηρ'
-
-TSV Line 112: ΔΕΥΤΕΡΟΝΟΜΙΟΝ 1:31
-  Expected in: DEU_src.tex
-  Looking for: 'τροφοφορήσαι'
-  Correction: 'τροφοφορήσει'
-  Notes: vaticanus
-
-TSV Line 152: ΙΗΣΟΥΣ ΝΑΥΗ 12:8
-  Expected in: JOS_src.tex
-  Looking for: 'Ἄραβ'
-  Correction: 'Ἄραβα'
 
 --------------------------------------------------------------------------------
 SUMMARY BY FILE
