@@ -1,0 +1,141 @@
+Loading word data...
+Opening file with word IDs: input/rahlfs_words.csv
+Successfully opened input/rahlfs_words.csv
+Finished reading input/rahlfs_words.csv (623693 rows, 623693 word IDs loaded)
+Loaded 623693 word IDs from Rahlfs
+Opening file with word IDs: input/swete_words.csv
+Successfully opened input/swete_words.csv
+Finished reading input/swete_words.csv (609522 rows, 609522 word IDs loaded)
+Loaded 609522 word IDs from Swete
+Deriving normalized word sets...
+Derived 45224 unique words from Rahlfs
+Derived 46292 unique words from Swete
+Opening accepted words file: input/accepted_words.txt
+Successfully opened input/accepted_words.txt
+Finished reading input/accepted_words.txt (1567 lines, 1537 words loaded)
+Loaded 1537 accepted words
+Opening already examined file: ../word_corrections.tsv
+Successfully opened ../word_corrections.tsv
+Finished reading ../word_corrections.tsv (629 rows, 623 word changes loaded)
+Loaded 623 already examined word changes
+Loading versification for verse-specific typo checking...
+Opening versification file: input/rahlfs_versification.csv
+Successfully opened input/rahlfs_versification.csv
+Finished reading input/rahlfs_versification.csv (30637 rows, 30637 verses loaded)
+Sorting verses from input/rahlfs_versification.csv...
+Finished sorting 30637 verses
+Loaded 30637 verses from Rahlfs versification
+Opening versification file: input/swete_versification.csv
+Successfully opened input/swete_versification.csv
+Finished reading input/swete_versification.csv (30533 rows, 30533 verses loaded)
+Sorting verses from input/swete_versification.csv...
+Finished sorting 30533 verses
+Loaded 30533 verses from Swete versification
+Processing Bible file...
+Opening Bible file for reading: input/Brenton.tex
+Successfully opened input/Brenton.tex
+Found book: ΓΕΝΕΣΙΣ
+Found book: ΕΞΟΔΟΣ
+Found book: ΛΕΥΙΤΙΚΟΝ
+Found book: ΑΡΙΘΜΟΙ
+  Checked 100 words, found 0 potential typos so far... (Current: ΑΡΙΘΜΟΙ 7:88)
+Found book: ΔΕΥΤΕΡΟΝΟΜΙΟΝ
+Found book: ΙΗΣΟΥΣ ΝΑΥΗ
+  Checked 200 words, found 0 potential typos so far... (Current: ΙΗΣΟΥΣ ΝΑΥΗ 8:19)
+Found book: ΚΡΙΤΑΙ
+Found book: ΡΟΥΘ
+Found book: ΒΑΣΙΛΕΙΩΝ Α
+  Checked 300 words, found 2 potential typos so far... (Current: ΒΑΣΙΛΕΙΩΝ Α 22:5)
+Found book: ΒΑΣΙΛΕΙΩΝ Β
+Found book: ΒΑΣΙΛΕΙΩΝ Γ
+Found book: ΒΑΣΙΛΕΙΩΝ Δ
+  Checked 400 words, found 4 potential typos so far... (Current: ΒΑΣΙΛΕΙΩΝ Δ 25:29)
+Found book: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α
+  Checked 500 words, found 4 potential typos so far... (Current: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 25:31)
+Found book: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Β
+Found book: ΕΣΔΡΑΣ
+Found book: ΝΕΕΜΙΑΣ
+  Checked 600 words, found 4 potential typos so far... (Current: ΝΕΕΜΙΑΣ 7:15)
+Found book: ΕΣΘΗΡ
+Found book: ΙΩΒ
+Found book: ΨΑΛΜΟΙ
+  Checked 700 words, found 4 potential typos so far... (Current: ΨΑΛΜΟΙ 34:27)
+Found book: ΠΑΡΟΙΜΙΑΙ ΣΑΛΩΜΩΝΤΟΣ
+Found book: ΕΚΚΛΗΣΙΑΣΤΗΣ
+Found book: ΑΣΜΑ
+Found book: ΗΣΑΙΑΣ
+  Checked 800 words, found 4 potential typos so far... (Current: ΗΣΑΙΑΣ 19:18)
+Found book: ΙΕΡΕΜΙΑΣ
+  Checked 900 words, found 4 potential typos so far... (Current: ΙΕΡΕΜΙΑΣ 23:2)
+Found book: ΘΡΗΝΟΙ ΙΕΡΕΜΙΟΥ
+Found book: ΙΕΖΕΚΙΗΛ
+  Checked 1000 words, found 4 potential typos so far... (Current: ΙΕΖΕΚΙΗΛ 12:7)
+Found book: ΔΑΝΙΗΛ
+  Checked 1100 words, found 4 potential typos so far... (Current: ΔΑΝΙΗΛ 3:37)
+Found book: ΩΣΗΕ
+Found book: ΙΩΗΛ
+Found book: ΑΜΩΣ
+Found book: ΟΒΔΕΙΟΥ
+Found book: ΙΩΝΑΣ
+Found book: ΜΙΧΑΙΑΣ
+Found book: ΝΑΟΥΜ
+Found book: ΑΜΒΑΚΟΥΜ
+Found book: ΣΟΦΟΝΙΑΣ
+Found book: ΑΓΓΑΙΟΣ
+Found book: ΖΑΧΑΡΙΑΣ
+Found book: ΜΑΛΑΧΙΑΣ
+Found book: ΕΣΔΡΑΣ Α
+  Checked 1200 words, found 4 potential typos so far... (Current: ΕΣΔΡΑΣ Α 5:35)
+Found book: ΤΩΒΙΤ
+Found book: ΙΟΥΔΙΘ
+Found book: ΣΟΦΙΑ ΣΑΛΩΜΩΝ
+Found book: ΣΟΦΙΑ ΣΕΙΡΑΧ
+  Checked 1300 words, found 4 potential typos so far... (Current: ΣΟΦΙΑ ΣΕΙΡΑΧ 28:9)
+Found book: ΒΑΡΟΥΧ
+Found book: ΕΠΙΣΤΟΛΗ ΙΕΡΕΜΙΟΥ
+Found book: ΣΩΣΑΝΝΑ
+Found book: ΒΗΛ ΚΑΙ ΔΡΑΚΩΝ
+Found book: ΜΑΚΚΑΒΑΙΩΝ Α
+Found book: ΜΑΚΚΑΒΑΙΩΝ Β
+  Checked 1400 words, found 4 potential typos so far... (Current: ΜΑΚΚΑΒΑΙΩΝ Β 12:17)
+Found book: ΜΑΚΚΑΒΑΙΩΝ Γ
+Found book: ΜΑΚΚΑΒΑΙΩΝ Δ
+Found book: ΠΡΟΣΕΥΧΗ ΜΑΝΑΣΣΗ ΥΙΟΥ ΕΖΕΚΙΟΥ
+
+Writing results to output/missing_words.tsv...
+Opening file for writing: output/missing_words.tsv
+Successfully opened output/missing_words.tsv for writing
+Finished writing 1460 rows to output/missing_words.tsv
+Writing full typo check results to output/missing_words_typo_check.tsv...
+Opening file for writing: output/missing_words_typo_check.tsv
+Successfully opened output/missing_words_typo_check.tsv for writing
+Finished writing 1460 rows to output/missing_words_typo_check.tsv
+Writing likely typos to output/missing_words_likely_typos.tsv...
+Opening file for writing: output/missing_words_likely_typos.tsv
+Successfully opened output/missing_words_likely_typos.tsv for writing
+Finished writing 4 rows to output/missing_words_likely_typos.tsv
+Writing legitimate variations to output/missing_words_legitimate_variations.tsv...
+Opening file for writing: output/missing_words_legitimate_variations.tsv
+Successfully opened output/missing_words_legitimate_variations.tsv for writing
+Finished writing 1456 rows to output/missing_words_legitimate_variations.tsv
+Writing unmatched words to output/missing_words_unmatched.tsv...
+Opening file for writing: output/missing_words_unmatched.tsv
+Successfully opened output/missing_words_unmatched.tsv for writing
+Finished writing 4 rows to output/missing_words_unmatched.tsv
+
+Complete! Found 1460 missing words.
+  - Likely proper names: 425
+  - Likely numbers: 0
+  - Legitimate variations: 1456
+    - Found in verse: 1420
+    - Found in area (±20 verses): 36
+  - Likely typos: 4
+    - Matched within verse: 4
+    - Matched within area (±20 verses): 0
+    - Matched in broader corpus: 0
+  - Unmatched (need review): 4
+Results saved to: output/missing_words.tsv
+Full typo check results saved to: output/missing_words_typo_check.tsv
+Filtered typos saved to: output/missing_words_likely_typos.tsv
+Legitimate variations saved to: output/missing_words_legitimate_variations.tsv
+Unmatched words saved to: output/missing_words_unmatched.tsv

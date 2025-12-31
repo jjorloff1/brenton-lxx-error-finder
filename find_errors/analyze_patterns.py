@@ -16,7 +16,7 @@ def normalize_for_comparison(word):
 def analyze_corrections():
     """Analyze transcription error patterns in word_corrections.tsv"""
     corrections = []
-    with open('word_corrections.tsv', 'r', encoding='utf-8') as f:
+    with open('../word_corrections.tsv', 'r', encoding='utf-8') as f:
         reader = csv.reader(f, delimiter='\t')
         for row in reader:
             if len(row) >= 3:
@@ -88,7 +88,7 @@ def analyze_accepted_words():
     
     # Load accepted words
     accepted = []
-    with open('accepted_words.txt', 'r', encoding='utf-8') as f:
+    with open('input/accepted_words.txt', 'r', encoding='utf-8') as f:
         for line in f:
             line = line.strip()
             if line and not line.startswith('#'):
