@@ -8,10 +8,32 @@ import re
 import unicodedata
 import csv
 import argparse
+import sys
+from pathlib import Path
 from difflib import SequenceMatcher
-from book_code_mappings import (
+
+# Add parent directory to path to import shared modules
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from shared.book_code_mappings import (
     convert_brenton_reference_to_rahlfs,
     convert_brenton_reference_to_swete
+)
+from shared.greek_utils import (
+    normalize_text,
+    strip_diacritics,
+    normalize_for_comparison,
+    extract_greek_words,
+    load_accepted_words,
+    load_already_examined
+)
+from shared.data_loaders import (
+    derive_word_set,
+    load_words_with_ids,
+    load_versification,
+    get_words_by_id_range,
+    get_verse_words,
+    get_area_words
 )
 from valid_variation_patterns import generate_variation_list, strip_accents as strip_accents_vvp
 
@@ -26,224 +48,6 @@ RAHLFS_SORTED_VERSES = []  # [(verse_ref, word_id), ...] sorted by word_id
 SWETE_SORTED_VERSES = []   # [(verse_ref, word_id), ...] sorted by word_id
 ACCEPTED_WORDS = set()  # set of normalized accepted words
 ALREADY_EXAMINED = {}  # dict mapping (verse_ref, normalized_word) -> corrected_word
-
-
-def normalize_text(text):
-    """Normalize Greek text using NFC normalization."""
-    return unicodedata.normalize("NFC", text)
-
-
-def strip_diacritics(text):
-    """Remove diacritical marks and accents from Greek text."""
-    # First apply NFC normalization for consistency
-    text = normalize_text(text)
-    # Then decompose to NFD (separates base chars from combining marks)
-    text = unicodedata.normalize('NFD', text)
-    # Remove combining characters (accents, breathing marks, etc.)
-    stripped = ''.join(
-        char for char in text 
-        if unicodedata.category(char) != 'Mn'
-    )
-    # Normalize back to NFC for consistent comparison
-    return unicodedata.normalize('NFC', stripped)
-
-
-def normalize_for_comparison(text):
-    """Normalize text for comparison purposes.
-    - Strips spaces (for compound word matching)
-    - Replaces ς with σ when not at the end of the word
-    """
-    # Remove spaces
-    text = text.replace(' ', '')
-    
-    # Replace ς with σ when it's not the last character
-    # Process from left to right, checking if ς is followed by more characters
-    result = []
-    for i, char in enumerate(text):
-        if char == 'ς' and i < len(text) - 1:
-            result.append('σ')
-        else:
-            result.append(char)
-    
-    return ''.join(result)
-
-
-def load_accepted_words(filepath):
-    """Load accepted words from a text file (one word per line)."""
-    print(f"Opening accepted words file: {filepath}")
-    words = set()
-    try:
-        with open(filepath, 'r', encoding='utf-8') as f:
-            print(f"Successfully opened {filepath}")
-            line_count = 0
-            for line in f:
-                line_count += 1
-                word = line.strip()
-                if word and not word.startswith('#'):  # Skip empty lines and comments
-                    # Normalize and strip diacritics for comparison
-                    normalized = strip_diacritics(normalize_text(word).lower())
-                    words.add(normalized)
-            print(f"Finished reading {filepath} ({line_count} lines, {len(words)} words loaded)")
-    except FileNotFoundError:
-        print(f"Note: Accepted words file '{filepath}' not found. Continuing without it.")
-    except Exception as e:
-        print(f"Error loading accepted words from {filepath}: {e}")
-    return words
-
-
-def load_already_examined(filepath):
-    """Load already examined word changes from a TSV file.
-    Returns dict mapping (verse_ref, normalized_word) -> corrected_word.
-    """
-    print(f"Opening already examined file: {filepath}")
-    examined = {}
-    try:
-        with open(filepath, 'r', encoding='utf-8') as f:
-            print(f"Successfully opened {filepath}")
-            reader = csv.reader(f, delimiter='\t')
-            row_count = 0
-            for row in reader:
-                row_count += 1
-                if len(row) >= 3:
-                    verse_ref = normalize_text(row[0].strip())
-                    original_word = normalize_text(row[1].strip())
-                    corrected_word = normalize_text(row[2].strip())
-                    # Normalize and strip diacritics for comparison
-                    normalized_word = strip_diacritics(original_word.lower())
-                    key = (verse_ref, normalized_word)
-                    examined[key] = corrected_word
-            print(f"Finished reading {filepath} ({row_count} rows, {len(examined)} word changes loaded)")
-    except FileNotFoundError:
-        print(f"Note: Already examined file '{filepath}' not found. Continuing without it.")
-    except Exception as e:
-        print(f"Error loading already examined from {filepath}: {e}")
-    return examined
-
-
-def derive_word_set(words_dict):
-    """Derive normalized->original mapping from word_id dictionary.
-    words_dict maps word_id -> {'normalized': str, 'original': str}.
-    Returns dict mapping normalized -> original.
-    """
-    word_set = {}
-    for word_data in words_dict.values():
-        normalized = word_data['normalized']
-        original = word_data['original']
-        # Keep first occurrence (prefer earlier instances)
-        if normalized not in word_set:
-            word_set[normalized] = original
-    return word_set
-
-
-def load_words_with_ids(filepath):
-    """Load words from CSV file with their word IDs for verse-specific lookups.
-    Returns dict mapping word_id -> {'normalized': str, 'original': str}.
-    """
-    print(f"Opening file with word IDs: {filepath}")
-    words_dict = {}  # word_id -> {'normalized': word, 'original': word}
-    try:
-        with open(filepath, 'r', encoding='utf-8') as f:
-            print(f"Successfully opened {filepath}")
-            reader = csv.reader(f, delimiter='\t')
-            row_count = 0
-            for row in reader:
-                row_count += 1
-                if len(row) >= 2:
-                    word_id = int(row[0])
-                    word = normalize_text(row[-1])
-                    normalized = strip_diacritics(word.lower())
-                    words_dict[word_id] = {
-                        'normalized': normalized,
-                        'original': word.lower()
-                    }
-            print(f"Finished reading {filepath} ({row_count} rows, {len(words_dict)} word IDs loaded)")
-    except Exception as e:
-        print(f"Error loading {filepath} with IDs: {e}")
-    return words_dict
-
-
-def load_versification(filepath):
-    """Load versification file mapping verses to word IDs."""
-    print(f"Opening versification file: {filepath}")
-    verse_map = {}  # verse_ref -> word_id
-    try:
-        with open(filepath, 'r', encoding='utf-8') as f:
-            print(f"Successfully opened {filepath}")
-            reader = csv.reader(f, delimiter='\t')
-            row_count = 0
-            for row in reader:
-                row_count += 1
-                if len(row) >= 2:
-                    # Rahlfs: verse_ref, word_id
-                    # Swete: word_id, verse_ref
-                    # Detect format by checking if first column is numeric
-                    try:
-                        word_id = int(row[0])
-                        verse_ref = row[1]
-                    except ValueError:
-                        # First column is verse ref, second is word_id
-                        verse_ref = row[0]
-                        word_id = int(row[1])
-                    verse_map[verse_ref] = word_id
-            print(f"Finished reading {filepath} ({row_count} rows, {len(verse_map)} verses loaded)")
-    except Exception as e:
-        print(f"Error loading {filepath}: {e}")
-    
-    # Pre-sort verses by word_id for efficient range lookup
-    print(f"Sorting verses from {filepath}...")
-    sorted_verses = sorted(verse_map.items(), key=lambda x: x[1])
-    print(f"Finished sorting {len(sorted_verses)} verses")
-    return verse_map, sorted_verses
-
-
-def extract_greek_words(line):
-    """Extract Greek words from a line, excluding LaTeX commands."""
-    words = []
-    
-    # Check for \lettrine macro at the beginning of a book
-    # There are two patterns:
-    # 1. With \textcolor: \lettrine[...]{\textcolor{...}{Φ}}{ΙΛΟΣΟΦΩΤΑΤΟΝ}
-    # 2. Without \textcolor: \lettrine[...]{Κ}{ΑΙ}
-    
-    # Try pattern with \textcolor first (more specific)
-    lettrine_pattern_textcolor = r'\\lettrine\[[^\]]*\]\{\\textcolor\{[^}]+\}\{([^}]+)\}\}\{([^}]*)\}'
-    lettrine_match = re.search(lettrine_pattern_textcolor, line)
-    
-    if not lettrine_match:
-        # Try simple pattern without \textcolor
-        lettrine_pattern_simple = r'\\lettrine\[[^\]]*\]\{([^}]+)\}\{([^}]*)\}'
-        lettrine_match = re.search(lettrine_pattern_simple, line)
-    
-    if lettrine_match:
-        # Extract the first character
-        first_char = lettrine_match.group(1)
-        # Extract the rest of the word from the second group
-        rest_of_word = lettrine_match.group(2)
-        
-        # Combine and lowercase the first word
-        if rest_of_word.strip():
-            first_word = (first_char + rest_of_word).lower()
-        else:
-            # Single character word
-            first_word = first_char.lower()
-        
-        words.append(normalize_text(first_word))
-        
-        # Remove the \lettrine command from the line for further processing
-        line = line[:lettrine_match.start()] + line[lettrine_match.end():]
-    
-    # Remove remaining LaTeX commands and their contents
-    line = re.sub(r'\\[a-zA-Z]+\{[^}]*\}', '', line)
-    line = re.sub(r'\\[a-zA-Z]+', '', line)
-    
-    # Match Greek words (unicode Greek range)
-    # Greek range: \u0370-\u03FF (basic Greek), \u1F00-\u1FFF (extended Greek)
-    greek_pattern = r'[\u0370-\u03FF\u1F00-\u1FFF]+'
-    remaining_words = re.findall(greek_pattern, line)
-    
-    words.extend([normalize_text(word) for word in remaining_words])
-    
-    return words
 
 
 def is_likely_proper_name(word):
@@ -318,105 +122,6 @@ def find_best_match(word_dict, normalized, current_best_ratio = 0):
             current_best_ratio = ratio
             best_match_normalized = candidate_normalized
     return best_match_normalized,current_best_ratio
-
-
-def get_words_by_id_range(start_word_id, end_word_id, words_dict):
-    """Extract words in a given word ID range, including compound combinations.
-    
-    Args:
-        start_word_id: Starting word ID (inclusive)
-        end_word_id: Ending word ID (inclusive)
-        words_dict: Dictionary mapping word_id -> {'normalized': str, 'original': str}
-    
-    Returns:
-        Dictionary mapping normalized -> original for words in this range,
-        including compound combinations of consecutive words.
-    """
-    result_words = {}  # normalized -> original
-    words_in_order = []
-    
-    # Extract words in this ID range and track order
-    for word_id in range(start_word_id, end_word_id + 1):
-        if word_id in words_dict:
-            word_data = words_dict[word_id]
-            result_words[word_data['normalized']] = word_data['original']
-            words_in_order.append(word_data)
-    
-    # Add compound combinations of consecutive words
-    for i in range(len(words_in_order) - 1):
-        word1 = words_in_order[i]
-        word2 = words_in_order[i + 1]
-        combined_normalized = word1['normalized'] + word2['normalized']
-        # Preserve space in the original form
-        combined_original = word1['original'] + ' ' + word2['original']
-        result_words[combined_normalized] = combined_original
-    
-    return result_words
-
-
-def get_verse_words(verse_ref, verse_map, sorted_verses, words_dict):
-    """Get all words for a specific verse using the versification mapping.
-    words_dict maps word_id -> {'normalized': str, 'original': str}.
-    Returns dict mapping normalized -> original for words in this verse.
-    Also includes compound combinations of consecutive words (e.g., word1+word2).
-    NOTE: This helper still takes parameters since it's used internally with different data sources.
-    """
-    # Find start word ID for this verse
-    if verse_ref not in verse_map:
-        return {}
-    
-    start_id = verse_map[verse_ref]
-    
-    # Find the next verse to get end boundary using pre-sorted list
-    current_idx = None
-    for i, (v_ref, v_id) in enumerate(sorted_verses):
-        if v_ref == verse_ref:
-            current_idx = i
-            break
-    
-    # Determine end ID
-    if current_idx is not None and current_idx + 1 < len(sorted_verses):
-        end_id = sorted_verses[current_idx + 1][1] - 1
-    else:
-        # Last verse - use maximum word ID
-        end_id = max(words_dict.keys()) if words_dict else start_id
-    
-    return get_words_by_id_range(start_id, end_id, words_dict)
-
-
-def get_area_words(verse_ref, verse_map, sorted_verses, words_dict, verse_range=20):
-    """Get all words from surrounding verses (±verse_range verses).
-    words_dict maps word_id -> {'normalized': str, 'original': str}.
-    Returns dict mapping normalized -> original for words in this area.
-    Also includes compound combinations of consecutive words (e.g., word1+word2).
-    """
-    # Find the current verse index in sorted list
-    if verse_ref not in verse_map:
-        return {}
-    
-    current_idx = None
-    for i, (v_ref, v_id) in enumerate(sorted_verses):
-        if v_ref == verse_ref:
-            current_idx = i
-            break
-    
-    if current_idx is None:
-        return {}
-    
-    # Get range of verses (current ± verse_range)
-    start_verse_idx = max(0, current_idx - verse_range)
-    end_verse_idx = min(len(sorted_verses) - 1, current_idx + verse_range)
-    
-    # Get word IDs for the range
-    start_word_id = sorted_verses[start_verse_idx][1]
-    
-    # Find the end word ID (start of next verse after range, minus 1)
-    if end_verse_idx + 1 < len(sorted_verses):
-        end_word_id = sorted_verses[end_verse_idx + 1][1] - 1
-    else:
-        end_word_id = max(words_dict.keys()) if words_dict else start_word_id
-    
-    return get_words_by_id_range(start_word_id, end_word_id, words_dict)
 
 
 def check_words_in_both_sources(word, rahlfs_words, swete_words, check_func):
