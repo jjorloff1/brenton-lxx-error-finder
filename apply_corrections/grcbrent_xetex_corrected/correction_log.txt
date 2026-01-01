@@ -2,7 +2,7 @@
 CORRECTION LOG
 ================================================================================
 
-Total corrections applied: 770
+Total corrections applied: 773
 Corrections not found: 0
 Corrections at unexpected locations: 0
 
@@ -2632,6 +2632,12 @@ File: EXO_src.tex, Line 976
   Changed: 'περιέλαντο' -> 'περιείλαντο'
   Location: Chapter 33, Verse 6
 
+File: EXO_src.tex, Line 814
+  TSV Line: 633
+  Reference: ΕΞΟΔΟΣ 28:29
+  Changed: 'μνημόσυνου' -> 'μνημόσυνον'
+  Location: Chapter 28, Verse 29
+
 File: EXO_src.tex, Line 28
   TSV Line: 22
   Reference: ΕΞΟΔΟΣ 2:2
@@ -2764,6 +2770,13 @@ File: EXO_src.tex, Line 949
   Reference: ΕΞΟΔΟΣ 32:15
   Changed: 'ἦσανς' -> 'ἦσαν'
   Location: Chapter 32, Verse 15
+
+File: EXO_src.tex, Line 167
+  TSV Line: 632
+  Reference: ΕΞΟΔΟΣ 7:5
+  Changed: 'μέσον' -> 'μέσου'
+  Location: Chapter 7, Verse 5
+  Notes: rahlf
 
 File: EXO_src.tex, Line 290
   TSV Line: 26
@@ -3095,6 +3108,12 @@ File: GEN_src.tex, Line 649
   Reference: ΓΕΝΕΣΙΣ 24:31
   Changed: 'Κυροίυ' -> 'Κυρίου'
   Location: Chapter 24, Verse 31
+
+File: GEN_src.tex, Line 1345
+  TSV Line: 631
+  Reference: ΓΕΝΕΣΙΣ 43:9
+  Changed: 'ἡμέραν' -> 'ἡμέρας'
+  Location: Chapter 43, Verse 9
 
 File: GEN_src.tex, Line 293
   TSV Line: 4
@@ -4719,10 +4738,10 @@ DAG_src.tex: 11 corrections
 DEU_src.tex: 30 corrections
 ECC_src.tex: 1 corrections
 ESG_src.tex: 12 corrections
-EXO_src.tex: 31 corrections
+EXO_src.tex: 33 corrections
 EZK_src.tex: 26 corrections
 EZR_src.tex: 2 corrections
-GEN_src.tex: 30 corrections
+GEN_src.tex: 31 corrections
 ISA_src.tex: 26 corrections
 JDG_src.tex: 6 corrections
 JDT_src.tex: 6 corrections

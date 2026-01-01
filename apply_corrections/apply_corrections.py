@@ -290,36 +290,79 @@ def apply_corrections_to_content(
                 ))
             continue
 
-        # Apply the correction for each occurrence
-        for pos in reversed(positions):  # Reverse to maintain positions
-            # Calculate line number in the file
-            line_num = content[:pos].count('\n') + 1
+        # Handle verse-specific corrections differently from ALL/book-wide
+        if check_verse_ref and correction.chapter_verse:
+            # Filter to only positions at the expected verse
+            expected_parts = correction.chapter_verse.split(':')
+            if len(expected_parts) == 2:
+                expected_ch, expected_vs = expected_parts
+                # Remove any letter suffix from verse for comparison
+                expected_vs_num = re.sub(r'[a-z]$', '', expected_vs)
 
-            # Find what verse this is in
-            actual_verse = find_verse_at_position(content, pos)
+                positions_at_verse = []
+                positions_elsewhere = []
 
-            # Check if this matches the expected verse
-            found_at_expected = True
-            if check_verse_ref and correction.chapter_verse:
-                expected_parts = correction.chapter_verse.split(':')
-                if len(expected_parts) == 2:
-                    expected_ch, expected_vs = expected_parts
-                    # Remove any letter suffix from verse for comparison
-                    expected_vs_num = re.sub(r'[a-z]$', '', expected_vs)
-                    found_at_expected = (f"Chapter {expected_ch}" in actual_verse and
-                                        f"Verse {expected_vs_num}" in actual_verse)
+                for pos in positions:
+                    actual_verse = find_verse_at_position(content, pos)
+                    if (f"Chapter {expected_ch}" in actual_verse and
+                        f"Verse {expected_vs_num}" in actual_verse):
+                        positions_at_verse.append((pos, actual_verse))
+                    else:
+                        positions_elsewhere.append((pos, actual_verse))
 
-            log_entries.append(LogEntry(
-                filename=filename,
-                line_num=line_num,
-                correction=correction,
-                found_at_expected=found_at_expected,
-                actual_location=actual_verse,
-                success=True
-            ))
+                if not positions_at_verse:
+                    # Not found at expected verse
+                    elsewhere_info = ""
+                    if positions_elsewhere:
+                        elsewhere_info = f" (found {len(positions_elsewhere)} elsewhere in book)"
+                    log_entries.append(LogEntry(
+                        filename=filename,
+                        line_num=0,
+                        correction=correction,
+                        found_at_expected=False,
+                        actual_location=f"NOT FOUND at {correction.verse_ref}{elsewhere_info}",
+                        success=False
+                    ))
+                    continue
 
-            # Apply the replacement
-            content = content[:pos] + correction.correct + content[pos + len(correction.incorrect):]
+                # Log and apply corrections at the expected verse
+                warning_suffix = ""
+                if len(positions_at_verse) > 1:
+                    warning_suffix = f" [WARNING: {len(positions_at_verse)} matches in verse]"
+
+                for pos, actual_verse in positions_at_verse:
+                    log_entries.append(LogEntry(
+                        filename=filename,
+                        line_num=content[:pos].count('\n') + 1,
+                        correction=correction,
+                        found_at_expected=True,
+                        actual_location=f"{actual_verse}{warning_suffix}",
+                        success=True
+                    ))
+
+                # Only replace at verse-specific positions
+                for pos, _ in reversed(positions_at_verse):
+                    content = content[:pos] + correction.correct + content[pos + len(correction.incorrect):]
+        else:
+            # ALL corrections or book-wide: apply everywhere (existing behavior)
+            for pos in reversed(positions):  # Reverse to maintain positions
+                # Calculate line number in the file
+                line_num = content[:pos].count('\n') + 1
+
+                # Find what verse this is in
+                actual_verse = find_verse_at_position(content, pos)
+
+                log_entries.append(LogEntry(
+                    filename=filename,
+                    line_num=line_num,
+                    correction=correction,
+                    found_at_expected=True,  # ALL corrections are always "expected"
+                    actual_location=actual_verse,
+                    success=True
+                ))
+
+                # Apply the replacement
+                content = content[:pos] + correction.correct + content[pos + len(correction.incorrect):]
 
     return content
 
