@@ -8,12 +8,20 @@ This script complements `check_missing_words_for_typos` by catching errors that 
 
 ## Error Types Detected
 
-### Single Character Confusions (υ/ν/ς/σ)
-These characters can be visually confused by OCR:
+### Single Character Confusions
+These characters can be visually confused by OCR and produce valid Greek words:
+
+**υ/ν/ς/σ group:**
 - `υ` ↔ `ν` (e.g., `-ου` vs `-ον`, `-υν` vs `-ων`)
 - `υ` ↔ `ς`
 - `ν` ↔ `ς`
 - `ς` ↔ `σ` (final vs medial sigma)
+
+**ε/η pair:**
+- `ε` ↔ `η` (e.g., `μέν` vs `μήν`, `δέ` vs `δή` - common particles)
+
+**ο/ω pair:**
+- `ο` ↔ `ω` (e.g., `λύομεν` vs `λύωμεν` - indicative vs subjunctive)
 
 ### Multi-Character Sequence Confusions
 - `ην` ↔ `ης` (e.g., accusative vs genitive endings)

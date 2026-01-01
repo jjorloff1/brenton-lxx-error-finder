@@ -15,30 +15,47 @@ The workflow compares Brenton's Greek text against two authoritative Septuagint 
 
 ```
 brenton-lxx-error-finder/
-├── README.md                    # This file
-├── word_corrections.tsv         # Central corrections file (shared between workflows)
-├── check_missing_words_for_typos/  # Error detection scripts and data
-│   ├── README.md                   # Detailed documentation for error finding
-│   ├── check_missing_words_for_typos.py  # Main error detection script
-│   ├── input/                   # Source files (Brenton.tex, reference CSVs)
-│   ├── output/                  # Analysis results (missing_words*.tsv)
-│   └── logs/                    # Execution logs
-├── apply_corrections/           # Correction application scripts
-│   ├── README.md                # Detailed documentation for applying corrections
-│   ├── apply_corrections.py     # Script to apply corrections to LaTeX
-│   ├── grcbrent_xetex_original/ # Original LaTeX source files
-│   └── grcbrent_xetex_corrected/# Corrected LaTeX output files
-└── contributor_analysis/        # Files for manual verification by contributors
+├── README.md                       # This file
+├── word_corrections.tsv            # Central corrections file (shared between workflows)
+├── accepted_words.txt              # Manually verified acceptable word variations
+├── accepted_sequence_variants.tsv  # Verse-specific accepted textual variants
+├── shared/                         # Shared utility modules
+│   ├── greek_utils.py              # Text normalization and Greek processing
+│   ├── data_loaders.py             # CSV and versification loading
+│   └── book_code_mappings.py       # Verse reference conversion between editions
+├── check_missing_words_for_typos/  # Vocabulary-based error detection
+│   ├── README.md                   # Detailed documentation
+│   ├── check_missing_words_for_typos.py  # Main script
+│   ├── input/                      # Source files (Brenton.tex, reference CSVs)
+│   ├── output/                     # Analysis results (missing_words*.tsv)
+│   └── logs/                       # Execution logs
+├── check_sequence_errors/          # Sequence-based error detection
+│   ├── README.md                   # Detailed documentation
+│   ├── check_sequence_errors.py    # Main script
+│   └── output/                     # Analysis results (sequence_errors.tsv)
+├── apply_corrections/              # Correction application scripts
+│   ├── README.md                   # Detailed documentation
+│   ├── apply_corrections.py        # Script to apply corrections to LaTeX
+│   ├── grcbrent_xetex_original/    # Original LaTeX source files
+│   └── grcbrent_xetex_corrected/   # Corrected LaTeX output files
+└── contributor_analysis/           # Files for manual verification by contributors
 ```
 
 ## Quick Start
 
-### Find Errors
+### Find Vocabulary Errors
 ```bash
 cd check_missing_words_for_typos
 python3 -u check_missing_words_for_typos.py |& tee "logs/script_run-$(date +%s).log"
 ```
 Results are written to `check_missing_words_for_typos/output/`.
+
+### Find Sequence Errors
+```bash
+cd check_sequence_errors
+python3 check_sequence_errors.py
+```
+Results are written to `check_sequence_errors/output/`.
 
 ### Apply Corrections
 ```bash
@@ -49,7 +66,11 @@ Corrected files are written to `apply_corrections/grcbrent_xetex_corrected/`.
 
 ## Workflow
 
-### 1. Find Errors (`check_missing_words_for_typos/`)
+### 1. Find Errors
+
+Two complementary approaches detect different error types:
+
+#### Vocabulary-Based Detection (`check_missing_words_for_typos/`)
 
 The `check_missing_words_for_typos.py` script:
 - Reads the Brenton Greek text (`input/Brenton.tex`)
@@ -62,6 +83,21 @@ Key outputs:
 - `missing_words_likely_typos.tsv` - High-confidence typos for review
 - `missing_words_legitimate_variations.tsv` - Valid spelling differences
 - `missing_words_unmatched.tsv` - Words needing manual review
+
+**Catches:** Substitution, omission, fusion, fission, orthographic variation, visual confusion errors that result in non-words.
+
+#### Sequence-Based Detection (`check_sequence_errors/`)
+
+The `check_sequence_errors.py` script:
+- Performs word-by-word alignment between Brenton and Rahlfs using `difflib.SequenceMatcher`
+- Detects character substitutions that produce valid but incorrect Greek words
+- Focuses on OCR-confusable characters: υ/ν/ς/σ, ε/η, ο/ω
+- Detects multi-character sequence confusions: ην↔ης, οι↔αι
+
+Key output:
+- `sequence_errors.tsv` - Detected substitutions with verse, words, error type, context
+
+**Catches:** Valid-word substitutions that vocabulary checking misses (e.g., `-ου` vs `-ον` endings are both valid Greek, but only one is correct in context).
 
 ### 2. Document Corrections (`word_corrections.tsv`)
 
@@ -91,18 +127,56 @@ The script handles:
 ### `word_corrections.tsv`
 The central corrections file containing all identified errors and their corrections. This file:
 - Is read by `check_missing_words_for_typos/` to skip already-corrected words
+- Is read by `check_sequence_errors/` to skip already-corrected words
 - Is read by `apply_corrections/` to apply fixes to source files
+
+### `accepted_words.txt`
+Words that are acceptable variations and should not be flagged as errors. Used by both detection scripts.
+
+### `accepted_sequence_variants.tsv`
+Verse-specific textual variants that are intentional differences between Brenton and Rahlfs (not OCR errors). Format:
+```
+Verse Reference<tab>Brenton Word<tab>Rahlfs Word
+```
+Example:
+```
+ΓΕΝΕΣΙΣ 3:8	τὴς	τὴν
+```
 
 ### Reference Data
 Located in `check_missing_words_for_typos/input/`:
 - `rahlfs_words.csv` / `swete_words.csv` - Word lists from reference editions
 - `rahlfs_versification.csv` / `swete_versification.csv` - Verse mappings
-- `accepted_words.txt` - Manually verified acceptable variations
 
 ## Additional Folders
 
 ### `contributor_analysis/`
 Contains files for the manual verification process used by project contributors to help validate corrections. Not used by any scripts.
+
+### `shared/`
+Common utility modules used by both detection scripts:
+- `greek_utils.py` - Text normalization, diacritical handling, Greek word extraction
+- `data_loaders.py` - CSV loading, versification data handling
+- `book_code_mappings.py` - Verse reference conversion between Brenton and Rahlfs formats
+
+## OCR Error Detection Approaches
+
+This project uses multiple approaches to detect different categories of OCR errors:
+
+### Currently Implemented
+
+| Approach | Script | Error Types Detected |
+|----------|--------|---------------------|
+| **Vocabulary-Based** | `check_missing_words_for_typos.py` | Non-word errors: substitution, omission, fusion, fission, orthographic variation |
+| **Sequence-Based** | `check_sequence_errors.py` | Valid-word substitutions: υ/ν/ς/σ, ε/η, ο/ω confusion; ην↔ης, οι↔αι sequences |
+
+### Potential Future Approaches
+
+| Approach | Error Types | Method |
+|----------|-------------|--------|
+| **Omission Detection** | Haplography, Homoioteleuton, Homoioarcton, Parablepsis | Detect missing words where adjacent words have similar beginnings/endings |
+| **Dittography Detection** | Repeated words/phrases | Find consecutive duplicates not present in reference |
+| **Article-Noun Agreement** | Case errors | Verify article case matches nearby noun ending |
 
 ## Requirements
 
@@ -116,5 +190,5 @@ This project is for academic and research purposes, analyzing public domain Sept
 ## Acknowledgments
 
 - Brenton's Septuagint translation
-- Rahlfs-Hanhart Septuaginta edition
+- Rahlfs Septuaginta edition
 - Swete's Old Testament in Greek edition

@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 """
 Detect OCR sequence errors in Brenton Septuagint by word-by-word alignment
-against Rahlfs edition, focusing on υ/ν/ς substitutions and sequence confusions.
+against Rahlfs edition, focusing on character substitutions and sequence confusions.
+
+Detects:
+- Single-char confusions: υ/ν/ς/σ, ε/η, ο/ω
+- Sequence confusions: ην↔ης, οι↔αι
 
 This script complements check_missing_words_for_typos by catching errors that
-pass vocabulary checks but are wrong in context (e.g., both υ and ν endings
+pass vocabulary checks but are wrong in context (e.g., both -ου and -ον endings
 can be valid Greek, but only one is correct for a given word form).
 """
 
@@ -33,7 +37,10 @@ from shared.data_loaders import (
 from shared.book_code_mappings import convert_brenton_reference_to_rahlfs
 
 # Single characters that can be OCR-confused with each other
-CONFUSABLE_CHARS = {'υ', 'ν', 'ς', 'σ'}
+# - υ/ν/ς/σ: visual similarity in many typefaces
+# - ε/η: e.g., μέν↔μήν, δέ↔δή (common particles)
+# - ο/ω: e.g., λύομεν↔λύωμεν (indicative vs subjunctive)
+CONFUSABLE_CHARS = {'υ', 'ν', 'ς', 'σ', 'ε', 'η', 'ο', 'ω'}
 
 # Multi-character sequences that can be OCR-confused
 CONFUSABLE_SEQUENCES = [
@@ -523,7 +530,7 @@ def main():
     # Summary
     print(f"\nSummary:")
     print(f"  Total errors found: {len(errors)}")
-    print(f"  - Single char (υ/ν/ς): {sum(1 for e in errors if e['error_type'] == 'single_char')}")
+    print(f"  - Single char (υ/ν/ς/σ/ε/η/ο/ω): {sum(1 for e in errors if e['error_type'] == 'single_char')}")
     print(f"  - Sequence (ην/ης, οι/αι): {sum(1 for e in errors if e['error_type'] == 'sequence')}")
     print(f"  Versification mismatches: {len(mismatches)}")
 
