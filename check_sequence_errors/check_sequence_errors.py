@@ -27,7 +27,8 @@ from shared.greek_utils import (
     strip_diacritics,
     extract_greek_words,
     load_accepted_words,
-    load_already_examined
+    load_already_examined,
+    should_filter_by_accent
 )
 from shared.data_loaders import (
     load_words_with_ids,
@@ -390,6 +391,9 @@ def process_brenton_file(brenton_path, rahlfs_words_dict, rahlfs_verse_map,
                 # Check for single-char confusion
                 confusion = detect_single_char_confusion(b_word[1], r_word[1])
                 if confusion:
+                    # Skip if accent differences indicate valid variant
+                    if should_filter_by_accent(b_word[1], r_word[1]):
+                        continue
                     errors.append({
                         'verse_ref': verse_ref,
                         'line_num': line_num,
@@ -404,6 +408,9 @@ def process_brenton_file(brenton_path, rahlfs_words_dict, rahlfs_verse_map,
                 # Check for sequence confusion
                 confusion = detect_sequence_confusion(b_word[1], r_word[1])
                 if confusion:
+                    # Skip if accent differences indicate valid variant
+                    if should_filter_by_accent(b_word[1], r_word[1]):
+                        continue
                     errors.append({
                         'verse_ref': verse_ref,
                         'line_num': line_num,

@@ -33,6 +33,137 @@ def strip_diacritics(text):
     return unicodedata.normalize('NFC', stripped)
 
 
+# Greek accent combining characters (used for accent comparison filtering)
+GREEK_ACCENTS = {
+    0x0300: 'GRAVE',      # COMBINING GRAVE ACCENT (varia)
+    0x0301: 'ACUTE',      # COMBINING ACUTE ACCENT (oxia/tonos)
+    0x0342: 'CIRCUMFLEX', # COMBINING GREEK PERISPOMENI
+}
+
+
+def extract_accent_info(word):
+    """Extract accent information from a Greek word.
+
+    Args:
+        word: Greek word (Unicode string)
+
+    Returns:
+        List of tuples: (base_char_position, accent_type, base_char)
+        where:
+        - base_char_position: index in the diacritic-stripped version
+        - accent_type: 'GRAVE', 'ACUTE', or 'CIRCUMFLEX'
+        - base_char: the base character that carries the accent
+
+    Example:
+        extract_accent_info('αὐτὸν') -> [(3, 'GRAVE', 'ο')]
+        extract_accent_info('αὐτοῦ') -> [(4, 'CIRCUMFLEX', 'υ')]
+    """
+    # Normalize to NFC first, then decompose to NFD
+    nfd = unicodedata.normalize('NFD', normalize_text(word))
+
+    accents = []
+    base_char_pos = -1
+    current_base = None
+
+    for char in nfd:
+        cat = unicodedata.category(char)
+        if cat != 'Mn':  # Base character (not combining mark)
+            base_char_pos += 1
+            current_base = char
+        else:
+            code = ord(char)
+            if code in GREEK_ACCENTS:
+                accents.append((base_char_pos, GREEK_ACCENTS[code], current_base))
+
+    return accents
+
+
+def compare_accents(word1, word2):
+    """Compare accents between two Greek words.
+
+    Args:
+        word1: First Greek word (typically Brenton)
+        word2: Second Greek word (typically Rahlfs)
+
+    Returns:
+        Tuple of (result, accents1, accents2) where result is one of:
+        - 'same': accents are identical (type and position)
+        - 'different_position': accent on different characters
+        - 'different_type': same position, different type
+        - 'word1_missing': word1 has no accent, word2 does
+        - 'word2_missing': word1 has accent, word2 doesn't
+        - 'both_none': neither word has an accent
+    """
+    acc1 = extract_accent_info(word1)
+    acc2 = extract_accent_info(word2)
+
+    if not acc1 and not acc2:
+        return ('both_none', acc1, acc2)
+
+    if not acc1:
+        return ('word1_missing', acc1, acc2)
+
+    if not acc2:
+        return ('word2_missing', acc1, acc2)
+
+    # Compare primary accent (most Greek words have only one)
+    pos1, type1, _ = acc1[0]
+    pos2, type2, _ = acc2[0]
+
+    if pos1 != pos2:
+        return ('different_position', acc1, acc2)
+
+    if type1 != type2:
+        return ('different_type', acc1, acc2)
+
+    return ('same', acc1, acc2)
+
+
+def should_filter_by_accent(brenton_word, rahlfs_word):
+    """Determine if a word pair should be filtered based on accent differences.
+
+    Filtering logic:
+    - FILTER (return True): Different accent position -> likely variant
+    - FILTER (return True): Different type involving circumflex -> likely variant
+    - KEEP (return False): Same accents -> needs examination
+    - KEEP (return False): Same position, acute/grave switch -> needs examination
+    - KEEP (return False): Brenton missing accent -> potential transcription error
+    - KEEP (return False): Both have no accent -> can't filter by accent
+    - KEEP (return False): Rahlfs missing accent -> unusual, keep for review
+
+    Args:
+        brenton_word: Word from Brenton text (may have OCR errors)
+        rahlfs_word: Word from Rahlfs text (reference)
+
+    Returns:
+        True if the pair should be filtered out (likely valid variant)
+        False if the pair should be kept (needs examination)
+    """
+    result, acc1, acc2 = compare_accents(brenton_word, rahlfs_word)
+
+    # Filter out when accent position differs -> likely valid variant
+    if result == 'different_position':
+        return True
+
+    # For different types at same position, check if it's acute/grave switch
+    if result == 'different_type':
+        # Get the accent types
+        type1 = acc1[0][1] if acc1 else None
+        type2 = acc2[0][1] if acc2 else None
+        # Keep acute/grave switches (they're essentially the same accent)
+        if {type1, type2} == {'ACUTE', 'GRAVE'}:
+            return False
+        # Filter other type differences (involving circumflex)
+        return True
+
+    # Keep (return False) in all other cases:
+    # - 'same': Same accents, needs examination
+    # - 'word1_missing': Brenton lost accent, potential OCR error
+    # - 'word2_missing': Unusual case, keep for review
+    # - 'both_none': Can't determine from accents, keep
+    return False
+
+
 def normalize_for_comparison(text):
     """Normalize text for comparison purposes.
     - Strips spaces (for compound word matching)

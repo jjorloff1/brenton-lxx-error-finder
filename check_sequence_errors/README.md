@@ -77,7 +77,25 @@ Log of verses that couldn't be aligned between Brenton and Rahlfs:
    - Skip if word is in `accepted_words.txt` or `word_corrections.tsv`
    - Check for single-character υ/ν/ς/σ confusion
    - Check for sequence confusion (ην↔ης, οι↔αι)
+   - Apply accent-based filtering (see below)
    - Record matches with context information
+
+## Accent-Based Filtering
+
+To reduce false positives, the script filters out word pairs where accent differences suggest a valid textual variant rather than an OCR error.
+
+### Filtering Logic
+- **Different accent position**: Filtered (likely valid Brenton variant)
+- **Different type involving circumflex**: Filtered (likely valid Brenton variant)
+- **Same accent position and type**: Kept for review (may be transcription error)
+- **Same position, acute/grave switch**: Kept (acute and grave are essentially the same accent)
+- **Brenton missing accent, Rahlfs has one**: Kept (accent-bearing character may have been mistranscribed)
+
+### Example
+| Brenton | Rahlfs | Accents | Action |
+|---------|--------|---------|--------|
+| αὐτὸν | αὐτοῦ | grave on ο vs circumflex on υ | Filtered |
+| τὴς | τὴν | both grave on η | Kept |
 
 ## Accepting Variants
 
