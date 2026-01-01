@@ -38,9 +38,9 @@ python3 check_sequence_errors.py
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `--brenton` | `../check_missing_words_for_typos/input/Brenton.tex` | Path to Brenton source |
-| `--rahlfs-words` | `../check_missing_words_for_typos/input/rahlfs_words.csv` | Rahlfs word list |
-| `--rahlfs-versification` | `../check_missing_words_for_typos/input/rahlfs_versification.csv` | Rahlfs verse mappings |
+| `--brenton` | `../input/Brenton.tex` | Path to Brenton source |
+| `--rahlfs-words` | `../input/rahlfs_words.csv` | Rahlfs word list |
+| `--rahlfs-versification` | `../input/rahlfs_versification.csv` | Rahlfs verse mappings |
 | `--accepted-words` | `../accepted_words.txt` | Words to skip |
 | `--corrections` | `../word_corrections.tsv` | Already-corrected words to skip |
 | `--accepted-variants` | `../accepted_sequence_variants.tsv` | Verse-specific accepted variants |

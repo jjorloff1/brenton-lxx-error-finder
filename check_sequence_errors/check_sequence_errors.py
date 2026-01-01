@@ -468,17 +468,17 @@ def main():
     )
     parser.add_argument(
         '--brenton',
-        default='../check_missing_words_for_typos/input/Brenton.tex',
+        default='../input/Brenton.tex',
         help='Path to Brenton.tex file'
     )
     parser.add_argument(
         '--rahlfs-words',
-        default='../check_missing_words_for_typos/input/rahlfs_words.csv',
+        default='../input/rahlfs_words.csv',
         help='Path to Rahlfs words CSV'
     )
     parser.add_argument(
         '--rahlfs-versification',
-        default='../check_missing_words_for_typos/input/rahlfs_versification.csv',
+        default='../input/rahlfs_versification.csv',
         help='Path to Rahlfs versification CSV'
     )
     parser.add_argument(

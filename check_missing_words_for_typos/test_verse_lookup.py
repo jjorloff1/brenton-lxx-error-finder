@@ -77,10 +77,10 @@ def get_verse_words(verse_ref, verse_map, words_dict):
 
 if __name__ == '__main__':
     print("Testing Rahlfs...")
-    rahlfs_words = load_words_with_ids('rahlfs_words.csv', max_lines=300)
+    rahlfs_words = load_words_with_ids('../input/rahlfs_words.csv', max_lines=300)
     print(f"Loaded {len(rahlfs_words)} words")
     
-    rahlfs_verses = load_versification('rahlfs_versification.csv', max_lines=20)
+    rahlfs_verses = load_versification('../input/rahlfs_versification.csv', max_lines=20)
     print(f"Loaded {len(rahlfs_verses)} verses")
     print("Verses:", list(rahlfs_verses.keys())[:5])
     
@@ -91,10 +91,10 @@ if __name__ == '__main__':
     
     print("\n" + "="*50)
     print("Testing Swete...")
-    swete_words = load_words_with_ids('swete_words.csv', max_lines=300)
+    swete_words = load_words_with_ids('../input/swete_words.csv', max_lines=300)
     print(f"Loaded {len(swete_words)} words")
     
-    swete_verses = load_versification('swete_versification.csv', max_lines=20)
+    swete_verses = load_versification('../input/swete_versification.csv', max_lines=20)
     print(f"Loaded {len(swete_verses)} verses")
     print("Verses:", list(swete_verses.keys())[:5])
     

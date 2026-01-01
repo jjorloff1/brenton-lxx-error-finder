@@ -612,16 +612,16 @@ Examples:
         """
     )
     
-    parser.add_argument('--bible', default='input/Brenton.tex',
-                        help='Path to Bible .tex file (default: input/Brenton.tex)')
-    parser.add_argument('--rahlfs', default='input/rahlfs_words.csv',
-                        help='Path to Rahlfs words CSV file (default: input/rahlfs_words.csv)')
-    parser.add_argument('--swete', default='input/swete_words.csv',
-                        help='Path to Swete words CSV file (default: input/swete_words.csv)')
-    parser.add_argument('--rahlfs-versification', default='input/rahlfs_versification.csv',
-                        help='Path to Rahlfs versification CSV file (default: input/rahlfs_versification.csv)')
-    parser.add_argument('--swete-versification', default='input/swete_versification.csv',
-                        help='Path to Swete versification CSV file (default: input/swete_versification.csv)')
+    parser.add_argument('--bible', default='../input/Brenton.tex',
+                        help='Path to Bible .tex file (default: ../input/Brenton.tex)')
+    parser.add_argument('--rahlfs', default='../input/rahlfs_words.csv',
+                        help='Path to Rahlfs words CSV file (default: ../input/rahlfs_words.csv)')
+    parser.add_argument('--swete', default='../input/swete_words.csv',
+                        help='Path to Swete words CSV file (default: ../input/swete_words.csv)')
+    parser.add_argument('--rahlfs-versification', default='../input/rahlfs_versification.csv',
+                        help='Path to Rahlfs versification CSV file (default: ../input/rahlfs_versification.csv)')
+    parser.add_argument('--swete-versification', default='../input/swete_versification.csv',
+                        help='Path to Swete versification CSV file (default: ../input/swete_versification.csv)')
     parser.add_argument('--output', default='output/missing_words.tsv',
                         help='Path to output TSV file (default: output/missing_words.tsv)')
     parser.add_argument('--accepted-words', default='../accepted_words.txt',

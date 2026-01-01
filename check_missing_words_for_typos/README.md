@@ -31,14 +31,6 @@ check_missing_words_for_typos/
 ├── book_code_mappings.py             # Greek book name to edition code mappings
 ├── test_lettrine.py                  # Unit tests for LaTeX lettrine parsing
 ├── test_verse_lookup.py              # Unit tests for verse reference conversion
-├── input/
-│   ├── Brenton.tex                   # Source text (LaTeX format)
-│   ├── Brenton-small.tex             # Smaller test version
-│   ├── rahlfs_words.csv              # Word list from Rahlfs edition
-│   ├── rahlfs_versification.csv      # Verse reference mappings (Rahlfs)
-│   ├── swete_words.csv               # Word list from Swete edition
-│   ├── swete_versification.csv       # Verse reference mappings (Swete)
-│   └── accepted_words.txt            # Manually verified words to skip
 ├── output/
 │   ├── missing_words.tsv             # Output: all missing words
 │   ├── missing_words_typo_check.tsv  # Output: full analysis with flags
@@ -74,20 +66,20 @@ python3 -u check_missing_words_for_typos.py |& tee "logs/script_run-$(date +%s).
 python3 check_missing_words_for_typos.py --no-typo-check
 
 # Specify custom input files:
-python3 check_missing_words_for_typos.py --bible input/MyBible.tex --rahlfs input/my_rahlfs.csv
+python3 check_missing_words_for_typos.py --bible ../input/MyBible.tex --rahlfs ../input/my_rahlfs.csv
 
 # See all options:
 python3 check_missing_words_for_typos.py --help
 ```
 
 Available options:
-- `--bible` - Path to Bible .tex file (default: input/Brenton.tex)
-- `--rahlfs` - Path to Rahlfs words CSV (default: input/rahlfs_words.csv)
-- `--swete` - Path to Swete words CSV (default: input/swete_words.csv)
-- `--rahlfs-versification` - Path to Rahlfs versification CSV (default: input/rahlfs_versification.csv)
-- `--swete-versification` - Path to Swete versification CSV (default: input/swete_versification.csv)
+- `--bible` - Path to Bible .tex file (default: ../input/Brenton.tex)
+- `--rahlfs` - Path to Rahlfs words CSV (default: ../input/rahlfs_words.csv)
+- `--swete` - Path to Swete words CSV (default: ../input/swete_words.csv)
+- `--rahlfs-versification` - Path to Rahlfs versification CSV (default: ../input/rahlfs_versification.csv)
+- `--swete-versification` - Path to Swete versification CSV (default: ../input/swete_versification.csv)
 - `--output` - Path to output TSV file (default: output/missing_words.tsv)
-- `--accepted-words` - Path to accepted words file (default: input/accepted_words.txt)
+- `--accepted-words` - Path to accepted words file (default: ../accepted_words.txt)
 - `--already-examined` - Path to already examined corrections (default: ../word_corrections.tsv)
 - `--no-typo-check` - Disable typo checking for faster processing
 

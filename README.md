@@ -19,6 +19,12 @@ brenton-lxx-error-finder/
 ├── word_corrections.tsv            # Central corrections file (shared between workflows)
 ├── accepted_words.txt              # Manually verified acceptable word variations
 ├── accepted_sequence_variants.tsv  # Verse-specific accepted textual variants
+├── input/                          # Shared input files
+│   ├── Brenton.tex                 # Source text (LaTeX format)
+│   ├── rahlfs_words.csv            # Word list from Rahlfs edition
+│   ├── rahlfs_versification.csv    # Verse reference mappings (Rahlfs)
+│   ├── swete_words.csv             # Word list from Swete edition
+│   └── swete_versification.csv     # Verse reference mappings (Swete)
 ├── shared/                         # Shared utility modules
 │   ├── greek_utils.py              # Text normalization and Greek processing
 │   ├── data_loaders.py             # CSV and versification loading
@@ -26,7 +32,6 @@ brenton-lxx-error-finder/
 ├── check_missing_words_for_typos/  # Vocabulary-based error detection
 │   ├── README.md                   # Detailed documentation
 │   ├── check_missing_words_for_typos.py  # Main script
-│   ├── input/                      # Source files (Brenton.tex, reference CSVs)
 │   ├── output/                     # Analysis results (missing_words*.tsv)
 │   └── logs/                       # Execution logs
 ├── check_sequence_errors/          # Sequence-based error detection
@@ -155,7 +160,8 @@ Example:
 ```
 
 ### Reference Data
-Located in `check_missing_words_for_typos/input/`:
+Located in `input/`:
+- `Brenton.tex` - Source text (LaTeX format)
 - `rahlfs_words.csv` / `swete_words.csv` - Word lists from reference editions
 - `rahlfs_versification.csv` / `swete_versification.csv` - Verse mappings
 

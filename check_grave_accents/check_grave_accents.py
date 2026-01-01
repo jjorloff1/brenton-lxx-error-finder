@@ -201,7 +201,7 @@ def main():
     )
     parser.add_argument(
         '--brenton',
-        default='../check_missing_words_for_typos/input/Brenton.tex',
+        default='../input/Brenton.tex',
         help='Path to Brenton.tex source file'
     )
     parser.add_argument(
