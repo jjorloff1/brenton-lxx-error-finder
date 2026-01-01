@@ -56,3 +56,5 @@ dmypy.json
 
 # Large file
 septuagint and apochrypha - version 1900 brenton.pdf
+
+*.local.json
