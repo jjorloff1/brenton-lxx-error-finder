@@ -33,6 +33,10 @@ brenton-lxx-error-finder/
 │   ├── README.md                   # Detailed documentation
 │   ├── check_sequence_errors.py    # Main script
 │   └── output/                     # Analysis results (sequence_errors.tsv)
+├── check_grave_accents/            # Misplaced grave accent detection
+│   ├── README.md                   # Detailed documentation
+│   ├── check_grave_accents.py      # Main script
+│   └── output/                     # Analysis results (misplaced_graves.tsv)
 ├── apply_corrections/              # Correction application scripts
 │   ├── README.md                   # Detailed documentation
 │   ├── apply_corrections.py        # Script to apply corrections to LaTeX
@@ -56,6 +60,13 @@ cd check_sequence_errors
 python3 check_sequence_errors.py
 ```
 Results are written to `check_sequence_errors/output/`.
+
+### Find Misplaced Grave Accents
+```bash
+cd check_grave_accents
+python3 check_grave_accents.py
+```
+Results are written to `check_grave_accents/output/`.
 
 ### Apply Corrections
 ```bash
@@ -169,6 +180,7 @@ This project uses multiple approaches to detect different categories of OCR erro
 |----------|--------|---------------------|
 | **Vocabulary-Based** | `check_missing_words_for_typos.py` | Non-word errors: substitution, omission, fusion, fission, orthographic variation |
 | **Sequence-Based** | `check_sequence_errors.py` | Valid-word substitutions: υ/ν/ς/σ, ε/η, ο/ω confusion; ην↔ης, οι↔αι sequences |
+| **Accent-Based** | `check_grave_accents.py` | Misplaced grave accents on non-ultimate syllables (acute→grave transcription errors) |
 
 ### Potential Future Approaches
 
@@ -192,3 +204,10 @@ This project is for academic and research purposes, analyzing public domain Sept
 - Brenton's Septuagint translation
 - Rahlfs Septuaginta edition
 - Swete's Old Testament in Greek edition
+
+## To Do
+[ ] Refactor: Move Brenton.tex input file up to root and update all scripts accordingly.
+[ ] Refactor: We may be able to simplify the parsing logic of the brenton.tex.  At least we might be able to extract it from individual scripts into a utility file and return a hash of verses.
+[ ] Refactor: For check_sequence_errors move line number to the first column
+[ ] Manual: Validate sequencing errors
+[ ] Manual: Verify and Fix Grave Errors
