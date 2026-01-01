@@ -228,8 +228,48 @@ def should_skip_word(word, verse_ref, accepted_words, corrections):
     return False
 
 
+def load_accepted_sequence_variants(filepath):
+    """Load accepted sequence variants from TSV file.
+
+    Returns set of (verse_ref, brenton_word_normalized, rahlfs_word_normalized) tuples.
+    """
+    print(f"Opening accepted sequence variants file: {filepath}")
+    accepted = set()
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            reader = csv.reader(f, delimiter='\t')
+            row_count = 0
+            for row in reader:
+                row_count += 1
+                # Skip comments and empty lines
+                if not row or row[0].startswith('#'):
+                    continue
+                if len(row) >= 3:
+                    verse_ref = normalize_text(row[0].strip())
+                    brenton_word = normalize_text(row[1].strip())
+                    rahlfs_word = normalize_text(row[2].strip())
+                    # Normalize for comparison
+                    b_normalized = strip_diacritics(brenton_word.lower())
+                    r_normalized = strip_diacritics(rahlfs_word.lower())
+                    accepted.add((verse_ref, b_normalized, r_normalized))
+            print(f"Finished reading {filepath} ({row_count} lines, {len(accepted)} variants loaded)")
+    except FileNotFoundError:
+        print(f"Note: Accepted sequence variants file '{filepath}' not found. Continuing without it.")
+    except Exception as e:
+        print(f"Error loading accepted sequence variants from {filepath}: {e}")
+    return accepted
+
+
+def is_accepted_variant(verse_ref, brenton_word, rahlfs_word, accepted_variants):
+    """Check if this specific verse+word pair is an accepted variant."""
+    b_normalized = strip_diacritics(brenton_word.lower())
+    r_normalized = strip_diacritics(rahlfs_word.lower())
+    return (verse_ref, b_normalized, r_normalized) in accepted_variants
+
+
 def process_brenton_file(brenton_path, rahlfs_words_dict, rahlfs_verse_map,
-                         rahlfs_sorted_verses, accepted_words, corrections):
+                         rahlfs_sorted_verses, accepted_words, corrections,
+                         accepted_variants):
     """Process Brenton.tex and find sequence errors.
 
     Returns:
@@ -328,6 +368,10 @@ def process_brenton_file(brenton_path, rahlfs_words_dict, rahlfs_verse_map,
 
                 # Skip if word is in accepted list or corrections
                 if should_skip_word(b_word[1], verse_ref, accepted_words, corrections):
+                    continue
+
+                # Skip if this specific variant is accepted
+                if is_accepted_variant(verse_ref, b_word[1], r_word[1], accepted_variants):
                     continue
 
                 # Check for single-char confusion
@@ -437,6 +481,11 @@ def main():
         default='output/versification_mismatches.tsv',
         help='Path to versification mismatches output'
     )
+    parser.add_argument(
+        '--accepted-variants',
+        default='../accepted_sequence_variants.tsv',
+        help='Path to accepted sequence variants file'
+    )
 
     args = parser.parse_args()
 
@@ -453,6 +502,9 @@ def main():
     print("Loading corrections...")
     corrections = load_already_examined(args.corrections)
 
+    print("Loading accepted sequence variants...")
+    accepted_variants = load_accepted_sequence_variants(args.accepted_variants)
+
     # Process Brenton file
     errors, mismatches = process_brenton_file(
         args.brenton,
@@ -460,7 +512,8 @@ def main():
         rahlfs_verse_map,
         rahlfs_sorted_verses,
         accepted_words,
-        corrections
+        corrections,
+        accepted_variants
     )
 
     # Write outputs

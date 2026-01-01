@@ -1,0 +1,20 @@
+# Accepted Sequence Variants
+# Format: Verse Reference<tab>Brenton Word<tab>Rahlfs Word
+# These are intentional textual differences between Brenton and Rahlfs, not OCR errors.
+# Lines starting with # are comments.
+#
+# Example:
+# ΓΕΝΕΣΙΣ 3:8	τὴς	τὴν
+
+ΓΕΝΕΣΙΣ 3:8	τὴς	τὴν
+ΓΕΝΕΣΙΣ 3:8	φωνὴς	φωνὴν
+ΓΕΝΕΣΙΣ 3:10	τὴς	τὴν
+ΓΕΝΕΣΙΣ 3:10	φωνῆς	φωνήν
+ΓΕΝΕΣΙΣ 7:22	πᾶν	πᾶς
+ΓΕΝΕΣΙΣ 24:52	τοῦ	τὸν
+ΓΕΝΕΣΙΣ 24:59	τοῦ	τὸν
+ΓΕΝΕΣΙΣ 30:38	τοῖς	ταῖς
+ΓΕΝΕΣΙΣ 30:41	τοῖς	ταῖς
+ΓΕΝΕΣΙΣ 47:26	γῆς	γῆν
+ΓΕΝΕΣΙΣ 49:12	οἶνον	οἴνου
+

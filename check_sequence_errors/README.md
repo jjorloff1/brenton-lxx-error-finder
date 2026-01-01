@@ -35,6 +35,7 @@ python3 check_sequence_errors.py
 | `--rahlfs-versification` | `../check_missing_words_for_typos/input/rahlfs_versification.csv` | Rahlfs verse mappings |
 | `--accepted-words` | `../accepted_words.txt` | Words to skip |
 | `--corrections` | `../word_corrections.tsv` | Already-corrected words to skip |
+| `--accepted-variants` | `../accepted_sequence_variants.tsv` | Verse-specific accepted variants |
 | `--output` | `output/sequence_errors.tsv` | Output file for detected errors |
 | `--mismatches-output` | `output/versification_mismatches.tsv` | Log of verse alignment issues |
 
@@ -70,10 +71,30 @@ Log of verses that couldn't be aligned between Brenton and Rahlfs:
    - Check for sequence confusion (ην↔ης, οι↔αι)
    - Record matches with context information
 
+## Accepting Variants
+
+Unlike `accepted_words.txt` which accepts words globally, sequence variants need to be accepted on a **case-by-case basis** because common words like `τὴς`/`τὴν` appear many times and may be correct in some verses but wrong in others.
+
+### `accepted_sequence_variants.tsv`
+
+Located at project root. Format:
+```
+Verse Reference<tab>Brenton Word<tab>Rahlfs Word
+```
+
+Example:
+```
+ΓΕΝΕΣΙΣ 3:8	τὴς	τὴν
+ΓΕΝΕΣΙΣ 3:8	φωνὴς	φωνὴν
+```
+
+This accepts specific verse+word combinations as intentional textual differences (not OCR errors).
+
 ## Integration with Existing Workflow
 
 After running this script:
 1. Review `sequence_errors.tsv` for true positives
-2. Add confirmed corrections to `../word_corrections.tsv`
-3. Add false positives to `../accepted_words.txt`
-4. Run `../apply_corrections/apply_corrections.py` to apply fixes
+2. For **OCR errors**: Add corrections to `../word_corrections.tsv`
+3. For **valid textual variants**: Add to `../accepted_sequence_variants.tsv`
+4. Re-run the script to verify errors are filtered
+5. Run `../apply_corrections/apply_corrections.py` to apply fixes
