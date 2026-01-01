@@ -20,6 +20,8 @@ Notes:
 - The second occurrence of ΕΣΔΡΑΣ in Brenton refers to 1 Esdras (apocryphal)
 """
 
+from typing import Union
+
 # Mapping from Brenton Greek book names to Swete book codes
 BRENTON_TO_SWETE = {
     # Pentateuch
@@ -265,7 +267,7 @@ def convert_brenton_chapter_to_swete(brenton_book: str, brenton_chapter: int) ->
     return (swete_book, brenton_chapter)
 
 
-def convert_brenton_reference_to_rahlfs(brenton_book: str, chapter: int, verse: int) -> str:
+def convert_brenton_reference_to_rahlfs(brenton_book: str, chapter: int, verse: Union[int, str]) -> str:
     """
     Convert a full Brenton verse reference to Rahlfs format.
     
@@ -289,7 +291,7 @@ def convert_brenton_reference_to_rahlfs(brenton_book: str, chapter: int, verse: 
     return f"{rahlfs_book}.{rahlfs_chapter}.{verse}"
 
 
-def convert_brenton_reference_to_swete(brenton_book: str, chapter: int, verse: int) -> str:
+def convert_brenton_reference_to_swete(brenton_book: str, chapter: int, verse: Union[int, str]) -> str:
     """
     Convert a full Brenton verse reference to Swete format.
     

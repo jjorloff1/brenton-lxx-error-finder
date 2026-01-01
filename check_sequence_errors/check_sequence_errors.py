@@ -14,7 +14,6 @@ can be valid Greek, but only one is correct for a given word form).
 
 import argparse
 import csv
-import re
 import sys
 from pathlib import Path
 from difflib import SequenceMatcher
@@ -25,11 +24,11 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from shared.greek_utils import (
     normalize_text,
     strip_diacritics,
-    extract_greek_words,
     load_accepted_words,
     load_already_examined,
     should_filter_by_accent
 )
+from shared.brenton_parser import BrentonParser
 from shared.data_loaders import (
     load_words_with_ids,
     load_versification,
@@ -293,133 +292,94 @@ def process_brenton_file(brenton_path, rahlfs_words_dict, rahlfs_verse_map,
     """
     errors = []
     mismatches = []
+    parser = BrentonParser(brenton_path)
 
-    current_book = None
-    current_chapter = None
-    current_verse = None
+    for ctx in parser.parse():
+        if not ctx.has_complete_ref or not ctx.greek_words:
+            continue
 
-    print(f"Processing {brenton_path}...")
+        # Convert to (normalized, original) tuples
+        brenton_words = [(strip_diacritics(w.lower()), w) for w in ctx.greek_words]
 
-    with open(brenton_path, 'r', encoding='utf-8') as f:
-        for line_num, line in enumerate(f, 1):
-            line = normalize_text(line)
+        # Get Rahlfs reference
+        rahlfs_ref = convert_brenton_reference_to_rahlfs(
+            ctx.book, ctx.chapter, ctx.verse
+        )
 
-            # Track book
-            book_match = re.search(r'\\biblebook\{([^}]+)\}', line)
-            if book_match:
-                current_book = book_match.group(1)
-                current_chapter = None
-                current_verse = None
+        if rahlfs_ref is None:
+            mismatches.append({
+                'brenton_ref': ctx.verse_ref,
+                'rahlfs_ref': None,
+                'status': 'conversion_failed',
+                'line_num': ctx.line_num
+            })
+            continue
+
+        # Get Rahlfs words for this verse
+        rahlfs_words = get_verse_word_list(
+            rahlfs_ref, rahlfs_verse_map, rahlfs_sorted_verses, rahlfs_words_dict
+        )
+
+        if not rahlfs_words:
+            mismatches.append({
+                'brenton_ref': ctx.verse_ref,
+                'rahlfs_ref': rahlfs_ref,
+                'status': 'not_found',
+                'line_num': ctx.line_num
+            })
+            continue
+
+        # Align word sequences
+        alignments = align_word_sequences(brenton_words, rahlfs_words)
+
+        # Check each aligned pair for confusions
+        for op, b_idx, r_idx in alignments:
+            if op != 'replace':
+                continue  # Only check replacements (different words at same position)
+
+            b_word = brenton_words[b_idx]
+            r_word = rahlfs_words[r_idx]
+
+            # Skip if word is in accepted list or corrections
+            if should_skip_word(b_word[1], ctx.verse_ref, accepted_words, corrections):
                 continue
 
-            # Track chapter
-            ch_match = re.search(r'\\ch\{(\d+)\}', line)
-            if ch_match:
-                current_chapter = int(ch_match.group(1))
-                current_verse = None
-
-            # Also check for lettrine (start of chapter)
-            if '\\lettrine' in line and current_chapter is None:
-                current_chapter = 1
-
-            # Track verse
-            vs_match = re.search(r'\\vs\{(\d+)\}', line)
-            if vs_match:
-                current_verse = int(vs_match.group(1))
-
-            # Skip if we don't have complete reference
-            if not all([current_book, current_chapter, current_verse]):
+            # Skip if this specific variant is accepted
+            if is_accepted_variant(ctx.verse_ref, b_word[1], r_word[1], accepted_variants):
                 continue
 
-            # Extract words from this line
-            brenton_words_raw = extract_greek_words(line)
-            if not brenton_words_raw:
-                continue
-
-            # Convert to (normalized, original) tuples
-            brenton_words = [(strip_diacritics(w.lower()), w) for w in brenton_words_raw]
-
-            # Get Rahlfs reference
-            rahlfs_ref = convert_brenton_reference_to_rahlfs(
-                current_book, current_chapter, current_verse
-            )
-
-            if rahlfs_ref is None:
-                mismatches.append({
-                    'brenton_ref': f"{current_book} {current_chapter}:{current_verse}",
-                    'rahlfs_ref': None,
-                    'status': 'conversion_failed',
-                    'line_num': line_num
+            # Check for single-char confusion
+            confusion = detect_single_char_confusion(b_word[1], r_word[1])
+            if confusion:
+                # Skip if accent differences indicate valid variant
+                if should_filter_by_accent(b_word[1], r_word[1]):
+                    continue
+                errors.append({
+                    'verse_ref': ctx.verse_ref,
+                    'line_num': ctx.line_num,
+                    'brenton_word': b_word[1],
+                    'rahlfs_word': r_word[1],
+                    'error_type': confusion['type'],
+                    'context': confusion['context'],
+                    'full_line': ctx.line
                 })
                 continue
 
-            # Get Rahlfs words for this verse
-            rahlfs_words = get_verse_word_list(
-                rahlfs_ref, rahlfs_verse_map, rahlfs_sorted_verses, rahlfs_words_dict
-            )
-
-            if not rahlfs_words:
-                mismatches.append({
-                    'brenton_ref': f"{current_book} {current_chapter}:{current_verse}",
-                    'rahlfs_ref': rahlfs_ref,
-                    'status': 'not_found',
-                    'line_num': line_num
+            # Check for sequence confusion
+            confusion = detect_sequence_confusion(b_word[1], r_word[1])
+            if confusion:
+                # Skip if accent differences indicate valid variant
+                if should_filter_by_accent(b_word[1], r_word[1]):
+                    continue
+                errors.append({
+                    'verse_ref': ctx.verse_ref,
+                    'line_num': ctx.line_num,
+                    'brenton_word': b_word[1],
+                    'rahlfs_word': r_word[1],
+                    'error_type': confusion['type'],
+                    'context': confusion['context'],
+                    'full_line': ctx.line
                 })
-                continue
-
-            # Align word sequences
-            alignments = align_word_sequences(brenton_words, rahlfs_words)
-
-            # Check each aligned pair for confusions
-            verse_ref = f"{current_book} {current_chapter}:{current_verse}"
-
-            for op, b_idx, r_idx in alignments:
-                if op != 'replace':
-                    continue  # Only check replacements (different words at same position)
-
-                b_word = brenton_words[b_idx]
-                r_word = rahlfs_words[r_idx]
-
-                # Skip if word is in accepted list or corrections
-                if should_skip_word(b_word[1], verse_ref, accepted_words, corrections):
-                    continue
-
-                # Skip if this specific variant is accepted
-                if is_accepted_variant(verse_ref, b_word[1], r_word[1], accepted_variants):
-                    continue
-
-                # Check for single-char confusion
-                confusion = detect_single_char_confusion(b_word[1], r_word[1])
-                if confusion:
-                    # Skip if accent differences indicate valid variant
-                    if should_filter_by_accent(b_word[1], r_word[1]):
-                        continue
-                    errors.append({
-                        'verse_ref': verse_ref,
-                        'line_num': line_num,
-                        'brenton_word': b_word[1],
-                        'rahlfs_word': r_word[1],
-                        'error_type': confusion['type'],
-                        'context': confusion['context'],
-                        'full_line': line.strip()
-                    })
-                    continue
-
-                # Check for sequence confusion
-                confusion = detect_sequence_confusion(b_word[1], r_word[1])
-                if confusion:
-                    # Skip if accent differences indicate valid variant
-                    if should_filter_by_accent(b_word[1], r_word[1]):
-                        continue
-                    errors.append({
-                        'verse_ref': verse_ref,
-                        'line_num': line_num,
-                        'brenton_word': b_word[1],
-                        'rahlfs_word': r_word[1],
-                        'error_type': confusion['type'],
-                        'context': confusion['context'],
-                        'full_line': line.strip()
-                    })
 
     return errors, mismatches
 

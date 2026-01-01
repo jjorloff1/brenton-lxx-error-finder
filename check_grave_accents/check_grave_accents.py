@@ -12,7 +12,6 @@ on a vowel that is not the last vowel in the word.
 
 import argparse
 import csv
-import re
 import sys
 from pathlib import Path
 
@@ -21,10 +20,10 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from shared.greek_utils import (
     normalize_text,
-    extract_greek_words,
     extract_accent_info,
     strip_diacritics
 )
+from shared.brenton_parser import BrentonParser
 
 # Greek vowels (accents only appear on vowels)
 GREEK_VOWELS = set('αεηιουωΑΕΗΙΟΥΩ')
@@ -115,64 +114,23 @@ def process_brenton_file(brenton_path):
         List of error dicts with verse_ref, line_num, word, position, full_line
     """
     errors = []
+    parser = BrentonParser(brenton_path)
 
-    current_book = None
-    current_chapter = None
-    current_verse = None
+    for ctx in parser.parse():
+        if not ctx.has_complete_ref or not ctx.greek_words:
+            continue
 
-    print(f"Processing {brenton_path}...")
-
-    with open(brenton_path, 'r', encoding='utf-8') as f:
-        for line_num, line in enumerate(f, 1):
-            line = normalize_text(line)
-
-            # Track book
-            book_match = re.search(r'\\biblebook\{([^}]+)\}', line)
-            if book_match:
-                current_book = book_match.group(1)
-                current_chapter = None
-                current_verse = None
-                continue
-
-            # Track chapter
-            ch_match = re.search(r'\\ch\{(\d+)\}', line)
-            if ch_match:
-                current_chapter = int(ch_match.group(1))
-                current_verse = None
-
-            # Also check for lettrine (start of chapter)
-            if '\\lettrine' in line and current_chapter is None:
-                current_chapter = 1
-
-            # Track verse
-            vs_match = re.search(r'\\vs\{(\d+)\}', line)
-            if vs_match:
-                current_verse = int(vs_match.group(1))
-
-            # Skip if we don't have complete reference
-            if not all([current_book, current_chapter, current_verse]):
-                continue
-
-            # Build verse reference
-            verse_ref = f"{current_book} {current_chapter}:{current_verse}"
-
-            # Extract words from this line
-            words = extract_greek_words(line)
-            if not words:
-                continue
-
-            # Check each word for misplaced grave
-            for word in words:
-                misplaced = has_misplaced_grave(word)
-                if misplaced:
-                    pos, base_char = misplaced
-                    errors.append({
-                        'line_num': line_num,
-                        'verse_ref': verse_ref,
-                        'word': word,
-                        'suggested_fix': fix_misplaced_grave(word, pos),
-                        'full_line': line.strip()
-                    })
+        for word in ctx.greek_words:
+            misplaced = has_misplaced_grave(word)
+            if misplaced:
+                pos, base_char = misplaced
+                errors.append({
+                    'line_num': ctx.line_num,
+                    'verse_ref': ctx.verse_ref,
+                    'word': word,
+                    'suggested_fix': fix_misplaced_grave(word, pos),
+                    'full_line': ctx.line
+                })
 
     return errors
 

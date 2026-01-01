@@ -172,7 +172,8 @@ Contains files for the manual verification process used by project contributors 
 
 ### `shared/`
 Common utility modules used by both detection scripts:
-- `greek_utils.py` - Text normalization, diacritical handling, Greek word extraction
+- `brenton_parser.py` - Shared parser for Brenton.tex that yields verse context (book, chapter, verse, words) for each line
+- `greek_utils.py` - Text normalization, diacritical handling, Greek word extraction, accent comparison
 - `data_loaders.py` - CSV loading, versification data handling
 - `book_code_mappings.py` - Verse reference conversion between Brenton and Rahlfs formats
 
@@ -212,8 +213,9 @@ This project is for academic and research purposes, analyzing public domain Sept
 - Swete's Old Testament in Greek edition
 
 ## To Do
-[ ] Refactor: Move Brenton.tex input file up to root and update all scripts accordingly.
-[ ] Refactor: We may be able to simplify the parsing logic of the brenton.tex.  At least we might be able to extract it from individual scripts into a utility file and return a hash of verses.
+[x] Refactor: Move Brenton.tex input file up to root and update all scripts accordingly.
+[x] Refactor: Extract Brenton.tex parsing logic into shared `brenton_parser.py` utility.
+- [ ] The missing_words, and legitimate words files don't have the same number in them, which are different?
 [ ] Refactor: For check_sequence_errors move line number to the first column
 [ ] Manual: Validate sequencing errors
 [ ] Manual: Verify and Fix Grave Errors

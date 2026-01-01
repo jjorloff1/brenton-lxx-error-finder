@@ -4,7 +4,6 @@ Script to check for Greek words in Brenton.tex that are not found in
 rahlfs_words.csv or swete_words.csv files.
 """
 
-import re
 import unicodedata
 import csv
 import argparse
@@ -20,13 +19,12 @@ from shared.book_code_mappings import (
     convert_brenton_reference_to_swete
 )
 from shared.greek_utils import (
-    normalize_text,
     strip_diacritics,
     normalize_for_comparison,
-    extract_greek_words,
     load_accepted_words,
     load_already_examined
 )
+from shared.brenton_parser import BrentonParser
 from shared.data_loaders import (
     derive_word_set,
     load_words_with_ids,
@@ -291,139 +289,83 @@ def is_word_in_sets(word):
     return False
 
 
-def extract_book_name(line):
-    """Extract book name from \\biblebook{...} command."""
-    match = re.search(r'\\biblebook\{([^}]+)\}', line)
-    if match:
-        return normalize_text(match.group(1))
-    return None
-
-
-def extract_chapter_number(line):
-    """Extract chapter number from \\ch{...} or \\lettrine lines."""
-    # Check for regular chapter command
-    match = re.search(r'\\ch\{(\d+)\}', line)
-    if match:
-        return int(match.group(1))
-    
-    # Check for lettrine (first chapter, starts with chapter 1)
-    if r'\lettrine' in line:
-        return 1
-    
-    return None
-
-
-def extract_verse_number(line):
-    """Extract verse number from \\vs{...} command."""
-    match = re.search(r'\\vs\{(\d+)\}', line)
-    if match:
-        return int(match.group(1))
-    return None
-
-
 def process_bible_file(bible_path, output_path, check_typos=True):
     """Process the Bible file and log missing words.
     Uses global data structures (RAHLFS_WORDS_DICT, SWETE_WORDS_DICT, ACCEPTED_WORDS, etc.).
     """
-    
-    current_book = None
-    current_chapter = None
-    current_verse = None
-    
     missing_words = []
     words_checked = 0
     typos_found = 0
-    
+    last_book = None
+
     print("Processing Bible file...")
     if not check_typos:
         print("Typo checking disabled for faster processing.")
-    
-    print(f"Opening Bible file for reading: {bible_path}")
-    with open(bible_path, 'r', encoding='utf-8') as f:
-        print(f"Successfully opened {bible_path}")
-        for line_num, line in enumerate(f, 1):
-            line = line.strip()
-            
-            # Track book name
-            book = extract_book_name(line)
-            if book:
-                current_book = book
-                current_chapter = None
-                current_verse = None
-                print(f"Found book: {current_book}")
-                continue
-            
-            # Track chapter number
-            chapter = extract_chapter_number(line)
-            if chapter:
-                current_chapter = chapter
-                # First verse is implied after chapter declaration
-                current_verse = 1
-            
-            # Track verse number
-            verse = extract_verse_number(line)
-            if verse:
-                current_verse = verse
-            
-            # Extract and check Greek words
-            greek_words = extract_greek_words(line)
-            if greek_words:
-                for word in greek_words:
-                    # First check if word is in accepted words list (skip if accepted)
-                    if ACCEPTED_WORDS:
-                        normalized_word = strip_diacritics(word.lower())
-                        if normalized_word in ACCEPTED_WORDS:
-                            continue
-                    
-                    # Check if this word has already been examined in this verse
-                    if ALREADY_EXAMINED and current_book and current_chapter and current_verse:
-                        verse_ref = f"{current_book} {current_chapter}:{current_verse}"
-                        normalized_word = strip_diacritics(word.lower())
-                        key = (verse_ref, normalized_word)
-                        if key in ALREADY_EXAMINED:
-                            continue
-                    
-                    if not is_word_in_sets(word):
-                        # Build verse reference
-                        verse_ref = "Unknown"
-                        if current_book and current_chapter and current_verse:
-                            verse_ref = f"{current_book} {current_chapter}:{current_verse}"
-                        
-                        # Check if likely proper name
-                        is_name = is_likely_proper_name(word) if check_typos else False
-                        
-                        # Check if likely number word
-                        is_number = is_likely_number_word(word) if check_typos else False
-                        
-                        # Check if likely typo (with optional verse-specific checking)
-                        if check_typos:
-                            words_checked += 1
-                            if words_checked % 100 == 0:
-                                print(f"  Checked {words_checked} words, found {typos_found} potential typos so far... (Current: {verse_ref})")
-                            
-                            is_typo, closest_match, similarity, verse_match, area_match, legitimate_variation = is_likely_typo(
-                                word, current_book, current_chapter, current_verse
-                            )
-                            
-                            if is_typo:
-                                typos_found += 1
-                        else:
-                            is_typo, closest_match, similarity, verse_match, area_match, legitimate_variation = False, None, 0, False, False, False
-                        
-                        missing_words.append({
-                            'line_num': line_num,
-                            'verse_ref': verse_ref,
-                            'word': word,
-                            'full_line': line,
-                            'is_name': is_name,
-                            'is_number': is_number,
-                            'is_typo': is_typo,
-                            'closest_match': closest_match if closest_match else '',
-                            'similarity': f"{similarity:.2f}" if similarity > 0 else '',
-                            'verse_match': verse_match,
-                            'area_match': area_match,
-                            'legitimate_variation': legitimate_variation
-                        })
+
+    parser = BrentonParser(bible_path)
+
+    for ctx in parser.parse():
+        # Print book progress
+        if ctx.book and ctx.book != last_book:
+            print(f"Found book: {ctx.book}")
+            last_book = ctx.book
+
+        if not ctx.greek_words:
+            continue
+
+        # Use verse_ref from parser if complete, otherwise "Unknown"
+        verse_ref = ctx.verse_ref if ctx.has_complete_ref else "Unknown"
+
+        for word in ctx.greek_words:
+            # First check if word is in accepted words list (skip if accepted)
+            if ACCEPTED_WORDS:
+                normalized_word = strip_diacritics(word.lower())
+                if normalized_word in ACCEPTED_WORDS:
+                    continue
+
+            # Check if this word has already been examined in this verse
+            if ALREADY_EXAMINED and ctx.has_complete_ref:
+                normalized_word = strip_diacritics(word.lower())
+                key = (ctx.verse_ref, normalized_word)
+                if key in ALREADY_EXAMINED:
+                    continue
+
+            if not is_word_in_sets(word):
+                # Check if likely proper name
+                is_name = is_likely_proper_name(word) if check_typos else False
+
+                # Check if likely number word
+                is_number = is_likely_number_word(word) if check_typos else False
+
+                # Check if likely typo (with optional verse-specific checking)
+                if check_typos:
+                    words_checked += 1
+                    if words_checked % 100 == 0:
+                        print(f"  Checked {words_checked} words, found {typos_found} potential typos so far... (Current: {verse_ref})")
+
+                    is_typo, closest_match, similarity, verse_match, area_match, legitimate_variation = is_likely_typo(
+                        word, ctx.book, ctx.chapter, ctx.verse
+                    )
+
+                    if is_typo:
+                        typos_found += 1
+                else:
+                    is_typo, closest_match, similarity, verse_match, area_match, legitimate_variation = False, None, 0, False, False, False
+
+                missing_words.append({
+                    'line_num': ctx.line_num,
+                    'verse_ref': verse_ref,
+                    'word': word,
+                    'full_line': ctx.line,
+                    'is_name': is_name,
+                    'is_number': is_number,
+                    'is_typo': is_typo,
+                    'closest_match': closest_match if closest_match else '',
+                    'similarity': f"{similarity:.2f}" if similarity > 0 else '',
+                    'verse_match': verse_match,
+                    'area_match': area_match,
+                    'legitimate_variation': legitimate_variation
+                })
     
     # Write results to log file
     print(f"\nWriting results to {output_path}...")
