@@ -20,11 +20,11 @@ The script performs verse-specific checking, looking first in the exact verse, t
 ## Folder Structure
 
 ```
-find_errors/
+check_missing_words_for_typos/
 ├── README.md                         # This file
 ├── PATTERN_ANALYSIS.md               # Analysis of error patterns
 ├── VARIATION_INTEGRATION.md          # Spelling variation documentation
-├── check_missing_words.py            # Main analysis script
+├── check_missing_words_for_typos.py  # Main analysis script
 ├── compare-brenton-swete.py          # Additional comparison script
 ├── analyze_patterns.py               # Analyze error patterns in corrections
 ├── valid_variation_patterns.py       # Legitimate spelling variation generator
@@ -56,28 +56,28 @@ find_errors/
 ## Quick Start
 
 ```bash
-cd find_errors
-python3 check_missing_words.py
+cd check_missing_words_for_typos
+python3 check_missing_words_for_typos.py
 ```
 
 Or with logging:
 
 ```bash
-cd find_errors
-python3 -u check_missing_words.py |& tee "logs/script_run-$(date +%s).log"
+cd check_missing_words_for_typos
+python3 -u check_missing_words_for_typos.py |& tee "logs/script_run-$(date +%s).log"
 ```
 
 ## Command-Line Options
 
 ```bash
 # Run without typo checking (faster):
-python3 check_missing_words.py --no-typo-check
+python3 check_missing_words_for_typos.py --no-typo-check
 
 # Specify custom input files:
-python3 check_missing_words.py --bible input/MyBible.tex --rahlfs input/my_rahlfs.csv
+python3 check_missing_words_for_typos.py --bible input/MyBible.tex --rahlfs input/my_rahlfs.csv
 
 # See all options:
-python3 check_missing_words.py --help
+python3 check_missing_words_for_typos.py --help
 ```
 
 Available options:

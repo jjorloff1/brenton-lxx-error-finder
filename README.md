@@ -17,9 +17,9 @@ The workflow compares Brenton's Greek text against two authoritative Septuagint 
 brenton-lxx-error-finder/
 ├── README.md                    # This file
 ├── word_corrections.tsv         # Central corrections file (shared between workflows)
-├── find_errors/                 # Error detection scripts and data
-│   ├── README.md                # Detailed documentation for error finding
-│   ├── check_missing_words.py   # Main error detection script
+├── check_missing_words_for_typos/  # Error detection scripts and data
+│   ├── README.md                   # Detailed documentation for error finding
+│   ├── check_missing_words_for_typos.py  # Main error detection script
 │   ├── input/                   # Source files (Brenton.tex, reference CSVs)
 │   ├── output/                  # Analysis results (missing_words*.tsv)
 │   └── logs/                    # Execution logs
@@ -35,10 +35,10 @@ brenton-lxx-error-finder/
 
 ### Find Errors
 ```bash
-cd find_errors
-python3 -u check_missing_words.py |& tee "logs/script_run-$(date +%s).log"
+cd check_missing_words_for_typos
+python3 -u check_missing_words_for_typos.py |& tee "logs/script_run-$(date +%s).log"
 ```
-Results are written to `find_errors/output/`.
+Results are written to `check_missing_words_for_typos/output/`.
 
 ### Apply Corrections
 ```bash
@@ -49,9 +49,9 @@ Corrected files are written to `apply_corrections/grcbrent_xetex_corrected/`.
 
 ## Workflow
 
-### 1. Find Errors (`find_errors/`)
+### 1. Find Errors (`check_missing_words_for_typos/`)
 
-The `check_missing_words.py` script:
+The `check_missing_words_for_typos.py` script:
 - Reads the Brenton Greek text (`input/Brenton.tex`)
 - Compares each word against Rahlfs and Swete word lists
 - Identifies words not found in either reference edition
@@ -70,7 +70,7 @@ After reviewing the error detection output, add corrections to `word_corrections
 - Example: `ΓΕΝΕΣΙΣ 5:10	ἑπτκόσια	ἑπτακόσια`
 - Use `ALL` for verse reference to apply correction globally
 
-This file is shared between both workflows - errors found by `find_errors/` are corrected via entries here, and `apply_corrections/` reads this file to apply the fixes.
+This file is shared between both workflows - errors found by `check_missing_words_for_typos/` are corrected via entries here, and `apply_corrections/` reads this file to apply the fixes.
 
 ### 3. Apply Corrections (`apply_corrections/`)
 
@@ -90,11 +90,11 @@ The script handles:
 
 ### `word_corrections.tsv`
 The central corrections file containing all identified errors and their corrections. This file:
-- Is read by `find_errors/` to skip already-corrected words
+- Is read by `check_missing_words_for_typos/` to skip already-corrected words
 - Is read by `apply_corrections/` to apply fixes to source files
 
 ### Reference Data
-Located in `find_errors/input/`:
+Located in `check_missing_words_for_typos/input/`:
 - `rahlfs_words.csv` / `swete_words.csv` - Word lists from reference editions
 - `rahlfs_versification.csv` / `swete_versification.csv` - Verse mappings
 - `accepted_words.txt` - Manually verified acceptable variations

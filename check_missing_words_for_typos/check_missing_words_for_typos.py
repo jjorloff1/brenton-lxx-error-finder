@@ -897,13 +897,13 @@ def main():
         epilog="""
 Examples:
   # Run with typo checking (default):
-  python check_missing_words.py
-  
+  python check_missing_words_for_typos.py
+
   # Run without typo checking (faster):
-  python check_missing_words.py --no-typo-check
-  
+  python check_missing_words_for_typos.py --no-typo-check
+
   # Specify custom input files:
-  python check_missing_words.py --bible MyBible.tex --rahlfs rahlfs.csv
+  python check_missing_words_for_typos.py --bible MyBible.tex --rahlfs rahlfs.csv
         """
     )
     

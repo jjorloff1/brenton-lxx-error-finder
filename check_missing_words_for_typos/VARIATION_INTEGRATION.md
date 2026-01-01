@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `valid_variation_patterns.py` module has been fully integrated with `check_missing_words.py` to automatically detect legitimate Greek spelling variations in Brenton's LXX text.
+The `valid_variation_patterns.py` module has been fully integrated with `check_missing_words_for_typos.py` to automatically detect legitimate Greek spelling variations in Brenton's LXX text.
 
 ## What Changed
 
@@ -27,7 +27,7 @@ The `valid_variation_patterns.py` module has been fully integrated with `check_m
 
 - **Iterative combination**: Applies patterns iteratively so multiple variations can compound
 
-### 2. Updated `check_missing_words.py`
+### 2. Updated `check_missing_words_for_typos.py`
 
 #### New Function: `has_legitimate_variation_in_verse()`
 ```python
@@ -70,7 +70,7 @@ All output files now include:
 
 ### Run the script normally:
 ```bash
-python3 check_missing_words.py
+python3 check_missing_words_for_typos.py
 ```
 
 ### Review the outputs:
