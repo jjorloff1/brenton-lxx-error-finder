@@ -1,0 +1,79 @@
+# Check Sequence Errors
+
+Detects OCR sequence errors in Brenton's Septuagint by performing word-by-word alignment against the Rahlfs edition.
+
+## Purpose
+
+This script complements `check_missing_words_for_typos` by catching errors that pass vocabulary checks but are wrong in context. For example, both `-ου` and `-ον` endings can be valid Greek, but only one is correct for a given word form.
+
+## Error Types Detected
+
+### Single Character Confusions (υ/ν/ς/σ)
+These characters can be visually confused by OCR:
+- `υ` ↔ `ν` (e.g., `-ου` vs `-ον`, `-υν` vs `-ων`)
+- `υ` ↔ `ς`
+- `ν` ↔ `ς`
+- `ς` ↔ `σ` (final vs medial sigma)
+
+### Multi-Character Sequence Confusions
+- `ην` ↔ `ης` (e.g., accusative vs genitive endings)
+- `οι` ↔ `αι` (e.g., dative plural `-οις` vs `-αις`)
+
+## Usage
+
+```bash
+cd check_sequence_errors
+python3 check_sequence_errors.py
+```
+
+### Options
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `--brenton` | `../check_missing_words_for_typos/input/Brenton.tex` | Path to Brenton source |
+| `--rahlfs-words` | `../check_missing_words_for_typos/input/rahlfs_words.csv` | Rahlfs word list |
+| `--rahlfs-versification` | `../check_missing_words_for_typos/input/rahlfs_versification.csv` | Rahlfs verse mappings |
+| `--accepted-words` | `../accepted_words.txt` | Words to skip |
+| `--corrections` | `../word_corrections.tsv` | Already-corrected words to skip |
+| `--output` | `output/sequence_errors.tsv` | Output file for detected errors |
+| `--mismatches-output` | `output/versification_mismatches.tsv` | Log of verse alignment issues |
+
+## Output Files
+
+### `sequence_errors.tsv`
+Tab-separated file with columns:
+- Verse Reference
+- Line Number
+- Brenton Word
+- Rahlfs Word
+- Error Type (`single_char` or `sequence`)
+- Context (e.g., `-ου → -ον`)
+- Full Line
+
+### `versification_mismatches.tsv`
+Log of verses that couldn't be aligned between Brenton and Rahlfs:
+- Brenton Reference
+- Rahlfs Reference
+- Status (`not_found` or `conversion_failed`)
+- Line Number
+
+## Algorithm
+
+1. For each verse in Brenton:
+   - Convert reference to Rahlfs format
+   - Get ordered word lists from both sources
+   - Align word sequences using `difflib.SequenceMatcher`
+
+2. For each aligned word pair where words differ:
+   - Skip if word is in `accepted_words.txt` or `word_corrections.tsv`
+   - Check for single-character υ/ν/ς/σ confusion
+   - Check for sequence confusion (ην↔ης, οι↔αι)
+   - Record matches with context information
+
+## Integration with Existing Workflow
+
+After running this script:
+1. Review `sequence_errors.tsv` for true positives
+2. Add confirmed corrections to `../word_corrections.tsv`
+3. Add false positives to `../accepted_words.txt`
+4. Run `../apply_corrections/apply_corrections.py` to apply fixes
