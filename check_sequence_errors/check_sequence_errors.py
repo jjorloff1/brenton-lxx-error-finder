@@ -389,13 +389,13 @@ def write_errors_tsv(errors, output_path):
     with open(output_path, 'w', encoding='utf-8', newline='') as f:
         writer = csv.writer(f, delimiter='\t')
         writer.writerow([
-            'Verse Reference', 'Line Number', 'Brenton Word', 'Rahlfs Word',
+            'Line Number', 'Verse Reference', 'Brenton Word', 'Rahlfs Word',
             'Error Type', 'Context', 'Full Line'
         ])
         for error in errors:
             writer.writerow([
-                error['verse_ref'],
                 error['line_num'],
+                error['verse_ref'],
                 error['brenton_word'],
                 error['rahlfs_word'],
                 error['error_type'],
