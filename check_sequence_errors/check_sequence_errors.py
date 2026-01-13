@@ -56,20 +56,36 @@ CONFUSABLE_SEQUENCES = [
 ]
 
 
-def _generate_letter_suffix_mappings(brenton_book, brenton_chapter, brenton_base_verse,
-                                     start_letter, end_letter,
-                                     rahlfs_book=None, rahlfs_chapter=None, rahlfs_start_verse=None,
-                                     swete_book=None, swete_chapter=None, swete_start_verse=None):
-    """Generate versification exception mappings for letter-suffixed verses.
+def _generate_verse_mappings(brenton_book, brenton_chapter,
+                             # Letter-suffix mode parameters
+                             brenton_base_verse=None, start_letter=None, end_letter=None,
+                             # Numeric verse range mode parameters
+                             start_verse=None, end_verse=None,
+                             # Target mappings (both modes)
+                             rahlfs_book=None, rahlfs_chapter=None, rahlfs_start_verse=None,
+                             swete_book=None, swete_chapter=None, swete_start_verse=None):
+    """Generate versification exception mappings for verse ranges.
 
-    Creates mappings for verses like "22f", "22g", etc. to their Rahlfs/Swete equivalents.
+    Supports two modes:
+    1. Letter-suffix mode: Maps verses like "22f", "22g", etc.
+       Requires: brenton_base_verse, start_letter, end_letter
+    2. Numeric mode: Maps consecutive verse numbers like 56, 57, 58
+       Requires: start_verse, end_verse
 
     Args:
         brenton_book: Greek book name in Brenton (e.g., "ΠΑΡΟΙΜΙΑΙ ΣΑΛΩΜΩΝΤΟΣ")
         brenton_chapter: Chapter number in Brenton
+
+        # Letter-suffix mode:
         brenton_base_verse: Base verse number (e.g., 22 for "22f")
         start_letter: Starting suffix letter (e.g., 'f')
         end_letter: Ending suffix letter (e.g., 't')
+
+        # Numeric mode:
+        start_verse: Starting verse number in Brenton
+        end_verse: Ending verse number in Brenton
+
+        # Target mappings (both modes):
         rahlfs_book: Rahlfs book code (optional, None if no Rahlfs mapping)
         rahlfs_chapter: Rahlfs chapter number
         rahlfs_start_verse: Starting verse number in Rahlfs
@@ -78,19 +94,34 @@ def _generate_letter_suffix_mappings(brenton_book, brenton_chapter, brenton_base
         swete_start_verse: Starting verse number in Swete
 
     Returns:
-        Dict mapping (book, chapter, verse_with_suffix) -> {'rahlfs': ref_or_none, 'swete': ref_or_none}
+        Dict mapping (book, chapter, verse) -> {'rahlfs': ref_or_none, 'swete': ref_or_none}
     """
     mappings = {}
-    start_ord = ord(start_letter)
-    end_ord = ord(end_letter)
+
+    # Determine mode based on which parameters are provided
+    letter_mode = brenton_base_verse is not None and start_letter is not None and end_letter is not None
+    numeric_mode = start_verse is not None and end_verse is not None
+
+    if not letter_mode and not numeric_mode:
+        raise ValueError("Must provide either (brenton_base_verse, start_letter, end_letter) "
+                         "or (start_verse, end_verse)")
+
+    if letter_mode and numeric_mode:
+        raise ValueError("Cannot provide both letter-suffix and numeric verse parameters")
+
+    # Generate the list of Brenton verses
+    if letter_mode:
+        brenton_verses = [
+            f"{brenton_base_verse}{chr(letter_ord)}"
+            for letter_ord in range(ord(start_letter), ord(end_letter) + 1)
+        ]
+    else:  # numeric_mode
+        brenton_verses = [str(v) for v in range(start_verse, end_verse + 1)]
 
     rahlfs_verse = rahlfs_start_verse
     swete_verse = swete_start_verse
 
-    for i, letter_ord in enumerate(range(start_ord, end_ord + 1)):
-        letter = chr(letter_ord)
-        brenton_verse = f"{brenton_base_verse}{letter}"
-
+    for brenton_verse in brenton_verses:
         mapping = {}
         if rahlfs_book is not None and rahlfs_verse is not None:
             mapping['rahlfs'] = f"{rahlfs_book}.{rahlfs_chapter}.{rahlfs_verse}"
@@ -116,7 +147,7 @@ def _build_versification_exceptions():
 
     # Proverbs 24:22f-t → Rahlfs Prov.30.1-15, Swete Pro.24:24-38
     # These are the "Words of Agur" section that appears in different locations
-    exceptions.update(_generate_letter_suffix_mappings(
+    exceptions.update(_generate_verse_mappings(
         brenton_book="ΠΑΡΟΙΜΙΑΙ ΣΑΛΩΜΩΝΤΟΣ",
         brenton_chapter=24,
         brenton_base_verse=22,
@@ -130,9 +161,36 @@ def _build_versification_exceptions():
         swete_start_verse=24
     ))
 
+    # 1 Esdras 1:56-58 → Rahlfs 1Esdr.1.53-55, Swete 1Es.1:53-55
+    exceptions.update(_generate_verse_mappings(
+        brenton_book="ΕΣΔΡΑΣ Α",
+        brenton_chapter=1,
+        start_verse=56,
+        end_verse=58,
+        rahlfs_book="1Esdr",
+        rahlfs_chapter=1,
+        rahlfs_start_verse=53,
+        swete_book="1Es",
+        swete_chapter=1,
+        swete_start_verse=53
+    ))
+
     # Add more exceptions here as needed:
-    # exceptions.update(_generate_letter_suffix_mappings(...))
-    # Or add individual mappings:
+    # Letter-suffix mode:
+    # exceptions.update(_generate_verse_mappings(
+    #     brenton_book="...", brenton_chapter=X,
+    #     brenton_base_verse=Y, start_letter='a', end_letter='z',
+    #     rahlfs_book="...", rahlfs_chapter=X, rahlfs_start_verse=Y,
+    #     swete_book="...", swete_chapter=X, swete_start_verse=Y
+    # ))
+    # Numeric mode:
+    # exceptions.update(_generate_verse_mappings(
+    #     brenton_book="...", brenton_chapter=X,
+    #     start_verse=Y, end_verse=Z,
+    #     rahlfs_book="...", rahlfs_chapter=X, rahlfs_start_verse=Y,
+    #     swete_book="...", swete_chapter=X, swete_start_verse=Y
+    # ))
+    # Individual mappings:
     # exceptions[("BOOK", chapter, "verse")] = {'rahlfs': "...", 'swete': "..."}
 
     return exceptions
