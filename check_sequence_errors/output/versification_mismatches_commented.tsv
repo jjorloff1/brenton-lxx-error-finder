@@ -1,16 +1,16 @@
 Brenton Reference	Rahlfs Reference	Status	Line Number
-ΓΕΝΕΣΙΣ 31:50a	Gen.31.50a	not_found	1127
-ΕΞΟΔΟΣ 25:5a	Exod.25.5a	not_found	2559
-ΑΡΙΘΜΟΙ 6:27	Num.6.27	not_found	4412
-ΚΡΙΤΑΙ 11:4	JudgB.11.4	not_found	8168
-ΒΑΣΙΛΕΙΩΝ Β 23:37a	2Sam.23.37a	not_found	10599
+ΓΕΝΕΣΙΣ 31:50a	Gen.31.50a	not_found	1127	Not present in rahlf, replicates v48
+ΕΞΟΔΟΣ 25:5a	Exod.25.5a	not_found	2559	Not present in rahlf or swete.
+ΑΡΙΘΜΟΙ 6:27	Num.6.27	not_found	4412	Not present in rahlf, present in swete with same verse number
+ΚΡΙΤΑΙ 11:4	JudgB.11.4	not_found	8168	Present swete and in JudgB.11.4
+ΒΑΣΙΛΕΙΩΝ Β 23:37a	2Sam.23.37a	not_found	10599	These three are all mixed up in numbers
 ΒΑΣΙΛΕΙΩΝ Β 23:37b	2Sam.23.37b	not_found	10600
 ΒΑΣΙΛΕΙΩΝ Β 23:37c	2Sam.23.37c	not_found	10601
 ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 16:23a	1Chr.16.23a	not_found	13338
-ΝΕΕΜΙΑΣ 3:6a	2Esdr.13.6a	not_found	15320
-ΕΣΘΗΡ 1:1	Esth.1.1	not_found	15807
-ΨΑΛΜΟΙ 115:4a	Ps.115.4a	not_found	20051
-ΠΑΡΟΙΜΙΑΙ ΣΑΛΩΜΩΝΤΟΣ 24:22f	Prov.24.22f	not_found	21666
+ΝΕΕΜΙΑΣ 3:6a	2Esdr.13.6a	not_found	15320	not present in rahlf or swete
+ΕΣΘΗΡ 1:1	Esth.1.1	not_found	15807	corresponds to Esther 1a in rahlf < this was lettrine, so it assumed v1 rather than 1a
+ΨΑΛΜΟΙ 115:4a	Ps.115.4a	not_found	20051	not present in rahlf or swete.
+ΠΑΡΟΙΜΙΑΙ ΣΑΛΩΜΩΝΤΟΣ 24:22f	Prov.24.22f	not_found	21666	these seem to be numbered in swete similarly
 ΠΑΡΟΙΜΙΑΙ ΣΑΛΩΜΩΝΤΟΣ 24:22f	Prov.24.22f	not_found	21668
 ΠΑΡΟΙΜΙΑΙ ΣΑΛΩΜΩΝΤΟΣ 24:22g	Prov.24.22g	not_found	21670
 ΠΑΡΟΙΜΙΑΙ ΣΑΛΩΜΩΝΤΟΣ 24:22h	Prov.24.22h	not_found	21671
