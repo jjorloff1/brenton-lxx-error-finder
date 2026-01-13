@@ -409,10 +409,13 @@ def should_skip_word(word, verse_ref, accepted_words, corrections):
 def load_accepted_sequence_variants(filepath):
     """Load accepted sequence variants from TSV file.
 
-    Returns set of (verse_ref, brenton_word_normalized, rahlfs_word_normalized) tuples.
+    Returns tuple of:
+    - set of (verse_ref, brenton_word_normalized, rahlfs_word_normalized) tuples
+    - set of verse_refs to skip entirely (verse-only entries without word columns)
     """
     print(f"Opening accepted sequence variants file: {filepath}")
     accepted = set()
+    skip_verses = set()
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             reader = csv.reader(f, delimiter='\t')
@@ -423,6 +426,7 @@ def load_accepted_sequence_variants(filepath):
                 if not row or row[0].startswith('#'):
                     continue
                 if len(row) >= 3:
+                    # Word variant entry: verse + brenton word + reference word
                     verse_ref = normalize_text(row[0].strip())
                     brenton_word = normalize_text(row[1].strip())
                     rahlfs_word = normalize_text(row[2].strip())
@@ -430,12 +434,16 @@ def load_accepted_sequence_variants(filepath):
                     b_normalized = strip_diacritics(brenton_word.lower())
                     r_normalized = strip_diacritics(rahlfs_word.lower())
                     accepted.add((verse_ref, b_normalized, r_normalized))
-            print(f"Finished reading {filepath} ({row_count} lines, {len(accepted)} variants loaded)")
+                elif len(row) >= 1 and row[0].strip():
+                    # Verse-only entry: skip this verse in mismatch reporting
+                    verse_ref = normalize_text(row[0].strip())
+                    skip_verses.add(verse_ref)
+            print(f"Finished reading {filepath} ({row_count} lines, {len(accepted)} variants, {len(skip_verses)} skip verses)")
     except FileNotFoundError:
         print(f"Note: Accepted sequence variants file '{filepath}' not found. Continuing without it.")
     except Exception as e:
         print(f"Error loading accepted sequence variants from {filepath}: {e}")
-    return accepted
+    return accepted, skip_verses
 
 
 def is_accepted_variant(verse_ref, brenton_word, rahlfs_word, accepted_variants):
@@ -448,7 +456,8 @@ def is_accepted_variant(verse_ref, brenton_word, rahlfs_word, accepted_variants)
 def process_brenton_file(brenton_path, rahlfs_words_dict, rahlfs_verse_map,
                          rahlfs_sorted_verses, accepted_words, corrections,
                          accepted_variants, swete_words_dict=None,
-                         swete_verse_map=None, swete_sorted_verses=None):
+                         swete_verse_map=None, swete_sorted_verses=None,
+                         skip_verses=None):
     """Process Brenton.tex and find sequence errors.
 
     Alignment priority:
@@ -456,11 +465,16 @@ def process_brenton_file(brenton_path, rahlfs_words_dict, rahlfs_verse_map,
     2. Standard Swete reference (fallback)
     3. Versification exceptions map (for special cases like Proverbs 24:22f-t)
 
+    Args:
+        skip_verses: Set of verse references to skip in mismatch reporting
+
     Returns:
         (errors, mismatches) where:
         - errors: list of detected confusion errors
         - mismatches: list of versification mismatches
     """
+    if skip_verses is None:
+        skip_verses = set()
     errors = []
     mismatches = []
     parser = BrentonParser(brenton_path)
@@ -529,12 +543,14 @@ def process_brenton_file(brenton_path, rahlfs_words_dict, rahlfs_verse_map,
                         reference_source = 'swete'
 
         if not reference_words:
-            mismatches.append({
-                'brenton_ref': ctx.verse_ref,
-                'rahlfs_ref': rahlfs_ref,
-                'status': 'not_found',
-                'line_num': ctx.line_num
-            })
+            # Only report mismatch if verse is not in skip list
+            if ctx.verse_ref not in skip_verses:
+                mismatches.append({
+                    'brenton_ref': ctx.verse_ref,
+                    'rahlfs_ref': rahlfs_ref,
+                    'status': 'not_found',
+                    'line_num': ctx.line_num
+                })
             continue
 
         # Align word sequences
@@ -704,7 +720,7 @@ def main():
     corrections = load_already_examined(args.corrections)
 
     print("Loading accepted sequence variants...")
-    accepted_variants = load_accepted_sequence_variants(args.accepted_variants)
+    accepted_variants, skip_verses = load_accepted_sequence_variants(args.accepted_variants)
 
     print("Loading Swete words (fallback)...")
     swete_words_dict = load_words_with_ids(args.swete_words)
@@ -723,7 +739,8 @@ def main():
         accepted_variants,
         swete_words_dict,
         swete_verse_map,
-        swete_sorted_verses
+        swete_sorted_verses,
+        skip_verses
     )
 
     # Write outputs
