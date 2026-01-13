@@ -175,6 +175,76 @@ def _build_versification_exceptions():
         swete_start_verse=53
     ))
 
+    # 1 Esdras 2:27-30 → Rahlfs 1Esdr.2.22-25, Swete 1Es.2:23-26
+    exceptions.update(_generate_verse_mappings(
+        brenton_book="ΕΣΔΡΑΣ Α",
+        brenton_chapter=2,
+        start_verse=27,
+        end_verse=30,
+        rahlfs_book="1Esdr",
+        rahlfs_chapter=2,
+        rahlfs_start_verse=22,
+        swete_book="1Es",
+        swete_chapter=2,
+        swete_start_verse=23
+    ))
+
+    # 1 Esdras 5:72-73 → Rahlfs 1Esdr.1.53-55, Swete 1Es.1:53-55
+    exceptions.update(_generate_verse_mappings(
+        brenton_book="ΕΣΔΡΑΣ Α",
+        brenton_chapter=5,
+        start_verse=72,
+        end_verse=73,
+        rahlfs_book="1Esdr",
+        rahlfs_chapter=5,
+        rahlfs_start_verse=69,
+        swete_book="1Es",
+        swete_chapter=5,
+        swete_start_verse=69
+    ))
+
+    # Tobit 4:7a-c → Rahlfs TobS.4.8-18, Swete Tob.4:8-18
+    exceptions.update(_generate_verse_mappings(
+        brenton_book="ΤΩΒΙΤ",
+        brenton_chapter=4,
+        brenton_base_verse=7,
+        start_letter='a',
+        end_letter='l',
+        rahlfs_book="TobS",
+        rahlfs_chapter=4,
+        rahlfs_start_verse=8,
+        swete_book="Tob",
+        swete_chapter=4,
+        swete_start_verse=8
+    ))
+
+    # Tobit 13:7a-c → Swete Tob.13:8-10
+    exceptions.update(_generate_verse_mappings(
+        brenton_book="ΤΩΒΙΤ",
+        brenton_chapter=13,
+        brenton_base_verse=7,
+        start_letter='a',
+        end_letter='c',
+        swete_book="Tob",
+        swete_chapter=13,
+        swete_start_verse=8
+    ))
+
+    # Sirach 1:1a-h → Rahlfs Sir.Prolog.1-8, Swete Sip.1:1-8
+    exceptions.update(_generate_verse_mappings(
+        brenton_book="ΣΟΦΙΑ ΣΕΙΡΑΧ",
+        brenton_chapter=1,
+        brenton_base_verse=1,
+        start_letter='a',
+        end_letter='h',  # f through t = 15 letters for 15 verses
+        rahlfs_book="Sir",
+        rahlfs_chapter="Prolog",
+        rahlfs_start_verse=1,
+        swete_book="Sip",
+        swete_chapter=1,
+        swete_start_verse=1
+    ))
+
     # Add more exceptions here as needed:
     # Letter-suffix mode:
     # exceptions.update(_generate_verse_mappings(
