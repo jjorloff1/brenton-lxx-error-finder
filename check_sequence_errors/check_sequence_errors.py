@@ -56,6 +56,107 @@ CONFUSABLE_SEQUENCES = [
 ]
 
 
+def _generate_letter_suffix_mappings(brenton_book, brenton_chapter, brenton_base_verse,
+                                     start_letter, end_letter,
+                                     rahlfs_book=None, rahlfs_chapter=None, rahlfs_start_verse=None,
+                                     swete_book=None, swete_chapter=None, swete_start_verse=None):
+    """Generate versification exception mappings for letter-suffixed verses.
+
+    Creates mappings for verses like "22f", "22g", etc. to their Rahlfs/Swete equivalents.
+
+    Args:
+        brenton_book: Greek book name in Brenton (e.g., "ΠΑΡΟΙΜΙΑΙ ΣΑΛΩΜΩΝΤΟΣ")
+        brenton_chapter: Chapter number in Brenton
+        brenton_base_verse: Base verse number (e.g., 22 for "22f")
+        start_letter: Starting suffix letter (e.g., 'f')
+        end_letter: Ending suffix letter (e.g., 't')
+        rahlfs_book: Rahlfs book code (optional, None if no Rahlfs mapping)
+        rahlfs_chapter: Rahlfs chapter number
+        rahlfs_start_verse: Starting verse number in Rahlfs
+        swete_book: Swete book code (optional, None if no Swete mapping)
+        swete_chapter: Swete chapter number
+        swete_start_verse: Starting verse number in Swete
+
+    Returns:
+        Dict mapping (book, chapter, verse_with_suffix) -> {'rahlfs': ref_or_none, 'swete': ref_or_none}
+    """
+    mappings = {}
+    start_ord = ord(start_letter)
+    end_ord = ord(end_letter)
+
+    rahlfs_verse = rahlfs_start_verse
+    swete_verse = swete_start_verse
+
+    for i, letter_ord in enumerate(range(start_ord, end_ord + 1)):
+        letter = chr(letter_ord)
+        brenton_verse = f"{brenton_base_verse}{letter}"
+
+        mapping = {}
+        if rahlfs_book is not None and rahlfs_verse is not None:
+            mapping['rahlfs'] = f"{rahlfs_book}.{rahlfs_chapter}.{rahlfs_verse}"
+            rahlfs_verse += 1
+        if swete_book is not None and swete_verse is not None:
+            mapping['swete'] = f"{swete_book}.{swete_chapter}:{swete_verse}"
+            swete_verse += 1
+
+        if mapping:  # Only add if at least one mapping exists
+            mappings[(brenton_book, brenton_chapter, brenton_verse)] = mapping
+
+    return mappings
+
+
+def _build_versification_exceptions():
+    """Build the complete versification exceptions map.
+
+    Returns:
+        Dict mapping (brenton_book, brenton_chapter, brenton_verse) ->
+            {'rahlfs': "Book.Ch.V" or None, 'swete': "Book.Ch:V" or None}
+    """
+    exceptions = {}
+
+    # Proverbs 24:22f-t → Rahlfs Prov.30.1-15, Swete Pro.24:24-38
+    # These are the "Words of Agur" section that appears in different locations
+    exceptions.update(_generate_letter_suffix_mappings(
+        brenton_book="ΠΑΡΟΙΜΙΑΙ ΣΑΛΩΜΩΝΤΟΣ",
+        brenton_chapter=24,
+        brenton_base_verse=22,
+        start_letter='f',
+        end_letter='t',  # f through t = 15 letters for 15 verses
+        rahlfs_book="Prov",
+        rahlfs_chapter=30,
+        rahlfs_start_verse=1,
+        swete_book="Pro",
+        swete_chapter=24,
+        swete_start_verse=24
+    ))
+
+    # Add more exceptions here as needed:
+    # exceptions.update(_generate_letter_suffix_mappings(...))
+    # Or add individual mappings:
+    # exceptions[("BOOK", chapter, "verse")] = {'rahlfs': "...", 'swete': "..."}
+
+    return exceptions
+
+
+# Pre-built versification exceptions map
+VERSIFICATION_EXCEPTIONS = _build_versification_exceptions()
+
+
+def get_exception_reference(brenton_book, brenton_chapter, brenton_verse):
+    """Look up versification exception for a Brenton reference.
+
+    Args:
+        brenton_book: Greek book name
+        brenton_chapter: Chapter number
+        brenton_verse: Verse (may include letter suffix like "22f")
+
+    Returns:
+        Dict with 'rahlfs' and/or 'swete' keys, or None if no exception exists
+    """
+    key = (brenton_book, brenton_chapter, str(brenton_verse))
+    return VERSIFICATION_EXCEPTIONS.get(key)
+
+
 def get_verse_word_list(verse_ref, verse_map, sorted_verses, words_dict):
     """Get ordered list of words for a verse (not just a dict).
 
@@ -292,7 +393,10 @@ def process_brenton_file(brenton_path, rahlfs_words_dict, rahlfs_verse_map,
                          swete_verse_map=None, swete_sorted_verses=None):
     """Process Brenton.tex and find sequence errors.
 
-    Aligns against Rahlfs first; if verse not found in Rahlfs, falls back to Swete.
+    Alignment priority:
+    1. Standard Rahlfs reference
+    2. Standard Swete reference (fallback)
+    3. Versification exceptions map (for special cases like Proverbs 24:22f-t)
 
     Returns:
         (errors, mismatches) where:
@@ -344,6 +448,27 @@ def process_brenton_file(brenton_path, rahlfs_words_dict, rahlfs_verse_map,
             except ValueError:
                 # Book not found in Swete mapping
                 pass
+
+        # Fallback to versification exceptions if both standard lookups failed
+        if not reference_words:
+            exception = get_exception_reference(ctx.book, ctx.chapter, ctx.verse)
+            if exception:
+                # Try Rahlfs exception first
+                if 'rahlfs' in exception:
+                    reference_words = get_verse_word_list(
+                        exception['rahlfs'], rahlfs_verse_map,
+                        rahlfs_sorted_verses, rahlfs_words_dict
+                    )
+                    if reference_words:
+                        reference_source = 'rahlfs'
+                # Fall back to Swete exception if Rahlfs not available or empty
+                if not reference_words and 'swete' in exception and swete_words_dict is not None:
+                    reference_words = get_verse_word_list(
+                        exception['swete'], swete_verse_map,
+                        swete_sorted_verses, swete_words_dict
+                    )
+                    if reference_words:
+                        reference_source = 'swete'
 
         if not reference_words:
             mismatches.append({
