@@ -1,1 +1,2 @@
-Line Number	Verse Reference	Brenton Word	Rahlfs Word	Error Type	Context	Full Line
+Line Number	Verse Reference	Brenton Word	Reference Word	Source	Error Type	Context	Full Line
+21904	ΠΑΡΟΙΜΙΑΙ ΣΑΛΩΜΩΝΤΟΣ 29:22	ἁμαρτίαν	ἁμαρτίας	swete	single_char	-αν → -ας	\vs{22}Ἀνὴρ θυμώδης ἐγείρει νεῖκος, ἀνὴρ δὲ ὀργίλος ἐξώρυξεν ἁμαρτίαν.

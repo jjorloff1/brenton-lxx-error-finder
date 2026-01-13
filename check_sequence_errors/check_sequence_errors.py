@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
 Detect OCR sequence errors in Brenton Septuagint by word-by-word alignment
-against Rahlfs edition, focusing on character substitutions and sequence confusions.
+against Rahlfs edition (with Swete as fallback), focusing on character
+substitutions and sequence confusions.
 
 Detects:
 - Single-char confusions: υ/ν/ς/σ (within group), ο/ω (within group, disabled)
@@ -10,6 +11,8 @@ Detects:
 This script complements check_missing_words_for_typos by catching errors that
 pass vocabulary checks but are wrong in context (e.g., both -ου and -ον endings
 can be valid Greek, but only one is correct for a given word form).
+
+When a verse is not found in Rahlfs, the script falls back to Swete for alignment.
 """
 
 import argparse
@@ -34,7 +37,10 @@ from shared.data_loaders import (
     load_versification,
     get_verse_words
 )
-from shared.book_code_mappings import convert_brenton_reference_to_rahlfs
+from shared.book_code_mappings import (
+    convert_brenton_reference_to_rahlfs,
+    convert_brenton_reference_to_swete
+)
 
 # Groups of characters that can be OCR-confused with each other.
 # Characters are only considered confusable within the same group.
@@ -282,8 +288,11 @@ def is_accepted_variant(verse_ref, brenton_word, rahlfs_word, accepted_variants)
 
 def process_brenton_file(brenton_path, rahlfs_words_dict, rahlfs_verse_map,
                          rahlfs_sorted_verses, accepted_words, corrections,
-                         accepted_variants):
+                         accepted_variants, swete_words_dict=None,
+                         swete_verse_map=None, swete_sorted_verses=None):
     """Process Brenton.tex and find sequence errors.
+
+    Aligns against Rahlfs first; if verse not found in Rahlfs, falls back to Swete.
 
     Returns:
         (errors, mismatches) where:
@@ -316,11 +325,27 @@ def process_brenton_file(brenton_path, rahlfs_words_dict, rahlfs_verse_map,
             continue
 
         # Get Rahlfs words for this verse
-        rahlfs_words = get_verse_word_list(
+        reference_words = get_verse_word_list(
             rahlfs_ref, rahlfs_verse_map, rahlfs_sorted_verses, rahlfs_words_dict
         )
+        reference_source = 'rahlfs'
 
-        if not rahlfs_words:
+        # Fallback to Swete if Rahlfs doesn't have this verse
+        if not reference_words and swete_words_dict is not None:
+            try:
+                swete_ref = convert_brenton_reference_to_swete(
+                    ctx.book, ctx.chapter, ctx.verse
+                )
+                reference_words = get_verse_word_list(
+                    swete_ref, swete_verse_map, swete_sorted_verses, swete_words_dict
+                )
+                if reference_words:
+                    reference_source = 'swete'
+            except ValueError:
+                # Book not found in Swete mapping
+                pass
+
+        if not reference_words:
             mismatches.append({
                 'brenton_ref': ctx.verse_ref,
                 'rahlfs_ref': rahlfs_ref,
@@ -330,7 +355,7 @@ def process_brenton_file(brenton_path, rahlfs_words_dict, rahlfs_verse_map,
             continue
 
         # Align word sequences
-        alignments = align_word_sequences(brenton_words, rahlfs_words)
+        alignments = align_word_sequences(brenton_words, reference_words)
 
         # Check each aligned pair for confusions
         for op, b_idx, r_idx in alignments:
@@ -338,7 +363,7 @@ def process_brenton_file(brenton_path, rahlfs_words_dict, rahlfs_verse_map,
                 continue  # Only check replacements (different words at same position)
 
             b_word = brenton_words[b_idx]
-            r_word = rahlfs_words[r_idx]
+            r_word = reference_words[r_idx]
 
             # Skip if word is in accepted list or corrections
             if should_skip_word(b_word[1], ctx.verse_ref, accepted_words, corrections):
@@ -358,7 +383,8 @@ def process_brenton_file(brenton_path, rahlfs_words_dict, rahlfs_verse_map,
                     'verse_ref': ctx.verse_ref,
                     'line_num': ctx.line_num,
                     'brenton_word': b_word[1],
-                    'rahlfs_word': r_word[1],
+                    'reference_word': r_word[1],
+                    'reference_source': reference_source,
                     'error_type': confusion['type'],
                     'context': confusion['context'],
                     'full_line': ctx.line
@@ -375,7 +401,8 @@ def process_brenton_file(brenton_path, rahlfs_words_dict, rahlfs_verse_map,
                     'verse_ref': ctx.verse_ref,
                     'line_num': ctx.line_num,
                     'brenton_word': b_word[1],
-                    'rahlfs_word': r_word[1],
+                    'reference_word': r_word[1],
+                    'reference_source': reference_source,
                     'error_type': confusion['type'],
                     'context': confusion['context'],
                     'full_line': ctx.line
@@ -389,15 +416,16 @@ def write_errors_tsv(errors, output_path):
     with open(output_path, 'w', encoding='utf-8', newline='') as f:
         writer = csv.writer(f, delimiter='\t')
         writer.writerow([
-            'Line Number', 'Verse Reference', 'Brenton Word', 'Rahlfs Word',
-            'Error Type', 'Context', 'Full Line'
+            'Line Number', 'Verse Reference', 'Brenton Word', 'Reference Word',
+            'Source', 'Error Type', 'Context', 'Full Line'
         ])
         for error in errors:
             writer.writerow([
                 error['line_num'],
                 error['verse_ref'],
                 error['brenton_word'],
-                error['rahlfs_word'],
+                error['reference_word'],
+                error['reference_source'],
                 error['error_type'],
                 error['context'],
                 error['full_line']
@@ -466,6 +494,16 @@ def main():
         default='../accepted_sequence_variants.tsv',
         help='Path to accepted sequence variants file'
     )
+    parser.add_argument(
+        '--swete-words',
+        default='../input/swete_words.csv',
+        help='Path to Swete words CSV (fallback when verse not in Rahlfs)'
+    )
+    parser.add_argument(
+        '--swete-versification',
+        default='../input/swete_versification.csv',
+        help='Path to Swete versification CSV'
+    )
 
     args = parser.parse_args()
 
@@ -485,6 +523,12 @@ def main():
     print("Loading accepted sequence variants...")
     accepted_variants = load_accepted_sequence_variants(args.accepted_variants)
 
+    print("Loading Swete words (fallback)...")
+    swete_words_dict = load_words_with_ids(args.swete_words)
+
+    print("Loading Swete versification...")
+    swete_verse_map, swete_sorted_verses = load_versification(args.swete_versification)
+
     # Process Brenton file
     errors, mismatches = process_brenton_file(
         args.brenton,
@@ -493,7 +537,10 @@ def main():
         rahlfs_sorted_verses,
         accepted_words,
         corrections,
-        accepted_variants
+        accepted_variants,
+        swete_words_dict,
+        swete_verse_map,
+        swete_sorted_verses
     )
 
     # Write outputs
@@ -501,10 +548,15 @@ def main():
     write_mismatches_tsv(mismatches, args.mismatches_output)
 
     # Summary
+    rahlfs_errors = sum(1 for e in errors if e['reference_source'] == 'rahlfs')
+    swete_errors = sum(1 for e in errors if e['reference_source'] == 'swete')
     print(f"\nSummary:")
     print(f"  Total errors found: {len(errors)}")
     print(f"  - Single char (υ/ν/ς/σ, ο/ω): {sum(1 for e in errors if e['error_type'] == 'single_char')}")
     print(f"  - Sequence (ην/ης, οι/αι): {sum(1 for e in errors if e['error_type'] == 'sequence')}")
+    print(f"  By source:")
+    print(f"  - Rahlfs: {rahlfs_errors}")
+    print(f"  - Swete (fallback): {swete_errors}")
     print(f"  Versification mismatches: {len(mismatches)}")
 
 
