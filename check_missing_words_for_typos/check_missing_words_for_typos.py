@@ -550,12 +550,12 @@ Examples:
   python check_missing_words_for_typos.py --no-typo-check
 
   # Specify custom input files:
-  python check_missing_words_for_typos.py --bible MyBible.tex --rahlfs rahlfs.csv
+  python check_missing_words_for_typos.py --input MyText.tex --rahlfs rahlfs.csv
         """
     )
-    
-    parser.add_argument('--bible', default='../input/Brenton.tex',
-                        help='Path to Bible .tex file (default: ../input/Brenton.tex)')
+
+    parser.add_argument('--input', default='../input/Brenton.tex',
+                        help='Path to input .tex file (default: ../input/Brenton.tex)')
     parser.add_argument('--rahlfs', default='../input/rahlfs_words.csv',
                         help='Path to Rahlfs words CSV file (default: ../input/rahlfs_words.csv)')
     parser.add_argument('--swete', default='../input/swete_words.csv',
@@ -574,9 +574,9 @@ Examples:
                         help='Disable typo checking for faster processing')
     
     args = parser.parse_args()
-    
+
     # File paths
-    bible_path = args.bible
+    input_path = args.input
     output_path = args.output
     check_typos = not args.no_typo_check
     
@@ -614,7 +614,7 @@ Examples:
         SWETE_VERSE_MAP, SWETE_SORTED_VERSES = load_versification(args.swete_versification)
         print(f"Loaded {len(SWETE_VERSE_MAP)} verses from Swete versification")
     
-    process_bible_file(bible_path, output_path, check_typos)
+    process_bible_file(input_path, output_path, check_typos)
 
 
 if __name__ == '__main__':

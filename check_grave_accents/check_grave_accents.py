@@ -158,9 +158,9 @@ def main():
         description='Detect misplaced grave accents in Brenton Septuagint'
     )
     parser.add_argument(
-        '--brenton',
+        '--input',
         default='../input/Brenton.tex',
-        help='Path to Brenton.tex source file'
+        help='Path to input .tex source file (default: ../input/Brenton.tex)'
     )
     parser.add_argument(
         '--output',
@@ -171,7 +171,7 @@ def main():
     args = parser.parse_args()
 
     # Process file
-    errors = process_brenton_file(args.brenton)
+    errors = process_brenton_file(args.input)
 
     # Write output
     write_errors_tsv(errors, args.output)

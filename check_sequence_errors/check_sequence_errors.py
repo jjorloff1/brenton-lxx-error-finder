@@ -724,9 +724,9 @@ def main():
         description='Detect OCR sequence errors (υ/ν/ς confusion) in Brenton LXX'
     )
     parser.add_argument(
-        '--brenton',
+        '--input',
         default='../input/Brenton.tex',
-        help='Path to Brenton.tex file'
+        help='Path to input .tex file (default: ../input/Brenton.tex)'
     )
     parser.add_argument(
         '--rahlfs-words',
@@ -798,9 +798,9 @@ def main():
     print("Loading Swete versification...")
     swete_verse_map, swete_sorted_verses = load_versification(args.swete_versification)
 
-    # Process Brenton file
+    # Process input file
     errors, mismatches = process_brenton_file(
-        args.brenton,
+        args.input,
         rahlfs_words_dict,
         rahlfs_verse_map,
         rahlfs_sorted_verses,

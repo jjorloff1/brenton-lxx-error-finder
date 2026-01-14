@@ -38,7 +38,7 @@ python3 check_sequence_errors.py
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `--brenton` | `../input/Brenton.tex` | Path to Brenton source |
+| `--input` | `../input/Brenton.tex` | Path to input .tex source |
 | `--rahlfs-words` | `../input/rahlfs_words.csv` | Rahlfs word list |
 | `--rahlfs-versification` | `../input/rahlfs_versification.csv` | Rahlfs verse mappings |
 | `--accepted-words` | `../accepted_words.txt` | Words to skip |

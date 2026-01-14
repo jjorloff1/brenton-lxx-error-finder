@@ -27,7 +27,7 @@ python3 check_grave_accents.py
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `--brenton` | `../input/Brenton.tex` | Path to Brenton source |
+| `--input` | `../input/Brenton.tex` | Path to input .tex source |
 | `--output` | `output/misplaced_graves.tsv` | Output file path |
 
 ## Output

@@ -66,14 +66,14 @@ python3 -u check_missing_words_for_typos.py |& tee "logs/script_run-$(date +%s).
 python3 check_missing_words_for_typos.py --no-typo-check
 
 # Specify custom input files:
-python3 check_missing_words_for_typos.py --bible ../input/MyBible.tex --rahlfs ../input/my_rahlfs.csv
+python3 check_missing_words_for_typos.py --input ../input/MyText.tex --rahlfs ../input/my_rahlfs.csv
 
 # See all options:
 python3 check_missing_words_for_typos.py --help
 ```
 
 Available options:
-- `--bible` - Path to Bible .tex file (default: ../input/Brenton.tex)
+- `--input` - Path to input .tex file (default: ../input/Brenton.tex)
 - `--rahlfs` - Path to Rahlfs words CSV (default: ../input/rahlfs_words.csv)
 - `--swete` - Path to Swete words CSV (default: ../input/swete_words.csv)
 - `--rahlfs-versification` - Path to Rahlfs versification CSV (default: ../input/rahlfs_versification.csv)

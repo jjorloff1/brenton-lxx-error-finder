@@ -172,22 +172,22 @@ def main():
         epilog="""
 Examples:
   # Run with default paths:
-  python detect_multiple_accents.py
+  python check_multiple_accents.py
 
   # Specify custom input file:
-  python detect_multiple_accents.py --brenton /path/to/Brenton.tex
+  python check_multiple_accents.py --input /path/to/MyText.tex
         """
     )
 
-    parser.add_argument('--brenton', default='../input/Brenton.tex',
-                        help='Path to Brenton.tex file (default: ../input/Brenton.tex)')
+    parser.add_argument('--input', default='../input/Brenton.tex',
+                        help='Path to input .tex file (default: ../input/Brenton.tex)')
     parser.add_argument('--output', default='output/multiple_accents.tsv',
                         help='Path to output TSV file (default: output/multiple_accents.tsv)')
 
     args = parser.parse_args()
 
-    print(f"Detecting words with multiple accents in {args.brenton}...")
-    errors = process_brenton_file(args.brenton)
+    print(f"Detecting words with multiple accents in {args.input}...")
+    errors = process_brenton_file(args.input)
 
     print(f"\nWriting results to {args.output}...")
     write_errors_tsv(errors, args.output)

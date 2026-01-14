@@ -12,7 +12,7 @@ Optional comparison mode: "gemini" using LangChain + Gemini (see notes below).
 Example:
 
     python compare_lxx_editions.py \
-        --brenton /mnt/data/GEN_src.tex \
+        --input /mnt/data/GEN_src.tex \
         --swete /mnt/data/01.Genesis.txt \
         --mode simple
 """
@@ -379,10 +379,10 @@ def main():
         description="Compare Brenton (.tex) and Swete (.txt) LXX editions."
     )
     parser.add_argument(
-        "--brenton",
+        "--input",
         required=True,
         type=Path,
-        help="Path to Brenton LaTeX file (e.g., GEN_src.tex).",
+        help="Path to input LaTeX file (e.g., GEN_src.tex).",
     )
     parser.add_argument(
         "--swete",
@@ -443,7 +443,7 @@ def main():
     book_name = args.book_name if args.book_name is not None else detected_name
 
     # Parse input files
-    brenton_verses = parse_brenton_tex(args.brenton, book_num=book_num)
+    brenton_verses = parse_brenton_tex(args.input, book_num=book_num)
     swete_verses = parse_swete_txt(args.swete)
 
     # Compare

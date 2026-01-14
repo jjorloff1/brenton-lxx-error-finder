@@ -32,7 +32,7 @@ python check_multiple_accents.py
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `--brenton` | `../input/Brenton.tex` | Path to Brenton.tex file |
+| `--input` | `../input/Brenton.tex` | Path to input .tex file |
 | `--output` | `output/multiple_accents.tsv` | Path to output TSV file |
 
 ## Output
