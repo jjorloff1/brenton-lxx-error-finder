@@ -215,7 +215,10 @@ This project is for academic and research purposes, analyzing public domain Sept
 ## To Do
 [x] Refactor: Move Brenton.tex input file up to root and update all scripts accordingly.
 [x] Refactor: Extract Brenton.tex parsing logic into shared `brenton_parser.py` utility.
-- [ ] The missing_words, and legitimate words files don't have the same number in them, which are different?
-[ ] Refactor: For check_sequence_errors move line number to the first column
-[ ] Manual: Validate sequencing errors
+- [x] The missing_words, and legitimate words files don't have the same number in them, which are different?
+[x] Refactor: For check_sequence_errors move line number to the first column
+[x] Manual: Validate sequencing errors
 [ ] Manual: Verify and Fix Grave Errors
+    [ ] To investigate.  Why weren't these detected by the typo script
+        πολλαὶγίνονται
+        λυτρούμενὸσσε
