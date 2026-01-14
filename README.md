@@ -42,6 +42,10 @@ brenton-lxx-error-finder/
 │   ├── README.md                   # Detailed documentation
 │   ├── check_grave_accents.py      # Main script
 │   └── output/                     # Analysis results (misplaced_graves.tsv)
+├── check_multiple_accents/         # Multiple accent detection (merged words)
+│   ├── README.md                   # Detailed documentation
+│   ├── check_multiple_accents.py   # Main script
+│   └── output/                     # Analysis results (multiple_accents.tsv)
 ├── apply_corrections/              # Correction application scripts
 │   ├── README.md                   # Detailed documentation
 │   ├── apply_corrections.py        # Script to apply corrections to LaTeX
@@ -72,6 +76,13 @@ cd check_grave_accents
 python3 check_grave_accents.py
 ```
 Results are written to `check_grave_accents/output/`.
+
+### Find Multiple Accents (Merged Words)
+```bash
+cd check_multiple_accents
+python3 check_multiple_accents.py
+```
+Results are written to `check_multiple_accents/output/`.
 
 ### Apply Corrections
 ```bash
@@ -188,6 +199,7 @@ This project uses multiple approaches to detect different categories of OCR erro
 | **Vocabulary-Based** | `check_missing_words_for_typos.py` | Non-word errors: substitution, omission, fusion, fission, orthographic variation |
 | **Sequence-Based** | `check_sequence_errors.py` | Valid-word substitutions: υ/ν/ς/σ, ε/η, ο/ω confusion; ην↔ης, οι↔αι sequences |
 | **Accent-Based** | `check_grave_accents.py` | Misplaced grave accents on non-ultimate syllables (acute→grave transcription errors) |
+| **Multiple Accent** | `check_multiple_accents.py` | OCR-merged words where two words were combined but both retained accents |
 
 ### Potential Future Approaches
 
@@ -219,6 +231,4 @@ This project is for academic and research purposes, analyzing public domain Sept
 [x] Refactor: For check_sequence_errors move line number to the first column
 [x] Manual: Validate sequencing errors
 [ ] Manual: Verify and Fix Grave Errors
-    [ ] To investigate.  Why weren't these detected by the typo script
-        πολλαὶγίνονται
-        λυτρούμενὸσσε
+    [x] Investigated why merged words weren't detected by typo script - they were matching compound word combinations and being classified as "legitimate variations". Created `check_multiple_accents.py` to detect these.
