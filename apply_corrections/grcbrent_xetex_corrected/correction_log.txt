@@ -2,7 +2,7 @@
 CORRECTION LOG
 ================================================================================
 
-Total corrections applied: 1013
+Total corrections applied: 1032
 Corrections not found: 2
 Corrections at unexpected locations: 0
 
@@ -163,17 +163,17 @@ File: 1CH_src.tex, Line 656
   Changed: 'Μαγαβὲθ' -> 'Ματαβὲθ'
   Location: Chapter 18, Verse 8
 
+File: 1CH_src.tex, Line 283
+  TSV Line: 623
+  Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 7:3
+  Changed: 'Ιεζραῒα' -> 'Ιεζραΐα'
+  Location: Chapter 7, Verse 3
+
 File: 1CH_src.tex, Line 122
   TSV Line: 772
   Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 3:20
   Changed: 'Βαραχὶα' -> 'Βαραχία'
   Location: Chapter 3, Verse 20
-
-File: 1CH_src.tex, Line 283
-  TSV Line: 776
-  Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 7:3
-  Changed: 'Ιεζραῒα' -> 'Ιεζραΐα'
-  Location: Chapter 7, Verse 3
 
 File: 1CH_src.tex, Line 618
   TSV Line: 778
@@ -196,7 +196,7 @@ File: 1CH_src.tex, Line 935
 File: 1CH_src.tex, Line 283
   TSV Line: 242
   Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 7:3
-  Changed: 'Ιεζραΐ' -> 'Ιεζραῒα'
+  Changed: 'Ιεζραΐ' -> 'Ιεζραΐα'
   Location: Chapter 7, Verse 3
 
 File: 1CH_src.tex, Line 538
@@ -2926,6 +2926,18 @@ File: 4MA_src.tex, Line 373
   Changed: 'τοὺν' -> 'τοὺς'
   Location: Chapter 13, Verse 27
 
+File: AMO_src.tex, Line 23
+  TSV Line: 441
+  Reference: ΑΜΩΣ 2:4
+  Changed: 'ἀποστραφήσουμαι' -> 'ἀποστραφήσομαι'
+  Location: Chapter 2, Verse 4
+
+File: AMO_src.tex, Line 17
+  TSV Line: 830
+  Reference: ΑΜΩΣ 1:14
+  Changed: 'τεὶχη' -> 'τείχη'
+  Location: Chapter 1, Verse 14
+
 File: BEL_src.tex, Line 39
   TSV Line: 487
   Reference: ΒΗΛ ΚΑΙ ΔΡΑΚΩΝ 1:36
@@ -3196,7 +3208,7 @@ File: DEU_src.tex, Line 229
 File: DEU_src.tex, Line 499
   TSV Line: 130
   Reference: ΔΕΥΤΕΡΟΝΟΜΙΟΝ 17:9
-  Changed: 'τὸνς' -> 'τὸυς'
+  Changed: 'τὸνς' -> 'τοὺς'
   Location: Chapter 17, Verse 9
 
 File: DEU_src.tex, Line 527
@@ -4061,6 +4073,63 @@ File: GEN_src.tex, Line 360
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 14, Verse 7
 
+File: HAB_src.tex, Line 5
+  TSV Line: 442
+  Reference: ΑΜΒΑΚΟΥΜ 1:2
+  Changed: 'εἰσακουσεις' -> 'εἰσακούσεις'
+  Location: Chapter 1, Verse 2
+
+File: HAB_src.tex, Line 24
+  TSV Line: 834
+  Reference: ΑΜΒΑΚΟΥΜ 2:3
+  Changed: 'ὑπὸμεινον' -> 'ὑπόμεινον'
+  Location: Chapter 2, Verse 3
+
+File: HAB_src.tex, Line 9
+  TSV Line: 443
+  Reference: ΑΜΒΑΚΟΥΜ 1:6
+  Changed: 'ἔνθος' -> 'ἔθνος'
+  Location: Chapter 1, Verse 6
+  Notes: rahlf
+
+File: HOS_src.tex, Line 43
+  TSV Line: 435
+  Reference: ΩΣΗΕ 3:4
+  Changed: 'θυσιαστηρ ίου' -> 'θυσιαστηρίου'
+  Location: Chapter 3, Verse 4
+
+File: HOS_src.tex, Line 145
+  TSV Line: 437
+  Reference: ΩΣΗΕ 10:1
+  Changed: 'εὐκηματοῦσα' -> 'εὐκληματοῦσα'
+  Location: Chapter 10, Verse 1
+
+File: HOS_src.tex, Line 206
+  TSV Line: 681
+  Reference: ΩΣΗΕ 14:2
+  Changed: 'ἠσθένησαν' -> 'ἠσθένησας'
+  Location: Chapter 14, Verse 2
+  Notes: rahlf
+
+File: HOS_src.tex, Line 96
+  TSV Line: 436
+  Reference: ΩΣΗΕ 7:2
+  Changed: 'ᾄοντες' -> 'ᾄδοντες'
+  Location: Chapter 7, Verse 2
+
+File: HOS_src.tex, Line 158
+  TSV Line: 438
+  Reference: ΩΣΗΕ 10:14
+  Changed: 'ἄρχεν' -> 'ἄρχων'
+  Location: Chapter 10, Verse 14
+
+File: HOS_src.tex, Line 153
+  TSV Line: 829
+  Reference: ΩΣΗΕ 10:9
+  Changed: 'τὲκνα' -> 'τέκνα'
+  Location: Chapter 10, Verse 9
+  Notes: skipped starting here
+
 File: ISA_src.tex, Line 533
   TSV Line: 373
   Reference: ΗΣΑΙΑΣ 26:21
@@ -4685,6 +4754,18 @@ File: JOB_src.tex, Line 1113
   Changed: 'δὺο' -> 'δύο'
   Location: Chapter 42, Verse 7
 
+File: JOL_src.tex, Line 19
+  TSV Line: 439
+  Reference: ΙΩΗΛ 1:16
+  Changed: 'ἐξωλθρεύθη' -> 'ἐξωλοθρεύθη'
+  Location: Chapter 1, Verse 16
+
+File: JOL_src.tex, Line 49
+  TSV Line: 440
+  Reference: ΙΩΗΛ 2:25
+  Changed: 'ἀνταποδώσε' -> 'ἀνταποδώσω'
+  Location: Chapter 2, Verse 25
+
 File: JOS_src.tex, Line 130
   TSV Line: 145
   Reference: ΙΗΣΟΥΣ ΝΑΥΗ 6:25
@@ -5101,6 +5182,20 @@ File: LJE_src.tex, Line 76
   Changed: 'οὖ' -> 'οὖν'
   Location: Chapter 1, Verse 73
 
+File: MAL_src.tex, Line 11
+  TSV Line: 682
+  Reference: ΜΑΛΑΧΙΑΣ 1:8
+  Changed: 'θυσίας' -> 'θυσίαν'
+  Location: Chapter 1, Verse 8
+  Notes: rahlf
+
+File: MAL_src.tex, Line 38
+  TSV Line: 835
+  Reference: ΜΑΛΑΧΙΑΣ 3:2
+  Changed: 'ποὶα' -> 'ποία'
+  Location: Chapter 3, Verse 2
+  Notes: skipped ending here
+
 File: MAN_src.tex, Line 4
   TSV Line: 594
   Reference: ΠΡΟΣΕΥΧΗ ΜΑΝΑΣΣΗ ΥΙΟΥ ΕΖΕΚΙΟΥ 1:1
@@ -5118,6 +5213,24 @@ File: MAN_src.tex, Line 14
   Reference: ΠΡΟΣΕΥΧΗ ΜΑΝΑΣΣΗ ΥΙΟΥ ΕΖΕΚΙΟΥ 1:11
   Changed: 'παθὰ' -> 'παρὰ'
   Location: Chapter 1, Verse 11
+
+File: MIC_src.tex, Line 24
+  TSV Line: 831
+  Reference: ΜΙΧΑΙΑΣ 2:4
+  Changed: 'λὰοῦ' -> 'λαοῦ'
+  Location: Chapter 2, Verse 4
+
+File: NAM_src.tex, Line 41
+  TSV Line: 833
+  Reference: ΝΑΟΥΜ 3:8
+  Changed: 'Ἑτοιμασὰι' -> 'Ἑτοιμάσαι'
+  Location: Chapter 3, Verse 8
+
+File: NAM_src.tex, Line 28
+  TSV Line: 832
+  Reference: ΝΑΟΥΜ 2:10
+  Changed: 'σκεὺη' -> 'σκεύη'
+  Location: Chapter 2, Verse 10
 
 File: NEH_src.tex, Line 5
   TSV Line: 293
@@ -6175,6 +6288,13 @@ File: WIS_src.tex, Line 425
   Changed: 'σον' -> 'σου'
   Location: Chapter 18, Verse 15
 
+File: ZEP_src.tex, Line 46
+  TSV Line: 615
+  Reference: ΣΟΦΟΝΙΑΣ 3:8
+  Changed: 'εἰσδέκασθαι' -> 'εἰσδέξασθαι'
+  Location: Chapter 3, Verse 8
+  Notes: rahlf
+
 --------------------------------------------------------------------------------
 CORRECTIONS NOT FOUND
 --------------------------------------------------------------------------------
@@ -6204,6 +6324,7 @@ SUMMARY BY FILE
 2SA_src.tex: 18 corrections
 3MA_src.tex: 23 corrections
 4MA_src.tex: 93 corrections
+AMO_src.tex: 2 corrections
 BEL_src.tex: 1 corrections
 DAG_src.tex: 16 corrections
 DEU_src.tex: 37 corrections
@@ -6213,16 +6334,22 @@ EXO_src.tex: 49 corrections
 EZK_src.tex: 32 corrections
 EZR_src.tex: 2 corrections
 GEN_src.tex: 35 corrections
+HAB_src.tex: 3 corrections
+HOS_src.tex: 6 corrections
 ISA_src.tex: 42 corrections
 JDG_src.tex: 10 corrections
 JDT_src.tex: 12 corrections
 JER_src.tex: 15 corrections
 JOB_src.tex: 23 corrections
+JOL_src.tex: 2 corrections
 JOS_src.tex: 34 corrections
 LAM_src.tex: 2 corrections
 LEV_src.tex: 20 corrections
 LJE_src.tex: 13 corrections
+MAL_src.tex: 2 corrections
 MAN_src.tex: 3 corrections
+MIC_src.tex: 1 corrections
+NAM_src.tex: 2 corrections
 NEH_src.tex: 42 corrections
 NUM_src.tex: 44 corrections
 PRO_src.tex: 13 corrections
@@ -6232,3 +6359,4 @@ SIR_src.tex: 17 corrections
 SNG_src.tex: 5 corrections
 TOB_src.tex: 11 corrections
 WIS_src.tex: 11 corrections
+ZEP_src.tex: 1 corrections

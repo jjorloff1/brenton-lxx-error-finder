@@ -78,6 +78,9 @@ def build_book_mapping(source_dir: Path) -> dict[str, str]:
         match = re.search(r'\{\\MT\s+(.+?)(?:\n|$)', content)
         if match:
             book_name = match.group(1).strip()
+            # Strip ordinal suffix from minor prophets (e.g., "ΩΣΗΕ. Αʹ" -> "ΩΣΗΕ")
+            # The suffix is ". " followed by a Greek numeral with keraia (ʹ)
+            book_name = re.sub(r'\.\s+[ΑΒΓΔΕϛΖΗΘΙ]+ʹ$', '', book_name)
             mapping[book_name] = filename
 
     return mapping
