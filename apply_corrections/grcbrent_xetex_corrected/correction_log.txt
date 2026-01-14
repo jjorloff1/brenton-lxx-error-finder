@@ -2,8 +2,8 @@
 CORRECTION LOG
 ================================================================================
 
-Total corrections applied: 839
-Corrections not found: 0
+Total corrections applied: 1013
+Corrections not found: 2
 Corrections at unexpected locations: 0
 
 --------------------------------------------------------------------------------
@@ -27,6 +27,12 @@ File: 1CH_src.tex, Line 960
   Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 29:27
   Changed: 'τεσσράκοντα' -> 'τεσσαράκοντα'
   Location: Chapter 29, Verse 27
+
+File: 1CH_src.tex, Line 660
+  TSV Line: 781
+  Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 18:12
+  Changed: 'ὀκτὼκαὶδεκα' -> 'ὀκτωκαίδεκα'
+  Location: Chapter 18, Verse 12
 
 File: 1CH_src.tex, Line 844
   TSV Line: 272
@@ -73,6 +79,12 @@ File: 1CH_src.tex, Line 701
   Changed: 'κατίσχυσν' -> 'κατίσχυσε'
   Location: Chapter 21, Verse 6
 
+File: 1CH_src.tex, Line 626
+  TSV Line: 779
+  Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 17:6
+  Changed: 'καλὺμματι' -> 'καλύμματι'
+  Location: Chapter 17, Verse 6
+
 File: 1CH_src.tex, Line 390
   TSV Line: 245
   Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 9:28
@@ -109,6 +121,18 @@ File: 1CH_src.tex, Line 814
   Changed: 'Τοδολίας' -> 'Γοδολίας'
   Location: Chapter 25, Verse 3
 
+File: 1CH_src.tex, Line 167
+  TSV Line: 773
+  Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 4:40
+  Changed: 'πλεὶονας' -> 'πλείονας'
+  Location: Chapter 4, Verse 40
+
+File: 1CH_src.tex, Line 636
+  TSV Line: 780
+  Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 17:16
+  Changed: 'ἐκὰθισεν' -> 'ἐκάθισεν'
+  Location: Chapter 17, Verse 16
+
 File: 1CH_src.tex, Line 369
   TSV Line: 244
   Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 9:7
@@ -138,6 +162,36 @@ File: 1CH_src.tex, Line 656
   Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 18:8
   Changed: 'Μαγαβὲθ' -> 'Ματαβὲθ'
   Location: Chapter 18, Verse 8
+
+File: 1CH_src.tex, Line 122
+  TSV Line: 772
+  Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 3:20
+  Changed: 'Βαραχὶα' -> 'Βαραχία'
+  Location: Chapter 3, Verse 20
+
+File: 1CH_src.tex, Line 283
+  TSV Line: 776
+  Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 7:3
+  Changed: 'Ιεζραῒα' -> 'Ιεζραΐα'
+  Location: Chapter 7, Verse 3
+
+File: 1CH_src.tex, Line 618
+  TSV Line: 778
+  Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 16:42
+  Changed: 'κὺμβαλα' -> 'κύμβαλα'
+  Location: Chapter 16, Verse 42
+
+File: 1CH_src.tex, Line 687
+  TSV Line: 782
+  Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 20:1
+  Changed: 'δὺναμιν' -> 'δύναμιν'
+  Location: Chapter 20, Verse 1
+
+File: 1CH_src.tex, Line 935
+  TSV Line: 784
+  Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 29:2
+  Changed: 'χρυσὶον' -> 'χρυσίον'
+  Location: Chapter 29, Verse 2
 
 File: 1CH_src.tex, Line 283
   TSV Line: 242
@@ -176,6 +230,18 @@ File: 1CH_src.tex, Line 207
   Location: Chapter 5, Verse 36
   Notes: swete
 
+File: 1CH_src.tex, Line 228
+  TSV Line: 774
+  Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 6:15
+  Changed: 'Ἀσαῒας' -> 'Ἀσαΐας'
+  Location: Chapter 6, Verse 15
+
+File: 1CH_src.tex, Line 249
+  TSV Line: 775
+  Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 6:36
+  Changed: 'Σαραῒα' -> 'Σαραΐα'
+  Location: Chapter 6, Verse 36
+
 File: 1CH_src.tex, Line 367
   TSV Line: 243
   Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 9:5
@@ -213,6 +279,12 @@ File: 1CH_src.tex, Line 847
   Changed: 'τρίος' -> 'τρίτος'
   Location: Chapter 26, Verse 4
 
+File: 1CH_src.tex, Line 607
+  TSV Line: 777
+  Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 16:32
+  Changed: 'ξὺλον' -> 'ξύλον'
+  Location: Chapter 16, Verse 32
+
 File: 1CH_src.tex, Line 712
   TSV Line: 259
   Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 21:17
@@ -235,6 +307,12 @@ File: 1CH_src.tex, Line 698
   TSV Line: 608
   Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 21:3
   Changed: 'μυυ' -> 'μου'
+  Location: Chapter 21, Verse 3
+
+File: 1CH_src.tex, Line 698
+  TSV Line: 783
+  Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 21:3
+  Changed: 'ἳνα' -> 'ἵνα'
   Location: Chapter 21, Verse 3
 
 File: 1CH_src.tex, Line 661
@@ -628,6 +706,18 @@ File: 1ES_src.tex, Line 225
   Changed: 'ὑποζύλια' -> 'ὑποζύγια'
   Location: Chapter 5, Verse 43
 
+File: 1ES_src.tex, Line 12
+  TSV Line: 836
+  Reference: ΕΣΔΡΑΣ Α 1:9
+  Changed: 'Ἰεχονὶας' -> 'Ἰεχονίας'
+  Location: Chapter 1, Verse 9
+
+File: 1ES_src.tex, Line 154
+  TSV Line: 837
+  Reference: ΕΣΔΡΑΣ Α 4:36
+  Changed: 'ἀλὴθειαν' -> 'ἀλήθειαν'
+  Location: Chapter 4, Verse 36
+
 File: 1ES_src.tex, Line 160
   TSV Line: 449
   Reference: ΕΣΔΡΑΣ Α 4:42
@@ -780,6 +870,30 @@ File: 1KI_src.tex, Line 209
   Changed: 'ἄρωσι' -> 'αἴρωσι'
   Location: Chapter 6, Verse 1a
 
+File: 1KI_src.tex, Line 27
+  TSV Line: 763
+  Reference: ΒΑΣΙΛΕΙΩΝ Γ 1:24
+  Changed: 'Νὰθαν' -> 'Νάθαν'
+  Location: Chapter 1, Verse 24
+
+File: 1KI_src.tex, Line 320
+  TSV Line: 764
+  Reference: ΒΑΣΙΛΕΙΩΝ Γ 8:29
+  Changed: 'τὸπον' -> 'τόπον'
+  Location: Chapter 8, Verse 29
+
+File: 1KI_src.tex, Line 611
+  TSV Line: 765
+  Reference: ΒΑΣΙΛΕΙΩΝ Γ 16:24
+  Changed: 'ἐπὶε' -> 'ἐπὶ'
+  Location: Chapter 16, Verse 24
+
+File: 1KI_src.tex, Line 815
+  TSV Line: 766
+  Reference: ΒΑΣΙΛΕΙΩΝ Γ 22:16
+  Changed: 'ὃπως' -> 'ὅπως'
+  Location: Chapter 22, Verse 16
+
 File: 1KI_src.tex, Line 807
   TSV Line: 210
   Reference: ΒΑΣΙΛΕΙΩΝ Γ 22:8
@@ -835,6 +949,12 @@ File: 1MA_src.tex, Line 492
   Reference: ΜΑΚΚΑΒΑΙΩΝ Α 9:13
   Changed: 'συνημένος' -> 'συνημμένος'
   Location: Chapter 9, Verse 13
+
+File: 1MA_src.tex, Line 861
+  TSV Line: 862
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Α 14:35
+  Changed: 'ἡγοὺμενον' -> 'ἡγούμενον'
+  Location: Chapter 14, Verse 35
 
 File: 1MA_src.tex, Line 745
   TSV Line: 494
@@ -907,6 +1027,18 @@ File: 1SA_src.tex, Line 179
   Changed: 'ἑκατονάρχους' -> 'ἑκατοντάρχους'
   Location: Chapter 8, Verse 12
 
+File: 1SA_src.tex, Line 762
+  TSV Line: 759
+  Reference: ΒΑΣΙΛΕΙΩΝ Α 30:2
+  Changed: 'ᾐχμαλὼτευσαν' -> 'ᾐχμαλώτευσαν'
+  Location: Chapter 30, Verse 2
+
+File: 1SA_src.tex, Line 781
+  TSV Line: 760
+  Reference: ΒΑΣΙΛΕΙΩΝ Α 30:21
+  Changed: 'διακοσὶους' -> 'διακοσίους'
+  Location: Chapter 30, Verse 21
+
 File: 1SA_src.tex, Line 702
   TSV Line: 181
   Reference: ΒΑΣΙΛΕΙΩΝ Α 26:19
@@ -918,6 +1050,18 @@ File: 1SA_src.tex, Line 535
   Reference: ΒΑΣΙΛΕΙΩΝ Α 20:34
   Changed: 'ἐθρανσθη' -> 'ἐθραύσθη'
   Location: Chapter 20, Verse 34
+
+File: 1SA_src.tex, Line 543
+  TSV Line: 756
+  Reference: ΒΑΣΙΛΕΙΩΝ Α 20:42
+  Changed: 'ἀνὰμέσον' -> 'ἀναμέσον'
+  Location: Chapter 20, Verse 42 [WARNING: 2 matches in verse]
+
+File: 1SA_src.tex, Line 543
+  TSV Line: 756
+  Reference: ΒΑΣΙΛΕΙΩΝ Α 20:42
+  Changed: 'ἀνὰμέσον' -> 'ἀναμέσον'
+  Location: Chapter 20, Verse 42 [WARNING: 2 matches in verse]
 
 File: 1SA_src.tex, Line 111
   TSV Line: 171
@@ -942,6 +1086,12 @@ File: 1SA_src.tex, Line 89
   Reference: ΒΑΣΙΛΕΙΩΝ Α 3:20
   Changed: 'Σαμονὴλ' -> 'Σαμουὴλ'
   Location: Chapter 3, Verse 20
+
+File: 1SA_src.tex, Line 309
+  TSV Line: 753
+  Reference: ΒΑΣΙΛΕΙΩΝ Α 13:22
+  Changed: 'Ἰωνὰθαν' -> 'Ἰωνάθαν'
+  Location: Chapter 13, Verse 22
 
 File: 1SA_src.tex, Line 90
   TSV Line: 170
@@ -974,6 +1124,18 @@ File: 1SA_src.tex, Line 537
   Changed: 'ἔδραυε' -> 'ἔδραμε'
   Location: Chapter 20, Verse 36
 
+File: 1SA_src.tex, Line 62
+  TSV Line: 749
+  Reference: ΒΑΣΙΛΕΙΩΝ Α 2:30
+  Changed: 'Κὺριος' -> 'Κύριος'
+  Location: Chapter 2, Verse 30
+
+File: 1SA_src.tex, Line 477
+  TSV Line: 754
+  Reference: ΒΑΣΙΛΕΙΩΝ Α 19:1
+  Changed: 'πὰντας' -> 'πάντας'
+  Location: Chapter 19, Verse 1
+
 File: 1SA_src.tex, Line 478
   TSV Line: 176
   Reference: ΒΑΣΙΛΕΙΩΝ Α 19:2
@@ -992,6 +1154,18 @@ File: 1SA_src.tex, Line 749
   Changed: 'Ἀεδὼρ' -> 'Ἀενδὼρ'
   Location: Chapter 29, Verse 1
 
+File: 1SA_src.tex, Line 52
+  TSV Line: 748
+  Reference: ΒΑΣΙΛΕΙΩΝ Α 2:20
+  Changed: 'τὸπον' -> 'τόπον'
+  Location: Chapter 2, Verse 20
+
+File: 1SA_src.tex, Line 134
+  TSV Line: 751
+  Reference: ΒΑΣΙΛΕΙΩΝ Α 6:7
+  Changed: 'τὲκνα' -> 'τέκνα'
+  Location: Chapter 6, Verse 7
+
 File: 1SA_src.tex, Line 164
   TSV Line: 172
   Reference: ΒΑΣΙΛΕΙΩΝ Α 7:15
@@ -1003,6 +1177,18 @@ File: 1SA_src.tex, Line 100
   Reference: ΒΑΣΙΛΕΙΩΝ Α 4:9
   Changed: 'ἡυῖν' -> 'ἡμῖν'
   Location: Chapter 4, Verse 9
+
+File: 1SA_src.tex, Line 222
+  TSV Line: 752
+  Reference: ΒΑΣΙΛΕΙΩΝ Α 10:4
+  Changed: 'λὴψῃ' -> 'λήψῃ'
+  Location: Chapter 10, Verse 4
+
+File: 1SA_src.tex, Line 512
+  TSV Line: 755
+  Reference: ΒΑΣΙΛΕΙΩΝ Α 20:11
+  Changed: 'μὲνε' -> 'μένε'
+  Location: Chapter 20, Verse 11
 
 File: 1SA_src.tex, Line 68
   TSV Line: 649
@@ -1027,6 +1213,13 @@ File: 1SA_src.tex, Line 782
   Reference: ΒΑΣΙΛΕΙΩΝ Α 30:22
   Changed: 'τὴς' -> 'τὴν'
   Location: Chapter 30, Verse 22
+
+File: 1SA_src.tex, Line 554
+  TSV Line: 758
+  Reference: ΒΑΣΙΛΕΙΩΝ Α 21:10
+  Changed: 'τὸυ' -> 'τοῦ'
+  Location: Chapter 21, Verse 10
+  Notes: rahlf
 
 File: 1SA_src.tex, Line 697
   TSV Line: 56
@@ -1416,6 +1609,12 @@ File: 2CH_src.tex, Line 819
   Changed: 'διαχίλια' -> 'δισχίλια'
   Location: Chapter 35, Verse 8
 
+File: 2CH_src.tex, Line 873
+  TSV Line: 785
+  Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Β 36:22
+  Changed: 'στὸματος' -> 'στόματος'
+  Location: Chapter 36, Verse 22
+
 File: 2CH_src.tex, Line 208
   TSV Line: 280
   Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Β 9:27
@@ -1527,6 +1726,12 @@ File: 2KI_src.tex, Line 203
   Changed: 'σεμισάλεως' -> 'σεμιδάλεως'
   Location: Chapter 7, Verse 16
 
+File: 2KI_src.tex, Line 245
+  TSV Line: 767
+  Reference: ΒΑΣΙΛΕΙΩΝ Δ 9:7
+  Changed: 'ἐκδικὴσεις' -> 'ἐκδικήσεις'
+  Location: Chapter 9, Verse 7
+
 File: 2KI_src.tex, Line 492
   TSV Line: 232
   Reference: ΒΑΣΙΛΕΙΩΝ Δ 17:18
@@ -1581,6 +1786,12 @@ File: 2KI_src.tex, Line 242
   Changed: 'παιφήτης' -> 'προφήτης'
   Location: Chapter 9, Verse 4
 
+File: 2KI_src.tex, Line 263
+  TSV Line: 768
+  Reference: ΒΑΣΙΛΕΙΩΝ Δ 9:24
+  Changed: 'ἀνὰμέσον' -> 'ἀναμέσον'
+  Location: Chapter 9, Verse 24
+
 File: 2KI_src.tex, Line 297
   TSV Line: 222
   Reference: ΒΑΣΙΛΕΙΩΝ Δ 10:20
@@ -1610,6 +1821,18 @@ File: 2KI_src.tex, Line 687
   Reference: ΒΑΣΙΛΕΙΩΝ Δ 23:24
   Changed: 'βιβλίον' -> 'βιβλίου'
   Location: Chapter 23, Verse 24
+
+File: 2KI_src.tex, Line 275
+  TSV Line: 769
+  Reference: ΒΑΣΙΛΕΙΩΝ Δ 9:36
+  Changed: 'Ἰεζρὰελ' -> 'Ἰεζράελ'
+  Location: Chapter 9, Verse 36
+
+File: 2KI_src.tex, Line 719
+  TSV Line: 771
+  Reference: ΒΑΣΙΛΕΙΩΝ Δ 24:18
+  Changed: 'θυγὰτηρ' -> 'θυγάτηρ'
+  Location: Chapter 24, Verse 18
 
 File: 2KI_src.tex, Line 9
   TSV Line: 211
@@ -1646,6 +1869,12 @@ File: 2KI_src.tex, Line 345
   Reference: ΒΑΣΙΛΕΙΩΝ Δ 12:10
   Changed: 'ἔδωκας' -> 'ἔδωκαν'
   Location: Chapter 12, Verse 10
+
+File: 2KI_src.tex, Line 546
+  TSV Line: 770
+  Reference: ΒΑΣΙΛΕΙΩΝ Δ 18:30
+  Changed: 'Κὺριον' -> 'Κύριον'
+  Location: Chapter 18, Verse 30
 
 File: 2KI_src.tex, Line 109
   TSV Line: 213
@@ -1868,6 +2097,12 @@ File: 2MA_src.tex, Line 277
   Changed: 'φίλως' -> 'φίλων'
   Location: Chapter 8, Verse 9
 
+File: 2MA_src.tex, Line 569
+  TSV Line: 863
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Β 15:36
+  Changed: 'τὴνδε' -> 'τήνδε'
+  Location: Chapter 15, Verse 36
+
 File: 2MA_src.tex, Line 135
   TSV Line: 695
   Reference: ΜΑΚΚΑΒΑΙΩΝ Β 4:21
@@ -1909,6 +2144,12 @@ File: 2SA_src.tex, Line 196
   Reference: ΒΑΣΙΛΕΙΩΝ Β 7:28
   Changed: 'ἀληθιναὶ' -> 'ἀληθινοὶ'
   Location: Chapter 7, Verse 28
+
+File: 2SA_src.tex, Line 622
+  TSV Line: 762
+  Reference: ΒΑΣΙΛΕΙΩΝ Β 22:15
+  Changed: 'ἢστραψεν' -> 'ἤστραψεν'
+  Location: Chapter 22, Verse 15
 
 File: 2SA_src.tex, Line 570
   TSV Line: 190
@@ -1967,6 +2208,12 @@ File: 2SA_src.tex, Line 682
   Changed: 'υἱὸν' -> 'υἱὸς'
   Location: Chapter 23, Verse 22
 
+File: 2SA_src.tex, Line 615
+  TSV Line: 761
+  Reference: ΒΑΣΙΛΕΙΩΝ Β 22:8
+  Changed: 'ὃτι' -> 'ὅτι'
+  Location: Chapter 22, Verse 8
+
 File: 2SA_src.tex, Line 292
   TSV Line: 187
   Reference: ALL
@@ -2021,6 +2268,12 @@ File: 3MA_src.tex, Line 38
   Changed: 'αιαδήλους' -> 'διαδήλους'
   Location: Chapter 2, Verse 5
 
+File: 3MA_src.tex, Line 112
+  TSV Line: 868
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Γ 4:14
+  Changed: 'κατὰπονον' -> 'κατάπονον'
+  Location: Chapter 4, Verse 14
+
 File: 3MA_src.tex, Line 76
   TSV Line: 523
   Reference: ΜΑΚΚΑΒΑΙΩΝ Γ 3:9
@@ -2046,6 +2299,12 @@ File: 3MA_src.tex, Line 96
   Location: Chapter 3, Verse 29
   Notes: rahlf
 
+File: 3MA_src.tex, Line 109
+  TSV Line: 867
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Γ 4:11
+  Changed: 'Σχεδὶαν' -> 'Σχεδίαν'
+  Location: Chapter 4, Verse 11
+
 File: 3MA_src.tex, Line 54
   TSV Line: 520
   Reference: ΜΑΚΚΑΒΑΙΩΝ Γ 2:21
@@ -2064,6 +2323,12 @@ File: 3MA_src.tex, Line 43
   Changed: 'τοῦτου' -> 'τοῦτον'
   Location: Chapter 2, Verse 10
 
+File: 3MA_src.tex, Line 113
+  TSV Line: 869
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Γ 4:15
+  Changed: 'τοὺτων' -> 'τούτων'
+  Location: Chapter 4, Verse 15
+
 File: 3MA_src.tex, Line 71
   TSV Line: 522
   Reference: ΜΑΚΚΑΒΑΙΩΝ Γ 3:4
@@ -2076,6 +2341,30 @@ File: 3MA_src.tex, Line 235
   Changed: 'δόκης' -> 'δόξης'
   Location: Chapter 7, Verse 21
   Notes: rahlf
+
+File: 3MA_src.tex, Line 96
+  TSV Line: 865
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Γ 3:29
+  Changed: 'τὸπος' -> 'τόπος'
+  Location: Chapter 3, Verse 29
+
+File: 3MA_src.tex, Line 101
+  TSV Line: 866
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Γ 4:3
+  Changed: 'τὸπος' -> 'τόπος'
+  Location: Chapter 4, Verse 3
+
+File: 3MA_src.tex, Line 116
+  TSV Line: 870
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Γ 4:18
+  Changed: 'τὸπον' -> 'τόπον'
+  Location: Chapter 4, Verse 18
+
+File: 3MA_src.tex, Line 43
+  TSV Line: 864
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Γ 2:10
+  Changed: 'ὃτι' -> 'ὅτι'
+  Location: Chapter 2, Verse 10
 
 File: 4MA_src.tex, Line 52
   TSV Line: 620
@@ -2155,6 +2444,12 @@ File: 4MA_src.tex, Line 355
   Changed: 'ἐπὶ Ἀσσυρίας' -> 'ἐπὶ τῆς Ἀσσυρίας'
   Location: Chapter 13, Verse 9
 
+File: 4MA_src.tex, Line 351
+  TSV Line: 887
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 13:5
+  Changed: 'παθοκρὰτειαν' -> 'παθοκράτειαν'
+  Location: Chapter 13, Verse 5
+
 File: 4MA_src.tex, Line 348
   TSV Line: 566
   Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 13:2
@@ -2185,6 +2480,19 @@ File: 4MA_src.tex, Line 451
   Changed: 'ἀντιστασθαι' -> 'ἀντίστασθαι'
   Location: Chapter 16, Verse 23
 
+File: 4MA_src.tex, Line 248
+  TSV Line: 880
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 9:6
+  Changed: 'βασανισμὸυς' -> 'βασανισμοὺς'
+  Location: Chapter 9, Verse 6
+  Notes: rahlf
+
+File: 4MA_src.tex, Line 350
+  TSV Line: 884
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 13:4
+  Changed: 'ἐπεκρὰτησεν' -> 'ἐπεκράτησεν'
+  Location: Chapter 13, Verse 4
+
 File: 4MA_src.tex, Line 199
   TSV Line: 543
   Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 7:11
@@ -2202,6 +2510,12 @@ File: 4MA_src.tex, Line 88
   Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 4:2
   Changed: 'Ἀπολλώνιος' -> 'Ἀπολλώνιον'
   Location: Chapter 4, Verse 2
+
+File: 4MA_src.tex, Line 352
+  TSV Line: 888
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 13:6
+  Changed: 'παρὲχουσιν' -> 'παρέχουσιν'
+  Location: Chapter 13, Verse 6
 
 File: 4MA_src.tex, Line 324
   TSV Line: 529
@@ -2263,6 +2577,12 @@ File: 4MA_src.tex, Line 354
   Changed: 'εὐσεβείαν' -> 'εὐσεβείας'
   Location: Chapter 13, Verse 8
 
+File: 4MA_src.tex, Line 100
+  TSV Line: 875
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 4:14
+  Changed: 'παραδὸξως' -> 'παραδόξως'
+  Location: Chapter 4, Verse 14
+
 File: 4MA_src.tex, Line 97
   TSV Line: 532
   Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 4:11
@@ -2299,6 +2619,24 @@ File: 4MA_src.tex, Line 435
   Changed: 'δεκάηνοι' -> 'δεκάμηνοι'
   Location: Chapter 16, Verse 7
 
+File: 4MA_src.tex, Line 119
+  TSV Line: 876
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 5:6
+  Changed: 'ἂρξασθαι' -> 'ἄρξασθαι'
+  Location: Chapter 5, Verse 6
+
+File: 4MA_src.tex, Line 193
+  TSV Line: 877
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 7:5
+  Changed: 'διὰνοιαν' -> 'διάνοιαν'
+  Location: Chapter 7, Verse 5
+
+File: 4MA_src.tex, Line 259
+  TSV Line: 881
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 9:17
+  Changed: 'διὰκονοι' -> 'διάκονοι'
+  Location: Chapter 9, Verse 17
+
 File: 4MA_src.tex, Line 166
   TSV Line: 539
   Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 6:14
@@ -2328,6 +2666,18 @@ File: 4MA_src.tex, Line 499
   Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 18:20
   Changed: 'Ἑλλήμων' -> 'Ἑλλήνων'
   Location: Chapter 18, Verse 20
+
+File: 4MA_src.tex, Line 36
+  TSV Line: 874
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 1:33
+  Changed: 'ὀρὲξεων' -> 'ὀρέξεων'
+  Location: Chapter 1, Verse 33
+
+File: 4MA_src.tex, Line 235
+  TSV Line: 879
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 8:21
+  Changed: 'βασιλὲα' -> 'βασιλέα'
+  Location: Chapter 8, Verse 21
 
 File: 4MA_src.tex, Line 36
   TSV Line: 530
@@ -2376,6 +2726,30 @@ File: 4MA_src.tex, Line 373
   Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 13:27
   Changed: 'αὐτοῖν' -> 'αὐτοῖς'
   Location: Chapter 13, Verse 27
+
+File: 4MA_src.tex, Line 19
+  TSV Line: 871
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 1:16
+  Changed: 'τοὶνυν' -> 'τοίνυν'
+  Location: Chapter 1, Verse 16
+
+File: 4MA_src.tex, Line 197
+  TSV Line: 878
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 7:9
+  Changed: 'λὸγους' -> 'λόγους'
+  Location: Chapter 7, Verse 9
+
+File: 4MA_src.tex, Line 350
+  TSV Line: 885
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 13:4
+  Changed: 'πὰθους' -> 'πάθους'
+  Location: Chapter 13, Verse 4
+
+File: 4MA_src.tex, Line 429
+  TSV Line: 889
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 16:1
+  Changed: 'παὶδων' -> 'παίδων'
+  Location: Chapter 16, Verse 1
 
 File: 4MA_src.tex, Line 57
   TSV Line: 531
@@ -2437,6 +2811,30 @@ File: 4MA_src.tex, Line 355
   Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 13:9
   Changed: 'νόμον' -> 'νόμου'
   Location: Chapter 13, Verse 9
+
+File: 4MA_src.tex, Line 31
+  TSV Line: 873
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 1:28
+  Changed: 'πὸνου' -> 'πόνου'
+  Location: Chapter 1, Verse 28
+
+File: 4MA_src.tex, Line 329
+  TSV Line: 882
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 12:4
+  Changed: 'τὲλος' -> 'τέλος'
+  Location: Chapter 12, Verse 4
+
+File: 4MA_src.tex, Line 329
+  TSV Line: 883
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 12:4
+  Changed: 'τὰλας' -> 'τάλας'
+  Location: Chapter 12, Verse 4
+
+File: 4MA_src.tex, Line 350
+  TSV Line: 886
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 13:4
+  Changed: 'πὸνων' -> 'πόνων'
+  Location: Chapter 13, Verse 4
 
 File: 4MA_src.tex, Line 337
   TSV Line: 559
@@ -2504,6 +2902,18 @@ File: 4MA_src.tex, Line 368
   Changed: 'τῆν' -> 'τῆς'
   Location: Chapter 13, Verse 22
 
+File: 4MA_src.tex, Line 27
+  TSV Line: 872
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 1:24
+  Changed: 'ὃτε' -> 'ὅτε'
+  Location: Chapter 1, Verse 24
+
+File: 4MA_src.tex, Line 443
+  TSV Line: 890
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 16:15
+  Changed: 'ὃτε' -> 'ὅτε'
+  Location: Chapter 16, Verse 15
+
 File: 4MA_src.tex, Line 337
   TSV Line: 558
   Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 12:12
@@ -2552,6 +2962,18 @@ File: DAG_src.tex, Line 289
   Changed: 'θηοίου' -> 'θηρίου'
   Location: Chapter 7, Verse 19
 
+File: DAG_src.tex, Line 168
+  TSV Line: 824
+  Reference: ΔΑΝΙΗΛ 3:95
+  Changed: 'σὼματα' -> 'σώματα'
+  Location: Chapter 3, Verse 95
+
+File: DAG_src.tex, Line 257
+  TSV Line: 826
+  Reference: ΔΑΝΙΗΛ 6:17
+  Changed: 'ἢγαγον' -> 'ἤγαγον'
+  Location: Chapter 6, Verse 17
+
 File: DAG_src.tex, Line 172
   TSV Line: 425
   Reference: ΔΑΝΙΗΛ 4:1
@@ -2587,6 +3009,24 @@ File: DAG_src.tex, Line 337
   Reference: ΔΑΝΙΗΛ 9:9
   Changed: 'Κυρί' -> 'Κυρίῳ'
   Location: Chapter 9, Verse 9
+
+File: DAG_src.tex, Line 191
+  TSV Line: 825
+  Reference: ΔΑΝΙΗΛ 4:20
+  Changed: 'ὓψος' -> 'ὕψος'
+  Location: Chapter 4, Verse 20
+
+File: DAG_src.tex, Line 289
+  TSV Line: 827
+  Reference: ΔΑΝΙΗΛ 7:19
+  Changed: 'ὃτι' -> 'ὅτι'
+  Location: Chapter 7, Verse 19
+
+File: DAG_src.tex, Line 353
+  TSV Line: 828
+  Reference: ΔΑΝΙΗΛ 9:25
+  Changed: 'ἓως' -> 'ἕως'
+  Location: Chapter 9, Verse 25
 
 File: DEU_src.tex, Line 182
   TSV Line: 78
@@ -2687,6 +3127,12 @@ File: DEU_src.tex, Line 737
   Changed: 'γένοτιο' -> 'γένοιτο'
   Location: Chapter 27, Verse 16
 
+File: DEU_src.tex, Line 738
+  TSV Line: 736
+  Reference: ΔΕΥΤΕΡΟΝΟΜΙΟΝ 27:17
+  Changed: 'πλησὶον' -> 'πλησίον'
+  Location: Chapter 27, Verse 17
+
 File: DEU_src.tex, Line 225
   TSV Line: 118
   Reference: ΔΕΥΤΕΡΟΝΟΜΙΟΝ 6:23
@@ -2729,6 +3175,18 @@ File: DEU_src.tex, Line 148
   Changed: 'σὐτοῦ' -> 'αὐτοῦ'
   Location: Chapter 4, Verse 30
 
+File: DEU_src.tex, Line 99
+  TSV Line: 733
+  Reference: ΔΕΥΤΕΡΟΝΟΜΙΟΝ 3:11
+  Changed: 'κλὶνη' -> 'κλίνη'
+  Location: Chapter 3, Verse 11 [WARNING: 2 matches in verse]
+
+File: DEU_src.tex, Line 99
+  TSV Line: 733
+  Reference: ΔΕΥΤΕΡΟΝΟΜΙΟΝ 3:11
+  Changed: 'κλὶνη' -> 'κλίνη'
+  Location: Chapter 3, Verse 11 [WARNING: 2 matches in verse]
+
 File: DEU_src.tex, Line 229
   TSV Line: 119
   Reference: ΔΕΥΤΕΡΟΝΟΜΙΟΝ 7:1
@@ -2740,6 +3198,12 @@ File: DEU_src.tex, Line 499
   Reference: ΔΕΥΤΕΡΟΝΟΜΙΟΝ 17:9
   Changed: 'τὸνς' -> 'τὸυς'
   Location: Chapter 17, Verse 9
+
+File: DEU_src.tex, Line 527
+  TSV Line: 735
+  Reference: ΔΕΥΤΕΡΟΝΟΜΙΟΝ 18:16
+  Changed: 'μὲγα' -> 'μέγα'
+  Location: Chapter 18, Verse 16
 
 File: DEU_src.tex, Line 379
   TSV Line: 122
@@ -2758,6 +3222,12 @@ File: DEU_src.tex, Line 642
   Reference: ΔΕΥΤΕΡΟΝΟΜΙΟΝ 23:11
   Changed: 'τῆν' -> 'τῆς'
   Location: Chapter 23, Verse 11
+
+File: DEU_src.tex, Line 823
+  TSV Line: 737
+  Reference: ΔΕΥΤΕΡΟΝΟΜΙΟΝ 29:5
+  Changed: 'ὃτι' -> 'ὅτι'
+  Location: Chapter 29, Verse 5
 
 File: DEU_src.tex, Line 439
   TSV Line: 126
@@ -2785,6 +3255,12 @@ File: DEU_src.tex, Line 439
   Changed: 'φυχή' -> 'ψυχή'
   Location: Chapter 14, Verse 26
   Notes: rahlf
+
+File: ECC_src.tex, Line 120
+  TSV Line: 798
+  Reference: ΕΚΚΛΗΣΙΑΣΤΗΣ 6:10
+  Changed: 'ἰσχυροτὲρου' -> 'ἰσχυροτέρου'
+  Location: Chapter 6, Verse 10
 
 File: ECC_src.tex, Line 220
   TSV Line: 359
@@ -2868,6 +3344,12 @@ File: ESG_src.tex, Line 123
   Location: Chapter 4, Verse 17q
   Notes: rahlf
 
+File: EXO_src.tex, Line 474
+  TSV Line: 718
+  Reference: ΕΞΟΔΟΣ 17:4
+  Changed: 'καταλιθοβολὴσουσί' -> 'καταλιθοβολήσουσί'
+  Location: Chapter 17, Verse 4
+
 File: EXO_src.tex, Line 1093
   TSV Line: 42
   Reference: ΕΞΟΔΟΣ 36:30
@@ -2891,6 +3373,18 @@ File: EXO_src.tex, Line 814
   Reference: ΕΞΟΔΟΣ 28:29
   Changed: 'μνημόσυνου' -> 'μνημόσυνον'
   Location: Chapter 28, Verse 29
+
+File: EXO_src.tex, Line 60
+  TSV Line: 713
+  Reference: ΕΞΟΔΟΣ 3:8
+  Changed: 'Γεργεσαὶων' -> 'Γεργεσαίων'
+  Location: Chapter 3, Verse 8
+
+File: EXO_src.tex, Line 1107
+  TSV Line: 724
+  Reference: ΕΞΟΔΟΣ 37:5
+  Changed: 'ὑφαντὸντοῦ' -> 'ὑφαντὸν'
+  Location: Chapter 37, Verse 5
 
 File: EXO_src.tex, Line 28
   TSV Line: 22
@@ -2940,6 +3434,12 @@ File: EXO_src.tex, Line 393
   Changed: 'Αἰγυπίων' -> 'Αἰγυπτίων'
   Location: Chapter 14, Verse 20
 
+File: EXO_src.tex, Line 552
+  TSV Line: 719
+  Reference: ΕΞΟΔΟΣ 20:11
+  Changed: 'θὰλασσαν' -> 'θάλασσαν'
+  Location: Chapter 20, Verse 11
+
 File: EXO_src.tex, Line 83
   TSV Line: 23
   Reference: ΕΞΟΔΟΣ 4:8
@@ -2969,6 +3469,42 @@ File: EXO_src.tex, Line 1079
   Reference: ΕΞΟΔΟΣ 36:16
   Changed: 'ἐπόησαν' -> 'ἐποίησαν'
   Location: Chapter 36, Verse 16
+
+File: EXO_src.tex, Line 33
+  TSV Line: 712
+  Reference: ΕΞΟΔΟΣ 2:7
+  Changed: 'παιδὶον' -> 'παιδίον'
+  Location: Chapter 2, Verse 7
+
+File: EXO_src.tex, Line 138
+  TSV Line: 714
+  Reference: ΕΞΟΔΟΣ 6:7
+  Changed: 'λὴψομαι' -> 'λήψομαι'
+  Location: Chapter 6, Verse 7
+
+File: EXO_src.tex, Line 303
+  TSV Line: 717
+  Reference: ΕΞΟΔΟΣ 12:5
+  Changed: 'λὴψεσθε' -> 'λήψεσθε'
+  Location: Chapter 12, Verse 5
+
+File: EXO_src.tex, Line 961
+  TSV Line: 721
+  Reference: ΕΞΟΔΟΣ 32:27
+  Changed: 'ἓκαστος' -> 'ἕκαστος'
+  Location: Chapter 32, Verse 27
+
+File: EXO_src.tex, Line 1064
+  TSV Line: 722
+  Reference: ΕΞΟΔΟΣ 36:1
+  Changed: 'διανοὶᾳ' -> 'διανοίᾳ'
+  Location: Chapter 36, Verse 1
+
+File: EXO_src.tex, Line 1105
+  TSV Line: 723
+  Reference: ΕΞΟΔΟΣ 37:3
+  Changed: 'ὑφαντὸυ' -> 'ὑφαντὸν'
+  Location: Chapter 37, Verse 3
 
 File: EXO_src.tex, Line 1012
   TSV Line: 40
@@ -3025,6 +3561,18 @@ File: EXO_src.tex, Line 982
   Changed: 'Μωυσῆς' -> 'Μωυσῆν'
   Location: Chapter 33, Verse 12 [WARNING: 2 matches in verse]
 
+File: EXO_src.tex, Line 240
+  TSV Line: 715
+  Reference: ΕΞΟΔΟΣ 9:19
+  Changed: 'πὰντες' -> 'πάντες'
+  Location: Chapter 9, Verse 19
+
+File: EXO_src.tex, Line 250
+  TSV Line: 716
+  Reference: ΕΞΟΔΟΣ 9:29
+  Changed: 'χὰλαζα' -> 'χάλαζα'
+  Location: Chapter 9, Verse 29
+
 File: EXO_src.tex, Line 272
   TSV Line: 24
   Reference: ΕΞΟΔΟΣ 10:15
@@ -3056,6 +3604,12 @@ File: EXO_src.tex, Line 803
   Changed: 'πεπὶ' -> 'περὶ'
   Location: Chapter 28, Verse 12
 
+File: EXO_src.tex, Line 816
+  TSV Line: 720
+  Reference: ΕΞΟΔΟΣ 28:30
+  Changed: 'ὃταν' -> 'ὅταν'
+  Location: Chapter 28, Verse 30
+
 File: EXO_src.tex, Line 656
   TSV Line: 30
   Reference: ΕΞΟΔΟΣ 23:19
@@ -3067,6 +3621,12 @@ File: EXO_src.tex, Line 973
   Reference: ΕΞΟΔΟΣ 33:3
   Changed: 'σεε' -> 'σε'
   Location: Chapter 33, Verse 3
+
+File: EXO_src.tex, Line 1174
+  TSV Line: 725
+  Reference: ΕΞΟΔΟΣ 39:22
+  Changed: 'Ὃσα' -> 'Ὅσα'
+  Location: Chapter 39, Verse 22
 
 File: EXO_src.tex, Line 803
   TSV Line: 76
@@ -3105,6 +3665,12 @@ File: EZK_src.tex, Line 1163
   Changed: 'διαστμήατος' -> 'διαστήματος'
   Location: Chapter 42, Verse 12
   Notes: rahlf
+
+File: EZK_src.tex, Line 624
+  TSV Line: 819
+  Reference: ΙΕΖΕΚΙΗΛ 23:47
+  Changed: 'ἀποκτενοὺσι' -> 'ἀποκτενούσι'
+  Location: Chapter 23, Verse 47
 
 File: EZK_src.tex, Line 79
   TSV Line: 399
@@ -3188,11 +3754,35 @@ File: EZK_src.tex, Line 613
   Location: Chapter 23, Verse 36
   Notes: rahlf
 
+File: EZK_src.tex, Line 1290
+  TSV Line: 823
+  Reference: ΙΕΖΕΚΙΗΛ 47:6
+  Changed: 'ἑὼρακας' -> 'ἑώρακας'
+  Location: Chapter 47, Verse 6
+
 File: EZK_src.tex, Line 1246
   TSV Line: 420
   Reference: ΙΕΖΕΚΙΗΛ 45:13
   Changed: 'μέτροο' -> 'μέτρου'
   Location: Chapter 45, Verse 13
+
+File: EZK_src.tex, Line 552
+  TSV Line: 818
+  Reference: ΙΕΖΕΚΙΗΛ 22:7
+  Changed: 'μητὲρα' -> 'μητέρα'
+  Location: Chapter 22, Verse 7
+
+File: EZK_src.tex, Line 1263
+  TSV Line: 821
+  Reference: ΙΕΖΕΚΙΗΛ 46:4
+  Changed: 'ἂμωμον' -> 'ἄμωμον'
+  Location: Chapter 46, Verse 4
+
+File: EZK_src.tex, Line 1273
+  TSV Line: 822
+  Reference: ΙΕΖΕΚΙΗΛ 46:14
+  Changed: 'τὸπρωῒ' -> 'τοπρωῒ'
+  Location: Chapter 46, Verse 14
 
 File: EZK_src.tex, Line 24
   TSV Line: 398
@@ -3231,6 +3821,12 @@ File: EZK_src.tex, Line 1246
   Changed: 'γυμὸρ' -> 'γομὸρ'
   Location: Chapter 45, Verse 13
 
+File: EZK_src.tex, Line 876
+  TSV Line: 820
+  Reference: ΙΕΖΕΚΙΗΛ 33:10
+  Changed: 'οὓτως' -> 'οὕτως'
+  Location: Chapter 33, Verse 10
+
 File: EZK_src.tex, Line 1292
   TSV Line: 422
   Reference: ΙΕΖΕΚΙΗΛ 47:8
@@ -3260,6 +3856,12 @@ File: GEN_src.tex, Line 545
   Reference: ΓΕΝΕΣΙΣ 21:8
   Changed: 'ἀπεκγαλακτίσθη' -> 'ἀπεγαλακτίσθη'
   Location: Chapter 21, Verse 8
+
+File: GEN_src.tex, Line 305
+  TSV Line: 709
+  Reference: ΓΕΝΕΣΙΣ 11:25
+  Changed: 'εἰκοσιπὲντε' -> 'εἰκοσιπέντε'
+  Location: Chapter 11, Verse 25
 
 File: GEN_src.tex, Line 466
   TSV Line: 7
@@ -3314,6 +3916,12 @@ File: GEN_src.tex, Line 1356
   Reference: ΓΕΝΕΣΙΣ 43:20
   Changed: 'κατέβηεν' -> 'κατέβημεν'
   Location: Chapter 43, Verse 20
+
+File: GEN_src.tex, Line 993
+  TSV Line: 710
+  Reference: ΓΕΝΕΣΙΣ 32:31
+  Changed: 'πρὸσωπον' -> 'πρόσωπον'
+  Location: Chapter 32, Verse 31
 
 File: GEN_src.tex, Line 548
   TSV Line: 10
@@ -3381,6 +3989,12 @@ File: GEN_src.tex, Line 1345
   Changed: 'ἡμέραν' -> 'ἡμέρας'
   Location: Chapter 43, Verse 9
 
+File: GEN_src.tex, Line 251
+  TSV Line: 708
+  Reference: ΓΕΝΕΣΙΣ 10:4
+  Changed: 'Ῥόδὶοι' -> 'Ῥόδιοι'
+  Location: Chapter 10, Verse 4
+
 File: GEN_src.tex, Line 293
   TSV Line: 4
   Reference: ΓΕΝΕΣΙΣ 11:13
@@ -3404,6 +4018,12 @@ File: GEN_src.tex, Line 380
   Reference: ΓΕΝΕΣΙΣ 15:2
   Changed: 'Δέγει' -> 'Λέγει'
   Location: Chapter 15, Verse 2
+
+File: GEN_src.tex, Line 1006
+  TSV Line: 711
+  Reference: ΓΕΝΕΣΙΣ 33:10
+  Changed: 'εὓρον' -> 'εὕρον'
+  Location: Chapter 33, Verse 10
 
 File: GEN_src.tex, Line 523
   TSV Line: 8
@@ -3447,6 +4067,12 @@ File: ISA_src.tex, Line 533
   Changed: 'ἐνοικοῦντασἐ πὶ' -> 'ἐνοικοῦντας ἐπὶ'
   Location: Chapter 26, Verse 21
 
+File: ISA_src.tex, Line 864
+  TSV Line: 809
+  Reference: ΗΣΑΙΑΣ 41:14
+  Changed: 'λυτρούμενὸσσε' -> 'λυτρούμενός σε'
+  Location: Chapter 41, Verse 14
+
 File: ISA_src.tex, Line 1290
   TSV Line: 386
   Reference: ΗΣΑΙΑΣ 63:1
@@ -3477,11 +4103,23 @@ File: ISA_src.tex, Line 1222
   Changed: 'βασιλίσκου' -> 'βασιλίσκον'
   Location: Chapter 59, Verse 5
 
+File: ISA_src.tex, Line 1006
+  TSV Line: 811
+  Reference: ΗΣΑΙΑΣ 47:2
+  Changed: 'ἀποκὸλυψαι' -> 'ἀποκόλυψαι'
+  Location: Chapter 47, Verse 2
+
 File: ISA_src.tex, Line 991
   TSV Line: 383
   Reference: ΗΣΑΙΑΣ 46:1
   Changed: 'ἐκλευμένῳ' -> 'ἐκλελυμένῳ'
   Location: Chapter 46, Verse 1
+
+File: ISA_src.tex, Line 708
+  TSV Line: 808
+  Reference: ΗΣΑΙΑΣ 34:13
+  Changed: 'ἀναφυὴσει' -> 'ἀναφυήσει'
+  Location: Chapter 34, Verse 13
 
 File: ISA_src.tex, Line 866
   TSV Line: 380
@@ -3495,11 +4133,41 @@ File: ISA_src.tex, Line 1009
   Changed: 'θύγατεηρ' -> 'θύγατερ'
   Location: Chapter 47, Verse 5
 
+File: ISA_src.tex, Line 361
+  TSV Line: 801
+  Reference: ΗΣΑΙΑΣ 17:10
+  Changed: 'διὰτοῦτο' -> 'διατοῦτο'
+  Location: Chapter 17, Verse 10
+
 File: ISA_src.tex, Line 811
   TSV Line: 379
   Reference: ΗΣΑΙΑΣ 39:2
   Changed: 'Ἐξεκίας' -> 'Ἐζεκίας'
   Location: Chapter 39, Verse 2
+
+File: ISA_src.tex, Line 402
+  TSV Line: 804
+  Reference: ΗΣΑΙΑΣ 20:1
+  Changed: 'Τανὰθαν' -> 'Τανάθαν'
+  Location: Chapter 20, Verse 1
+
+File: ISA_src.tex, Line 513
+  TSV Line: 806
+  Reference: ΗΣΑΙΑΣ 26:1
+  Changed: 'ᾂσονται' -> 'ᾄσονται'
+  Location: Chapter 26, Verse 1
+
+File: ISA_src.tex, Line 1326
+  TSV Line: 812
+  Reference: ΗΣΑΙΑΣ 65:4
+  Changed: 'ἐνὺπνια' -> 'ἐνύπνια'
+  Location: Chapter 65, Verse 4
+
+File: ISA_src.tex, Line 1358
+  TSV Line: 813
+  Reference: ΗΣΑΙΑΣ 66:8
+  Changed: 'ἑὼρακεν' -> 'ἑώρακεν'
+  Location: Chapter 66, Verse 8
 
 File: ISA_src.tex, Line 99
   TSV Line: 365
@@ -3526,6 +4194,12 @@ File: ISA_src.tex, Line 1296
   Changed: 'κριτὴν' -> 'κριτὴς'
   Location: Chapter 63, Verse 7
   Notes: rahlf
+
+File: ISA_src.tex, Line 174
+  TSV Line: 799
+  Reference: ΗΣΑΙΑΣ 8:11
+  Changed: 'πορεὶᾳ' -> 'πορείᾳ'
+  Location: Chapter 8, Verse 11
 
 File: ISA_src.tex, Line 203
   TSV Line: 366
@@ -3563,6 +4237,24 @@ File: ISA_src.tex, Line 979
   Changed: 'σωρήρ' -> 'σωτήρ'
   Location: Chapter 45, Verse 15
 
+File: ISA_src.tex, Line 377
+  TSV Line: 802
+  Reference: ΗΣΑΙΑΣ 19:2
+  Changed: 'νὸμος' -> 'νόμος'
+  Location: Chapter 19, Verse 2
+
+File: ISA_src.tex, Line 377
+  TSV Line: 803
+  Reference: ΗΣΑΙΑΣ 19:2
+  Changed: 'νὸμον' -> 'νόμον'
+  Location: Chapter 19, Verse 2
+
+File: ISA_src.tex, Line 633
+  TSV Line: 807
+  Reference: ΗΣΑΙΑΣ 30:28
+  Changed: 'σὺρον' -> 'σύρον'
+  Location: Chapter 30, Verse 28
+
 File: ISA_src.tex, Line 451
   TSV Line: 372
   Reference: ΗΣΑΙΑΣ 22:22
@@ -3581,6 +4273,18 @@ File: ISA_src.tex, Line 967
   Changed: 'σουὁ' -> 'σου'
   Location: Chapter 45, Verse 3
 
+File: ISA_src.tex, Line 357
+  TSV Line: 800
+  Reference: ΗΣΑΙΑΣ 17:6
+  Changed: 'τὰδε' -> 'τάδε'
+  Location: Chapter 17, Verse 6
+
+File: ISA_src.tex, Line 961
+  TSV Line: 810
+  Reference: ΗΣΑΙΑΣ 44:26
+  Changed: 'ῥὴμα' -> 'ῥήμα'
+  Location: Chapter 44, Verse 26
+
 File: ISA_src.tex, Line 342
   TSV Line: 368
   Reference: ΗΣΑΙΑΣ 16:7
@@ -3592,6 +4296,12 @@ File: ISA_src.tex, Line 357
   Reference: ΗΣΑΙΑΣ 17:6
   Changed: 'ἀπὶ' -> 'ἐπὶ'
   Location: Chapter 17, Verse 6
+
+File: ISA_src.tex, Line 451
+  TSV Line: 805
+  Reference: ΗΣΑΙΑΣ 22:22
+  Changed: 'ὢμῳ' -> 'ὤμῳ'
+  Location: Chapter 22, Verse 22
 
 File: ISA_src.tex, Line 360
   TSV Line: 50
@@ -3624,6 +4334,18 @@ File: JDG_src.tex, Line 483
   Changed: 'θυσαιάσαι' -> 'θυσιάσαι'
   Location: Chapter 16, Verse 23
 
+File: JDG_src.tex, Line 442
+  TSV Line: 746
+  Reference: ΚΡΙΤΑΙ 15:3
+  Changed: 'ἠθὼωμαι' -> 'ἠθώωμαι'
+  Location: Chapter 15, Verse 3
+
+File: JDG_src.tex, Line 568
+  TSV Line: 747
+  Reference: ΚΡΙΤΑΙ 19:30
+  Changed: 'ἑὼραται' -> 'ἑώραται'
+  Location: Chapter 19, Verse 30
+
 File: JDG_src.tex, Line 137
   TSV Line: 163
   Reference: ΚΡΙΤΑΙ 5:16
@@ -3637,11 +4359,29 @@ File: JDG_src.tex, Line 474
   Changed: 'πασσάῳ' -> 'πασσάλῳ'
   Location: Chapter 16, Verse 14
 
+File: JDG_src.tex, Line 377
+  TSV Line: 745
+  Reference: ΚΡΙΤΑΙ 12:2
+  Changed: 'Ἰεφθὰε' -> 'Ἰεφθάε'
+  Location: Chapter 12, Verse 2
+
 File: JDG_src.tex, Line 162
   TSV Line: 164
   Reference: ΚΡΙΤΑΙ 6:8
   Changed: 'νἱοὺς' -> 'υἱοὺς'
   Location: Chapter 6, Verse 8
+
+File: JDG_src.tex, Line 98
+  TSV Line: 744
+  Reference: ΚΡΙΤΑΙ 4:2
+  Changed: 'ἂρχων' -> 'ἄρχων'
+  Location: Chapter 4, Verse 2
+
+File: JDT_src.tex, Line 14
+  TSV Line: 844
+  Reference: ΙΟΥΔΙΘ 1:11
+  Changed: 'Ναβουχοδονὸσορ' -> 'Ναβουχοδονόσορ'
+  Location: Chapter 1, Verse 11
 
 File: JDT_src.tex, Line 7
   TSV Line: 461
@@ -3674,11 +4414,29 @@ File: JDT_src.tex, Line 305
   Changed: 'προσώτῳ' -> 'προσώπῳ'
   Location: Chapter 14, Verse 7
 
+File: JDT_src.tex, Line 12
+  TSV Line: 843
+  Reference: ΙΟΥΔΙΘ 1:9
+  Changed: 'Βετὰνη' -> 'Βετάνη'
+  Location: Chapter 1, Verse 9
+
+File: JDT_src.tex, Line 260
+  TSV Line: 846
+  Reference: ΙΟΥΔΙΘ 12:4
+  Changed: 'Κὺριος' -> 'Κύριος'
+  Location: Chapter 12, Verse 4
+
 File: JDT_src.tex, Line 352
   TSV Line: 466
   Reference: ΙΟΥΔΙΘ 16:19
   Changed: 'αὕτς' -> 'αὕτη'
   Location: Chapter 16, Verse 19
+
+File: JDT_src.tex, Line 226
+  TSV Line: 845
+  Reference: ΙΟΥΔΙΘ 10:18
+  Changed: 'πὰσῃ' -> 'πάσῃ'
+  Location: Chapter 10, Verse 18
 
 File: JDT_src.tex, Line 110
   TSV Line: 685
@@ -3755,6 +4513,12 @@ File: JER_src.tex, Line 78
   Location: Chapter 3, Verse 17
   Notes: rahlf
 
+File: JER_src.tex, Line 1356
+  TSV Line: 817
+  Reference: ΙΕΡΕΜΙΑΣ 52:26
+  Changed: 'ἢγαγεν' -> 'ἤγαγεν'
+  Location: Chapter 52, Verse 26
+
 File: JER_src.tex, Line 732
   TSV Line: 390
   Reference: ΙΕΡΕΜΙΑΣ 28:29
@@ -3768,6 +4532,18 @@ File: JER_src.tex, Line 202
   Changed: 'ξύλου' -> 'ξύλον'
   Location: Chapter 7, Verse 20
   Notes: rahlf
+
+File: JER_src.tex, Line 444
+  TSV Line: 814
+  Reference: ΙΕΡΕΜΙΑΣ 17:24
+  Changed: 'ἓσται' -> 'ἕσται'
+  Location: Chapter 17, Verse 24
+
+File: JER_src.tex, Line 512
+  TSV Line: 815
+  Reference: ΙΕΡΕΜΙΑΣ 21:4
+  Changed: 'τὰδε' -> 'τάδε'
+  Location: Chapter 21, Verse 4
 
 File: JOB_src.tex, Line 883
   TSV Line: 319
@@ -3856,6 +4632,12 @@ File: JOB_src.tex, Line 872
   Location: Chapter 34, Verse 14
 
 File: JOB_src.tex, Line 933
+  TSV Line: 792
+  Reference: ΙΩΒ 36:21
+  Changed: 'τοὺτων' -> 'τούτων'
+  Location: Chapter 36, Verse 21
+
+File: JOB_src.tex, Line 933
   TSV Line: 320
   Reference: ΙΩΒ 36:21
   Changed: 'ἄτοκα' -> 'ἄτοπα'
@@ -3872,6 +4654,36 @@ File: JOB_src.tex, Line 1122
   Reference: ΙΩΒ 42:16
   Changed: 'Σἴδεν' -> 'εἶδεν'
   Location: Chapter 42, Verse 16
+
+File: JOB_src.tex, Line 145
+  TSV Line: 790
+  Reference: ΙΩΒ 6:22
+  Changed: 'ἢτησα' -> 'ἤτησα'
+  Location: Chapter 6, Verse 22
+
+File: JOB_src.tex, Line 731
+  TSV Line: 791
+  Reference: ΙΩΒ 30:4
+  Changed: 'ῥὶζας' -> 'ῥίζας'
+  Location: Chapter 30, Verse 4
+
+File: JOB_src.tex, Line 1057
+  TSV Line: 794
+  Reference: ΙΩΒ 40:11
+  Changed: 'πὰντα' -> 'πάντα'
+  Location: Chapter 40, Verse 11
+
+File: JOB_src.tex, Line 1054
+  TSV Line: 793
+  Reference: ΙΩΒ 40:8
+  Changed: 'ἳνα' -> 'ἵνα'
+  Location: Chapter 40, Verse 8
+
+File: JOB_src.tex, Line 1113
+  TSV Line: 795
+  Reference: ΙΩΒ 42:7
+  Changed: 'δὺο' -> 'δύο'
+  Location: Chapter 42, Verse 7
 
 File: JOS_src.tex, Line 130
   TSV Line: 145
@@ -3976,6 +4788,18 @@ File: JOS_src.tex, Line 600
   Changed: 'ἡυμέρας' -> 'ἡμέρας'
   Location: Chapter 22, Verse 3
 
+File: JOS_src.tex, Line 503
+  TSV Line: 742
+  Reference: ΙΗΣΟΥΣ ΝΑΥΗ 19:17
+  Changed: 'Ἰσσὰχαρ' -> 'Ἰσσάχαρ'
+  Location: Chapter 19, Verse 17
+
+File: JOS_src.tex, Line 532
+  TSV Line: 743
+  Reference: ΙΗΣΟΥΣ ΝΑΥΗ 19:46
+  Changed: 'Ἱερὰκων' -> 'Ἱεράκων'
+  Location: Chapter 19, Verse 46
+
 File: JOS_src.tex, Line 242
   TSV Line: 148
   Reference: ΙΗΣΟΥΣ ΝΑΥΗ 10:21
@@ -3983,11 +4807,35 @@ File: JOS_src.tex, Line 242
   Location: Chapter 10, Verse 21
   Notes: rahlf
 
+File: JOS_src.tex, Line 178
+  TSV Line: 740
+  Reference: ΙΗΣΟΥΣ ΝΑΥΗ 8:19
+  Changed: 'καὶτὴν' -> 'ἐπὶ τὴν'
+  Location: Chapter 8, Verse 19
+
 File: JOS_src.tex, Line 293
   TSV Line: 151
   Reference: ΙΗΣΟΥΣ ΝΑΥΗ 12:5
   Changed: 'Γαλαδ' -> 'Γαλαὰδ'
   Location: Chapter 12, Verse 5
+
+File: JOS_src.tex, Line 122
+  TSV Line: 738
+  Reference: ΙΗΣΟΥΣ ΝΑΥΗ 6:17
+  Changed: 'Κυρὶῳ' -> 'Κυρίῳ'
+  Location: Chapter 6, Verse 17
+
+File: JOS_src.tex, Line 124
+  TSV Line: 739
+  Reference: ΙΗΣΟΥΣ ΝΑΥΗ 6:19
+  Changed: 'Κυρὶῳ' -> 'Κυρίῳ'
+  Location: Chapter 6, Verse 19
+
+File: JOS_src.tex, Line 469
+  TSV Line: 741
+  Reference: ΙΗΣΟΥΣ ΝΑΥΗ 18:12
+  Changed: 'νὼτου' -> 'νώτου'
+  Location: Chapter 18, Verse 12
 
 File: JOS_src.tex, Line 123
   TSV Line: 144
@@ -4109,6 +4957,12 @@ File: LEV_src.tex, Line 158
   Changed: 'θυαίας' -> 'θυσίας'
   Location: Chapter 7, Verse 15
 
+File: LEV_src.tex, Line 132
+  TSV Line: 726
+  Reference: ΛΕΥΙΤΙΚΟΝ 6:13
+  Changed: 'τὸπρωῒ' -> 'τοπρωῒ'
+  Location: Chapter 6, Verse 13
+
 File: LEV_src.tex, Line 785
   TSV Line: 54
   Reference: ΛΕΥΙΤΙΚΟΝ 25:34
@@ -4121,11 +4975,29 @@ File: LEV_src.tex, Line 365
   Changed: 'ωἶδος' -> 'εἶδος'
   Location: Chapter 13, Verse 43
 
+File: LEV_src.tex, Line 719
+  TSV Line: 728
+  Reference: ΛΕΥΙΤΙΚΟΝ 23:37
+  Changed: 'Κυρὶῳ' -> 'Κυρίῳ'
+  Location: Chapter 23, Verse 37
+
 File: LEV_src.tex, Line 263
   TSV Line: 46
   Reference: ΛΕΥΙΤΙΚΟΝ 10:19
   Changed: 'ἔται' -> 'ἔσται'
   Location: Chapter 10, Verse 19
+
+File: LEV_src.tex, Line 513
+  TSV Line: 727
+  Reference: ΛΕΥΙΤΙΚΟΝ 17:4
+  Changed: 'αὶμα' -> 'αίμα'
+  Location: Chapter 17, Verse 4
+
+File: LEV_src.tex, Line 788
+  TSV Line: 729
+  Reference: ΛΕΥΙΤΙΚΟΝ 25:37
+  Changed: 'τὸκῳ' -> 'τόκῳ'
+  Location: Chapter 25, Verse 37
 
 File: LEV_src.tex, Line 501
   TSV Line: 49
@@ -4157,6 +5029,42 @@ File: LJE_src.tex, Line 73
   Changed: 'περίχρυσον' -> 'περίχρυσοι'
   Location: Chapter 1, Verse 70
 
+File: LJE_src.tex, Line 42
+  TSV Line: 855
+  Reference: ΕΠΙΣΤΟΛΗ ΙΕΡΕΜΙΟΥ 1:39
+  Changed: 'ὡμοιωμὲνοι' -> 'ὡμοιωμένοι'
+  Location: Chapter 1, Verse 39
+
+File: LJE_src.tex, Line 44
+  TSV Line: 856
+  Reference: ΕΠΙΣΤΟΛΗ ΙΕΡΕΜΙΟΥ 1:41
+  Changed: 'αἰσθὲσθαι' -> 'αἰσθέσθαι'
+  Location: Chapter 1, Verse 41
+
+File: LJE_src.tex, Line 57
+  TSV Line: 861
+  Reference: ΕΠΙΣΤΟΛΗ ΙΕΡΕΜΙΟΥ 1:54
+  Changed: 'ἀδὺνατοι' -> 'ἀδύνατοι'
+  Location: Chapter 1, Verse 54
+
+File: LJE_src.tex, Line 46
+  TSV Line: 857
+  Reference: ΕΠΙΣΤΟΛΗ ΙΕΡΕΜΙΟΥ 1:43
+  Changed: 'σχοινὶα' -> 'σχοινία'
+  Location: Chapter 1, Verse 43
+
+File: LJE_src.tex, Line 48
+  TSV Line: 858
+  Reference: ΕΠΙΣΤΟΛΗ ΙΕΡΕΜΙΟΥ 1:45
+  Changed: 'γὲνηται' -> 'γένηται'
+  Location: Chapter 1, Verse 45
+
+File: LJE_src.tex, Line 56
+  TSV Line: 860
+  Reference: ΕΠΙΣΤΟΛΗ ΙΕΡΕΜΙΟΥ 1:53
+  Changed: 'Βασιλὲα' -> 'Βασιλέα'
+  Location: Chapter 1, Verse 53
+
 File: LJE_src.tex, Line 58
   TSV Line: 484
   Reference: ΕΠΙΣΤΟΛΗ ΙΕΡΕΜΙΟΥ 1:55
@@ -4174,6 +5082,18 @@ File: LJE_src.tex, Line 46
   Reference: ΕΠΙΣΤΟΛΗ ΙΕΡΕΜΙΟΥ 1:43
   Changed: 'ὅτας' -> 'ὅταν'
   Location: Chapter 1, Verse 43
+
+File: LJE_src.tex, Line 8
+  TSV Line: 854
+  Reference: ΕΠΙΣΤΟΛΗ ΙΕΡΕΜΙΟΥ 1:5
+  Changed: 'λὰβῃ' -> 'λάβῃ'
+  Location: Chapter 1, Verse 5
+
+File: LJE_src.tex, Line 54
+  TSV Line: 859
+  Reference: ΕΠΙΣΤΟΛΗ ΙΕΡΕΜΙΟΥ 1:51
+  Changed: 'ὃτι' -> 'ὅτι'
+  Location: Chapter 1, Verse 51
 
 File: LJE_src.tex, Line 76
   TSV Line: 706
@@ -4247,6 +5167,24 @@ File: NEH_src.tex, Line 349
   Changed: 'Ἰσδεϊοὺ' -> 'Ἰεδεϊοὺ'
   Location: Chapter 12, Verse 21
 
+File: NEH_src.tex, Line 359
+  TSV Line: 787
+  Reference: ΝΕΕΜΙΑΣ 12:31
+  Changed: 'τεὶχους' -> 'τείχους'
+  Location: Chapter 12, Verse 31
+
+File: NEH_src.tex, Line 362
+  TSV Line: 788
+  Reference: ΝΕΕΜΙΑΣ 12:34
+  Changed: 'Ἱερεμὶα' -> 'Ἱερεμία'
+  Location: Chapter 12, Verse 34
+
+File: NEH_src.tex, Line 363
+  TSV Line: 789
+  Reference: ΝΕΕΜΙΑΣ 12:35
+  Changed: 'Ἰωνὰθαν' -> 'Ἰωνάθαν'
+  Location: Chapter 12, Verse 35
+
 File: NEH_src.tex, Line 340
   TSV Line: 299
   Reference: ΝΕΕΜΙΑΣ 12:12
@@ -4264,6 +5202,12 @@ File: NEH_src.tex, Line 234
   Reference: ΝΕΕΜΙΑΣ 9:10
   Changed: 'ὅτς' -> 'ὅτι'
   Location: Chapter 9, Verse 10
+
+File: NEH_src.tex, Line 43
+  TSV Line: 786
+  Reference: ΝΕΕΜΙΑΣ 3:6a
+  Changed: 'ἓως' -> 'ἕως'
+  Location: Chapter 3, Verse 6a
 
 File: NEH_src.tex, Line 194
   TSV Line: 20
@@ -4495,6 +5439,12 @@ File: NUM_src.tex, Line 360
   Changed: 'μαρτυρίον' -> 'μαρτυρίου'
   Location: Chapter 8, Verse 15
 
+File: NUM_src.tex, Line 661
+  TSV Line: 731
+  Reference: ΑΡΙΘΜΟΙ 17:17
+  Changed: 'ἐπὶγραψον' -> 'ἐπίγραψον'
+  Location: Chapter 17, Verse 17
+
 File: NUM_src.tex, Line 578
   TSV Line: 66
   Reference: ΑΡΙΘΜΟΙ 15:12
@@ -4634,6 +5584,12 @@ File: NUM_src.tex, Line 632
   Changed: 'κύκγῳ' -> 'κύκλῳ'
   Location: Chapter 16, Verse 24
 
+File: NUM_src.tex, Line 996
+  TSV Line: 732
+  Reference: ΑΡΙΘΜΟΙ 27:17
+  Changed: 'ὃστις' -> 'ὅστις'
+  Location: Chapter 27, Verse 17
+
 File: NUM_src.tex, Line 52
   TSV Line: 55
   Reference: ΑΡΙΘΜΟΙ 1:49
@@ -4651,6 +5607,12 @@ File: NUM_src.tex, Line 1110
   Reference: ΑΡΙΘΜΟΙ 31:17
   Changed: 'ἔγυω' -> 'ἔγνω'
   Location: Chapter 31, Verse 17
+
+File: NUM_src.tex, Line 232
+  TSV Line: 730
+  Reference: ΑΡΙΘΜΟΙ 6:5
+  Changed: 'ἓως' -> 'ἕως'
+  Location: Chapter 6, Verse 5
 
 File: NUM_src.tex, Line 382
   TSV Line: 643
@@ -4676,6 +5638,12 @@ File: NUM_src.tex, Line 146
   Reference: ALL
   Changed: 'λέγεν' -> 'λέγων'
   Location: Chapter 4, Verse 1
+
+File: PRO_src.tex, Line 936
+  TSV Line: 797
+  Reference: ΠΑΡΟΙΜΙΑΙ ΣΑΛΩΜΩΝΤΟΣ 29:16
+  Changed: 'πολλαὶγίνονται' -> 'πολλαὶ γίνονται'
+  Location: Chapter 29, Verse 16
 
 File: PRO_src.tex, Line 209
   TSV Line: 353
@@ -4834,6 +5802,12 @@ File: PSA_src.tex, Line 2639
   Changed: 'ἐκέραξα' -> 'ἐκέκραξα'
   Location: Chapter 141, Verse 6
 
+File: PSA_src.tex, Line 455
+  TSV Line: 796
+  Reference: ΨΑΛΜΟΙ 30:3
+  Changed: 'τὰχυνον' -> 'τάχυνον'
+  Location: Chapter 30, Verse 3
+
 File: PSA_src.tex, Line 626
   TSV Line: 335
   Reference: ΨΑΛΜΟΙ 37:1
@@ -4946,6 +5920,12 @@ File: SIR_src.tex, Line 58
   Changed: 'παπεινώσουσι' -> 'ταπεινώσουσι'
   Location: Chapter 2, Verse 17
 
+File: SIR_src.tex, Line 336
+  TSV Line: 849
+  Reference: ΣΟΦΙΑ ΣΕΙΡΑΧ 12:18
+  Changed: 'κεφαλὴναὐτοῦ' -> 'κεφαλὴν αὐτοῦ'
+  Location: Chapter 12, Verse 18
+
 File: SIR_src.tex, Line 500
   TSV Line: 474
   Reference: ΣΟΦΙΑ ΣΕΙΡΑΧ 18:31
@@ -4979,6 +5959,12 @@ File: SIR_src.tex, Line 1142
   Location: Chapter 40, Verse 25
   Notes: rahlf
 
+File: SIR_src.tex, Line 1224
+  TSV Line: 852
+  Reference: ΣΟΦΙΑ ΣΕΙΡΑΧ 43:25
+  Changed: 'παρὰδοξα' -> 'παράδοξα'
+  Location: Chapter 43, Verse 25
+
 File: SIR_src.tex, Line 1337
   TSV Line: 482
   Reference: ΣΟΦΙΑ ΣΕΙΡΑΧ 48:5
@@ -4986,12 +5972,30 @@ File: SIR_src.tex, Line 1337
   Location: Chapter 48, Verse 5
   Notes: rahlf
 
+File: SIR_src.tex, Line 884
+  TSV Line: 851
+  Reference: ΣΟΦΙΑ ΣΕΙΡΑΧ 31:22
+  Changed: 'Φὸνεύων' -> 'Φονεύων'
+  Location: Chapter 31, Verse 22
+
+File: SIR_src.tex, Line 875
+  TSV Line: 850
+  Reference: ΣΟΦΙΑ ΣΕΙΡΑΧ 31:13
+  Changed: 'Κυρὶον' -> 'Κυρίον'
+  Location: Chapter 31, Verse 13
+
 File: SIR_src.tex, Line 1290
   TSV Line: 481
   Reference: ΣΟΦΙΑ ΣΕΙΡΑΧ 46:5
   Changed: 'μέγος' -> 'μέγας'
   Location: Chapter 46, Verse 5
   Notes: rahlf
+
+File: SIR_src.tex, Line 1431
+  TSV Line: 853
+  Reference: ΣΟΦΙΑ ΣΕΙΡΑΧ 51:25
+  Changed: 'στὸμα' -> 'στόμα'
+  Location: Chapter 51, Verse 25
 
 File: SIR_src.tex, Line 881
   TSV Line: 476
@@ -5042,16 +6046,46 @@ File: TOB_src.tex, Line 94
   Changed: 'γενυημάτων' -> 'γεννημάτων'
   Location: Chapter 5, Verse 13
 
+File: TOB_src.tex, Line 243
+  TSV Line: 841
+  Reference: ΤΩΒΙΤ 13:15
+  Changed: 'εὐλογεὶτω' -> 'εὐλογείτω'
+  Location: Chapter 13, Verse 15
+
 File: TOB_src.tex, Line 21
   TSV Line: 458
   Reference: ΤΩΒΙΤ 1:18
   Changed: 'Ἰιυδαίας' -> 'Ἰουδαίας'
   Location: Chapter 1, Verse 18
 
+File: TOB_src.tex, Line 23
+  TSV Line: 838
+  Reference: ΤΩΒΙΤ 1:20
+  Changed: 'Τωβὶου' -> 'Τωβίου'
+  Location: Chapter 1, Verse 20
+
 File: TOB_src.tex, Line 46
   TSV Line: 459
   Reference: ΤΩΒΙΤ 3:5
   Changed: 'εἰσιὶ' -> 'εἰσὶ'
+  Location: Chapter 3, Verse 5
+
+File: TOB_src.tex, Line 150
+  TSV Line: 840
+  Reference: ΤΩΒΙΤ 8:9
+  Changed: 'τὰφον' -> 'τάφον'
+  Location: Chapter 8, Verse 9
+
+File: TOB_src.tex, Line 263
+  TSV Line: 842
+  Reference: ΤΩΒΙΤ 14:15
+  Changed: 'πρὶνὴ' -> 'πρινὴ'
+  Location: Chapter 14, Verse 15
+
+File: TOB_src.tex, Line 46
+  TSV Line: 839
+  Reference: ΤΩΒΙΤ 3:5
+  Changed: 'ὃτι' -> 'ὅτι'
   Location: Chapter 3, Verse 5
 
 File: TOB_src.tex, Line 235
@@ -5072,6 +6106,12 @@ File: TOB_src.tex, Line 9
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 1, Verse 6
+
+File: WIS_src.tex, Line 317
+  TSV Line: 847
+  Reference: ΣΟΦΙΑ ΣΑΛΩΜΩΝ 14:11
+  Changed: 'ποσὶνἀφρόνων' -> 'ποσὶν ἀφρόνων'
+  Location: Chapter 14, Verse 11
 
 File: WIS_src.tex, Line 19
   TSV Line: 467
@@ -5117,6 +6157,12 @@ File: WIS_src.tex, Line 348
   Changed: 'αὐτον' -> 'αὐτοῦ'
   Location: Chapter 15, Verse 10
 
+File: WIS_src.tex, Line 439
+  TSV Line: 848
+  Reference: ΣΟΦΙΑ ΣΑΛΩΜΩΝ 19:3
+  Changed: 'πὲνθη' -> 'πένθη'
+  Location: Chapter 19, Verse 3
+
 File: WIS_src.tex, Line 43
   TSV Line: 468
   Reference: ΣΟΦΙΑ ΣΑΛΩΜΩΝ 2:23
@@ -5130,45 +6176,59 @@ File: WIS_src.tex, Line 425
   Location: Chapter 18, Verse 15
 
 --------------------------------------------------------------------------------
+CORRECTIONS NOT FOUND
+--------------------------------------------------------------------------------
+
+TSV Line 757: ΒΑΣΙΛΕΙΩΝ Α 20:42
+  Expected in: 1SA_src.tex
+  Looking for: 'ἀνὰμέσον'
+  Correction: 'ἀναμέσον'
+
+TSV Line 734: ΔΕΥΤΕΡΟΝΟΜΙΟΝ 3:11
+  Expected in: DEU_src.tex
+  Looking for: 'κλὶνη'
+  Correction: 'κλίνη'
+
+--------------------------------------------------------------------------------
 SUMMARY BY FILE
 --------------------------------------------------------------------------------
 
-1CH_src.tex: 93 corrections
-1ES_src.tex: 20 corrections
-1KI_src.tex: 17 corrections
-1MA_src.tex: 16 corrections
-1SA_src.tex: 78 corrections
-2CH_src.tex: 21 corrections
-2KI_src.tex: 43 corrections
-2MA_src.tex: 19 corrections
-2SA_src.tex: 16 corrections
-3MA_src.tex: 16 corrections
-4MA_src.tex: 73 corrections
+1CH_src.tex: 106 corrections
+1ES_src.tex: 22 corrections
+1KI_src.tex: 21 corrections
+1MA_src.tex: 17 corrections
+1SA_src.tex: 90 corrections
+2CH_src.tex: 22 corrections
+2KI_src.tex: 48 corrections
+2MA_src.tex: 20 corrections
+2SA_src.tex: 18 corrections
+3MA_src.tex: 23 corrections
+4MA_src.tex: 93 corrections
 BEL_src.tex: 1 corrections
-DAG_src.tex: 11 corrections
-DEU_src.tex: 32 corrections
-ECC_src.tex: 1 corrections
+DAG_src.tex: 16 corrections
+DEU_src.tex: 37 corrections
+ECC_src.tex: 2 corrections
 ESG_src.tex: 12 corrections
-EXO_src.tex: 35 corrections
-EZK_src.tex: 26 corrections
+EXO_src.tex: 49 corrections
+EZK_src.tex: 32 corrections
 EZR_src.tex: 2 corrections
-GEN_src.tex: 31 corrections
-ISA_src.tex: 27 corrections
-JDG_src.tex: 6 corrections
-JDT_src.tex: 8 corrections
-JER_src.tex: 12 corrections
-JOB_src.tex: 17 corrections
-JOS_src.tex: 28 corrections
+GEN_src.tex: 35 corrections
+ISA_src.tex: 42 corrections
+JDG_src.tex: 10 corrections
+JDT_src.tex: 12 corrections
+JER_src.tex: 15 corrections
+JOB_src.tex: 23 corrections
+JOS_src.tex: 34 corrections
 LAM_src.tex: 2 corrections
-LEV_src.tex: 16 corrections
-LJE_src.tex: 5 corrections
+LEV_src.tex: 20 corrections
+LJE_src.tex: 13 corrections
 MAN_src.tex: 3 corrections
-NEH_src.tex: 38 corrections
-NUM_src.tex: 41 corrections
-PRO_src.tex: 12 corrections
-PSA_src.tex: 28 corrections
+NEH_src.tex: 42 corrections
+NUM_src.tex: 44 corrections
+PRO_src.tex: 13 corrections
+PSA_src.tex: 29 corrections
 RUT_src.tex: 1 corrections
-SIR_src.tex: 12 corrections
+SIR_src.tex: 17 corrections
 SNG_src.tex: 5 corrections
-TOB_src.tex: 6 corrections
-WIS_src.tex: 9 corrections
+TOB_src.tex: 11 corrections
+WIS_src.tex: 11 corrections
