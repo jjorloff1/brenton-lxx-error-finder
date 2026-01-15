@@ -230,5 +230,10 @@ This project is for academic and research purposes, analyzing public domain Sept
 - [x] The missing_words, and legitimate words files don't have the same number in them, which are different?
 [x] Refactor: For check_sequence_errors move line number to the first column
 [x] Manual: Validate sequencing errors
-[ ] Manual: Verify and Fix Grave Errors
+[x] Manual: Verify and Fix Grave Errors
     [x] Investigated why merged words weren't detected by typo script - they were matching compound word combinations and being classified as "legitimate variations". Created `check_multiple_accents.py` to detect these.
+[ ] fix multiple accents
+    [ ] why did τοῖ not show up from ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 16:42
+[ ] find multiple words in a row without accents (ΔΑΝΙΗΛ 9:4)
+[ ] may not be worth it: words present, but in different order than rahlf and swete
+[ ] confirm fixes applied in all books
