@@ -253,3 +253,5 @@ This project is for academic and research purposes, analyzing public domain Sept
 [ ] may not be worth it: words present, but in different order than rahlf and swete
 [ ] confirm fixes applied in all books
 [ ] apply all corrections one last time to make sure none missed.
+[ ] Specific cases
+- [ ] ΑΡΙΘΜΟΙ 12:5	εἰν this must have been in rahlf?
