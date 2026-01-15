@@ -232,8 +232,8 @@ This project is for academic and research purposes, analyzing public domain Sept
 [x] Manual: Validate sequencing errors
 [x] Manual: Verify and Fix Grave Errors
     [x] Investigated why merged words weren't detected by typo script - they were matching compound word combinations and being classified as "legitimate variations". Created `check_multiple_accents.py` to detect these.
-[ ] fix multiple accents
-    [ ] why did τοῖ not show up from ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 16:42
+[x] fix multiple accents
+    [x] why did τοῖ not show up from ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 16:42 -> τοι is a valid word in the Rahlf corpus
 [ ] find multiple words in a row without accents (ΔΑΝΙΗΛ 9:4)
 [ ] may not be worth it: words present, but in different order than rahlf and swete
 [ ] confirm fixes applied in all books
