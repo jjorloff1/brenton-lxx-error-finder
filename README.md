@@ -21,6 +21,7 @@ brenton-lxx-error-finder/
 ├── accepted_sequence_variants.tsv  # Verse-specific accepted textual variants
 ├── input/                          # Shared input files
 │   ├── Brenton.tex                 # Source text (LaTeX format)
+│   ├── enclitics_proclitics.txt    # Valid unaccented word forms (for check_unaccented_words)
 │   ├── rahlfs_words.csv            # Word list from Rahlfs edition
 │   ├── rahlfs_versification.csv    # Verse reference mappings (Rahlfs)
 │   ├── swete_words.csv             # Word list from Swete edition
@@ -46,6 +47,10 @@ brenton-lxx-error-finder/
 │   ├── README.md                   # Detailed documentation
 │   ├── check_multiple_accents.py   # Main script
 │   └── output/                     # Analysis results (multiple_accents.tsv)
+├── check_unaccented_words/         # Missing accent detection (using enclitic/proclitic list)
+│   ├── README.md                   # Detailed documentation
+│   ├── check_unaccented_words.py   # Main script
+│   └── output/                     # Analysis results (unaccented_sequences.tsv, consecutive_enclitics.tsv)
 ├── apply_corrections/              # Correction application scripts
 │   ├── README.md                   # Detailed documentation
 │   ├── apply_corrections.py        # Script to apply corrections to LaTeX
@@ -83,6 +88,13 @@ cd check_multiple_accents
 python3 check_multiple_accents.py
 ```
 Results are written to `check_multiple_accents/output/`.
+
+### Find Missing Accents
+```bash
+cd check_unaccented_words
+python3 check_unaccented_words.py
+```
+Results are written to `check_unaccented_words/output/`.
 
 ### Apply Corrections
 ```bash
@@ -200,6 +212,7 @@ This project uses multiple approaches to detect different categories of OCR erro
 | **Sequence-Based** | `check_sequence_errors.py` | Valid-word substitutions: υ/ν/ς/σ, ε/η, ο/ω confusion; ην↔ης, οι↔αι sequences |
 | **Accent-Based** | `check_grave_accents.py` | Misplaced grave accents on non-ultimate syllables (acute→grave transcription errors) |
 | **Multiple Accent** | `check_multiple_accents.py` | OCR-merged words where two words were combined but both retained accents |
+| **Missing Accents** | `check_unaccented_words.py` | Words missing accents (filters out valid enclitics/proclitics and all-caps headings) |
 
 ### Potential Future Approaches
 
@@ -234,6 +247,9 @@ This project is for academic and research purposes, analyzing public domain Sept
     [x] Investigated why merged words weren't detected by typo script - they were matching compound word combinations and being classified as "legitimate variations". Created `check_multiple_accents.py` to detect these.
 [x] fix multiple accents
     [x] why did τοῖ not show up from ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 16:42 -> τοι is a valid word in the Rahlf corpus
-[ ] find multiple words in a row without accents (ΔΑΝΙΗΛ 9:4)
+[x] find multiple words in a row without accents (ΔΑΝΙΗΛ 9:4)
+[ ] find all words starting with vowels that lack breathing marks.
+[x] Create a list of valid enclitics/proclitics and check accent-less words against that list.
 [ ] may not be worth it: words present, but in different order than rahlf and swete
 [ ] confirm fixes applied in all books
+[ ] apply all corrections one last time to make sure none missed.

@@ -1,0 +1,154 @@
+# Greek Enclitics and Proclitics
+# Words that normally appear without accents in Greek text
+# Sources: Smyth Greek Grammar, Goodell's School Grammar
+#
+# This file is used by check_unaccented_words.py to filter out
+# legitimate unaccented words from error detection.
+
+# ============================================================
+# PROCLITICS - words that lean forward onto following word
+# ============================================================
+
+# Articles (nominative forms only - other cases have accents)
+ὁ
+ἡ
+οἱ
+αἱ
+
+# Prepositions (full forms - some are proclitic)
+εἰς
+ἐς
+ἐκ
+ἐξ
+ἐν
+πρός
+ἀπό
+ἐπί
+μετά
+παρά
+κατά
+διά
+ὑπό
+ἀντί
+περί
+πρό
+ἀνά
+
+# Elided prepositions (before vowels)
+ἐπ
+μετ
+ἀπ
+παρ
+κατ
+δι
+ὑπ
+ἀντ
+περ
+πρ
+ἀν
+
+# Elided prepositions (before rough breathing - aspiration)
+ἐφ
+μεθ
+ἀφ
+καθ
+ὑφ
+ἀνθ
+
+# Conjunctions
+εἰ
+ὡς
+ἀλλά
+οὐδέ
+μηδέ
+
+# Elided conjunctions
+ἀλλ
+οὐδ
+μηδ
+δ
+
+# Negation
+οὐ
+οὐκ
+οὐχ
+μή
+μήτε
+
+# ============================================================
+# ENCLITICS - words that lean back onto preceding word
+# ============================================================
+
+# Personal pronouns (genitive, dative, accusative singular)
+# First person
+μου
+μοι
+με
+# Second person
+σου
+σοι
+σε
+# Third person (reflexive)
+οὑ
+οἱ
+ἑ
+
+# Indefinite pronoun τις/τι (all forms)
+τις
+τι
+τινος
+τινι
+τινα
+τινες
+τινων
+τισι
+τισιν
+τινας
+
+# Indefinite adverbs
+που
+ποθι
+πη
+ποι
+ποθεν
+ποτε
+πω
+πως
+
+# Present indicative of εἰμί "to be" (except εἶ)
+# Note: dual form ἐστόν omitted - not used in Koine Greek
+εἰμι
+ἐστι
+ἐστιν
+ἐσμεν
+ἐστε
+εἰσι
+εἰσιν
+
+# Present indicative of φημί "to say" (except φῄς)
+# Note: dual form φατόν omitted - not used in Koine Greek
+φημι
+φησι
+φησιν
+φαμεν
+φατε
+φασι
+φασιν
+
+# Particles
+γε
+τε
+τοι
+περ
+# Elided particle
+τ
+
+# ============================================================
+# POETIC/DIALECTAL FORMS (less common)
+# ============================================================
+μιν
+νιν
+νυν
+σφι
+σφιν
+σφε
