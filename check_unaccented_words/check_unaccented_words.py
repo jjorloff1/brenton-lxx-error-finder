@@ -255,6 +255,11 @@ def is_all_caps(word):
     return len(letters) > 0 and all(c.isupper() for c in letters)
 
 
+def line_has_lettrine(line):
+    """Check if a line contains a lettrine command (decorative first letter)."""
+    return '\\lettrine' in line
+
+
 def is_valid_unaccented(word, valid_set):
     """Check if word is a known enclitic/proclitic or all-caps (heading)."""
     # All-caps words (headings/titles) legitimately lack accents
@@ -409,12 +414,29 @@ def classify_sequence(sequence, valid_unaccented):
     return {'category': 'ok', 'reason': ''}
 
 
+def get_primary_word_for_count(sequence, valid_unaccented):
+    """Get the primary word to use for the total count.
+
+    For single words, returns that word.
+    For pairs, returns the non-enclitic word (the problematic one).
+    For 3+ sequences, returns the first non-enclitic word.
+    """
+    # Find non-enclitic words
+    invalid_words = [w for w in sequence if not is_valid_unaccented(w, valid_unaccented)]
+
+    if invalid_words:
+        return invalid_words[0]
+    # All are enclitics, just use the first
+    return sequence[0]
+
+
 def finalize_sequence(unaccented_sequence, valid_unaccented, rahlfs_words, swete_words,
                        ctx, prev_accented, next_word, errors, enclitic_pairs,
-                       is_end_of_verse=False):
+                       word_counts, is_end_of_verse=False):
     """Process a completed unaccented sequence and add to appropriate list.
 
     Args:
+        word_counts: Dict mapping stripped word forms to their total counts
         is_end_of_verse: True if this sequence ends at the end of the verse
     """
     if not unaccented_sequence:
@@ -425,12 +447,17 @@ def finalize_sequence(unaccented_sequence, valid_unaccented, rahlfs_words, swete
         unaccented_sequence, valid_unaccented, rahlfs_words, swete_words,
         ctx.line, is_end_of_verse
     )
+
+    # Get the count for the primary flagged word (already has no accents)
+    primary_word = get_primary_word_for_count(unaccented_sequence, valid_unaccented)
+    total_count = word_counts.get(primary_word, 0)
+
     entry = {
         'line_num': ctx.line_num,
         'verse_ref': ctx.verse_ref,
         'unaccented_words': ' '.join(unaccented_sequence),
         'suggested_fix': suggested,
-        'sequence_length': len(unaccented_sequence),
+        'total_count': total_count,
         'reason': result['reason'],
         'context_before': prev_accented or '',
         'context_after': next_word or '',
@@ -440,6 +467,36 @@ def finalize_sequence(unaccented_sequence, valid_unaccented, rahlfs_words, swete
         errors.append(entry)
     elif result['category'] == 'enclitic_pair':
         enclitic_pairs.append(entry)
+
+def count_unaccented_words(brenton_path):
+    """First pass: count all unaccented words in the source text.
+
+    Returns dict mapping word forms (with breathing marks preserved) to their counts.
+    """
+    from collections import Counter
+    word_counts = Counter()
+    parser = BrentonParser(brenton_path)
+
+    print("Counting unaccented words...")
+    for ctx in parser.parse():
+        if not ctx.has_complete_ref or not ctx.greek_words:
+            continue
+
+        # Skip lines with lettrine (decorative first letters at book openings)
+        if line_has_lettrine(ctx.line):
+            continue
+
+        for word in ctx.greek_words:
+            # Skip all-caps words (headings)
+            if is_all_caps(word):
+                continue
+
+            if not word_has_accent(word):
+                # Word already has no accents, use as-is (preserves breathing marks and case)
+                word_counts[word] += 1
+
+    print(f"  Found {len(word_counts)} unique unaccented word forms")
+    return dict(word_counts)
 
 
 def process_brenton_file(brenton_path, valid_unaccented, rahlfs_words, swete_words):
@@ -456,6 +513,10 @@ def process_brenton_file(brenton_path, valid_unaccented, rahlfs_words, swete_wor
         - errors: List of definite issues to fix
         - enclitic_pairs: List of consecutive enclitic pairs for manual review
     """
+    # First pass: count all unaccented words
+    word_counts = count_unaccented_words(brenton_path)
+
+    # Second pass: detect errors
     errors = []
     enclitic_pairs = []
     parser = BrentonParser(brenton_path)
@@ -467,6 +528,10 @@ def process_brenton_file(brenton_path, valid_unaccented, rahlfs_words, swete_wor
             last_book = ctx.book
 
         if not ctx.has_complete_ref or not ctx.greek_words:
+            continue
+
+        # Skip lines with lettrine (decorative first letters at book openings)
+        if line_has_lettrine(ctx.line):
             continue
 
         # Track sequences of unaccented words
@@ -481,7 +546,8 @@ def process_brenton_file(brenton_path, valid_unaccented, rahlfs_words, swete_wor
             if word_has_accent(word):
                 # Sequence ends due to accented word
                 finalize_sequence(unaccented_sequence, valid_unaccented, rahlfs_words, swete_words,
-                                  ctx, prev_accented, word, errors, enclitic_pairs)
+                                  ctx, prev_accented, word, errors, enclitic_pairs,
+                                  word_counts)
                 # Reset sequence
                 unaccented_sequence = []
                 prev_accented = word
@@ -493,7 +559,8 @@ def process_brenton_file(brenton_path, valid_unaccented, rahlfs_words, swete_wor
                 if has_punctuation_after(word, ctx.line):
                     # End sequence here - punctuation breaks it
                     finalize_sequence(unaccented_sequence, valid_unaccented, rahlfs_words, swete_words,
-                                      ctx, prev_accented, '', errors, enclitic_pairs)
+                                      ctx, prev_accented, '', errors, enclitic_pairs,
+                                      word_counts)
                     # The word itself becomes the "previous" context for next sequence
                     prev_accented = word
                     unaccented_sequence = []
@@ -501,7 +568,7 @@ def process_brenton_file(brenton_path, valid_unaccented, rahlfs_words, swete_wor
         # Check sequence at end of verse
         finalize_sequence(unaccented_sequence, valid_unaccented, rahlfs_words, swete_words,
                           ctx, prev_accented, '', errors, enclitic_pairs,
-                          is_end_of_verse=True)
+                          word_counts, is_end_of_verse=True)
 
     return errors, enclitic_pairs
 
@@ -517,7 +584,7 @@ def write_errors_tsv(errors, output_path):
             'Verse Reference',
             'Unaccented Words',
             'Suggested Fix',
-            'Sequence Length',
+            'Total Count',
             'Reason',
             'Context Before',
             'Context After',
@@ -529,7 +596,7 @@ def write_errors_tsv(errors, output_path):
                 error['verse_ref'],
                 error['unaccented_words'],
                 error.get('suggested_fix', ''),
-                error['sequence_length'],
+                error.get('total_count', 0),
                 error['reason'],
                 error['context_before'],
                 error['context_after'],
