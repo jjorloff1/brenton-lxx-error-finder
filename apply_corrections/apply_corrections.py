@@ -108,6 +108,10 @@ def parse_corrections(tsv_path: Path) -> tuple[list[Correction], list[Correction
         if not line.strip():
             continue
 
+        # Skip comment lines
+        if line.strip().startswith('#'):
+            continue
+
         # Split by tab
         parts = line.split('\t')
         if len(parts) < 3:
