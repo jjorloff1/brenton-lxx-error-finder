@@ -58,6 +58,8 @@ python3 check_unaccented_words.py
 
 - `--input PATH` - Path to input .tex file (default: `../input/Brenton.tex`)
 - `--enclitics PATH` - Path to enclitics/proclitics list (default: `../input/enclitics_proclitics.txt`)
+- `--rahlfs-words PATH` - Path to Rahlfs word list for suggested fixes (default: `../input/rahlfs_words.csv`)
+- `--swete-words PATH` - Path to Swete word list for suggested fixes (default: `../input/swete_words.csv`)
 - `--output PATH` - Main output TSV path (default: `output/unaccented_sequences.tsv`)
 - `--enclitic-pairs-output PATH` - Enclitic pairs TSV (default: `output/consecutive_enclitics.tsv`)
 
@@ -72,11 +74,14 @@ Contains definite issues requiring correction:
 | Line Number | Line number in Brenton.tex |
 | Verse Reference | e.g., "ΔΑΝΙΗΛ 9:4" |
 | Unaccented Words | Words without accents (space-separated) |
+| Suggested Fix | Predicted correct form from Rahlfs/Swete (preserves capitalization) |
 | Sequence Length | Number of words in sequence |
 | Reason | Why flagged: "unknown unaccented word", "non-enclitic in pair: X", or "3+ consecutive unaccented" |
 | Context Before | Previous accented word |
 | Context After | Next accented word |
 | Full Line | Complete line from source file |
+
+The "Suggested Fix" column is populated by looking up each unaccented word (stripped of diacritics) in the Rahlfs and Swete word lists. If found, the properly accented form is suggested. Enclitics/proclitics are left unchanged (they're valid without accents). Words not found in either reference list show the original form unchanged.
 
 ### Secondary Output: `output/consecutive_enclitics.tsv`
 
