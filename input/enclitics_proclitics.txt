@@ -115,6 +115,7 @@
 ποτ
 πω
 πως
+μηθ
 
 # Present indicative of εἰμί "to be" (except εἶ)
 # Note: dual form ἐστόν omitted - not used in Koine Greek

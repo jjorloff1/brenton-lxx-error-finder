@@ -2,7 +2,7 @@
 CORRECTION LOG
 ================================================================================
 
-Total corrections applied: 1619
+Total corrections applied: 1620
 Corrections not found: 2
 Corrections at unexpected locations: 0
 
@@ -5614,6 +5614,12 @@ File: EZK_src.tex, Line 1282
   Changed: 'κυκλῳ' -> 'κύκλῳ'
   Location: Chapter 46, Verse 23
 
+File: EZK_src.tex, Line 1287
+  TSV Line: 1405
+  Reference: ΙΕΖΕΚΙΗΛ 47:3
+  Changed: 'μετρῳ' -> 'μέτρῳ'
+  Location: Chapter 47, Verse 3
+
 File: EZK_src.tex, Line 1292
   TSV Line: 425
   Reference: ΙΕΖΕΚΙΗΛ 47:8
@@ -10040,7 +10046,7 @@ DEU_src.tex: 62 corrections
 ECC_src.tex: 6 corrections
 ESG_src.tex: 20 corrections
 EXO_src.tex: 89 corrections
-EZK_src.tex: 62 corrections
+EZK_src.tex: 63 corrections
 EZR_src.tex: 9 corrections
 GEN_src.tex: 77 corrections
 HAB_src.tex: 3 corrections
