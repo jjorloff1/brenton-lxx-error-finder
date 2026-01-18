@@ -257,6 +257,8 @@ This project is for academic and research purposes, analyzing public domain Sept
 - [ ] ΑΡΙΘΜΟΙ 12:5	εἰν this must have been in rahlf?
 - [ ] ΛΕΥΙΤΙΚΟΝ 14:2	ὁ νὁμος	ὁ νὅμος weird breathign mark in wrong spot.
 - [ ] ΑΡΙΘΜΟΙ 15:15	νὀμος	νὄμος similar
+- [ ] why didn't Δανιδ get caught by typo check?
 - [ ] Todo check for breathing marks in wrong spots (not on first or second vowel, following a consonant)
 - [ ] 10066	ΒΑΣΙΛΕΙΩΝ Β 11:25	σου εἰν	σου εἳν
 [ ] create word counts for each version, and compare them, if a word is off by a lot, its possibly a common error (εἰν probably happens a lot for εἰς comparatively)
+[ ] how to compare normal word accenting to find errors.
