@@ -248,7 +248,7 @@ This project is for academic and research purposes, analyzing public domain Sept
 [x] fix multiple accents
     [x] why did τοῖ not show up from ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 16:42 -> τοι is a valid word in the Rahlf corpus
 [x] find multiple words in a row without accents (ΔΑΝΙΗΛ 9:4)
-[ ] find all words starting with vowels that lack breathing marks.
+[ ] find all words with misplace aaccent marks.
 [x] Create a list of valid enclitics/proclitics and check accent-less words against that list.
 [ ] may not be worth it: words present, but in different order than rahlf and swete
 [ ] confirm fixes applied in all books
