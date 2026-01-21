@@ -447,7 +447,8 @@ def check_breathing_errors(word: str, crasis_dict: Dict[str, str]) -> List[Breat
 
             if is_crasis:
                 # It's a known crasis - verify it has correct form
-                if word != correct_form:
+                # Compare case-insensitively since allowlist may have both lowercase and capital versions
+                if word.lower() != correct_form.lower():
                     errors.append(BreathingError(
                         error_type='crasis_wrong_form',
                         description=f'Crasis form incorrect, should be {correct_form}'
