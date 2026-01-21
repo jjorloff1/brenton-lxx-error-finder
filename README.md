@@ -22,6 +22,7 @@ brenton-lxx-error-finder/
 ├── input/                          # Shared input files
 │   ├── Brenton.tex                 # Source text (LaTeX format)
 │   ├── enclitics_proclitics.txt    # Valid unaccented word forms (for check_unaccented_words)
+│   ├── crasis_allowlist.txt        # Known crasis forms (for check_breathing_marks)
 │   ├── rahlfs_words.csv            # Word list from Rahlfs edition
 │   ├── rahlfs_versification.csv    # Verse reference mappings (Rahlfs)
 │   ├── swete_words.csv             # Word list from Swete edition
@@ -51,6 +52,10 @@ brenton-lxx-error-finder/
 │   ├── README.md                   # Detailed documentation
 │   ├── check_unaccented_words.py   # Main script
 │   └── output/                     # Analysis results (unaccented_sequences.tsv, consecutive_enclitics.tsv)
+├── check_breathing_marks/          # Breathing mark error detection
+│   ├── README.md                   # Detailed documentation
+│   ├── check_breathing_marks.py    # Main script
+│   └── output/                     # Analysis results (breathing_errors.tsv)
 ├── apply_corrections/              # Correction application scripts
 │   ├── README.md                   # Detailed documentation
 │   ├── apply_corrections.py        # Script to apply corrections to LaTeX
@@ -95,6 +100,13 @@ cd check_unaccented_words
 python3 check_unaccented_words.py
 ```
 Results are written to `check_unaccented_words/output/`.
+
+### Find Breathing Mark Errors
+```bash
+cd check_breathing_marks
+python3 check_breathing_marks.py
+```
+Results are written to `check_breathing_marks/output/`.
 
 ### Apply Corrections
 ```bash
@@ -213,6 +225,7 @@ This project uses multiple approaches to detect different categories of OCR erro
 | **Accent-Based** | `check_grave_accents.py` | Misplaced grave accents on non-ultimate syllables (acute→grave transcription errors) |
 | **Multiple Accent** | `check_multiple_accents.py` | OCR-merged words where two words were combined but both retained accents |
 | **Missing Accents** | `check_unaccented_words.py` | Words missing accents (filters out valid enclitics/proclitics and all-caps headings) |
+| **Breathing Marks** | `check_breathing_marks.py` | Missing/misplaced breathing marks, wrong breathing type, interior rho errors, crasis validation |
 
 ### Potential Future Approaches
 

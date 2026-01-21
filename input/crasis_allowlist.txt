@@ -1,0 +1,67 @@
+# Crasis Allowlist
+# Known crasis forms with their CORRECT breathing and accenting.
+# One word per line (with correct diacritics).
+# Comments start with #
+#
+# Crasis = contraction of two words, typically:
+# - καί + vowel-initial word
+# - τά/τό/τοῦ + vowel-initial word
+#
+# The breathing mark indicates the original second word's breathing.
+# Rough breathing = original word had rough breathing
+# Smooth breathing (coronis) = original word had smooth breathing
+
+# καί + ἐγώ forms
+κἀγώ
+κἀγώγε
+κἀμοί
+κἀμέ
+κἀμοῦ
+
+# καί + ἐκεῖ forms
+κἀκεῖ
+κἀκεῖθεν
+κἀκεῖνος
+κἀκεῖνον
+κἀκεῖνοι
+κἀκείνη
+κἀκείνης
+κἀκείνων
+κἀκείνοις
+κἀκείναις
+κἀκείνας
+κἀκείνους
+
+# καί + ἄν / ἐάν
+κἄν
+κἄνπερ
+
+# καί + εἰ
+κεἰ
+
+# καί + ἔπειτα
+κἄπειτα
+
+# καί + ἐν
+κἀν
+
+# τά + ἀ- forms
+τἀληθῆ
+τἀληθές
+τἄλλα
+τἀναντία
+
+# τό + ἐ- forms
+τοὔνομα
+τοὐναντίον
+τοὔργον
+τοὐμόν
+τοὐπίσω
+
+# τοῦ + ἑ- forms (rough breathing preserved)
+θἁτέρου
+θἅτερον
+θἁτέρα
+θἁτέρῳ
+
+# Additional forms may be added as discovered during testing
