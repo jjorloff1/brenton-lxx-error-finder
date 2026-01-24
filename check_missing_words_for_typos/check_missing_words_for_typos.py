@@ -282,9 +282,11 @@ def is_word_in_sets(word):
     
     # Second, try with movable ν added at the end
     # This handles cases where Brenton drops the movable nu
-    normalized_with_nu = normalized + 'ν'
-    if normalized_with_nu in RAHLFS_WORDS or normalized_with_nu in SWETE_WORDS:
-        return True
+    # Movable ν only appears after: -ε, -ι (verb endings, dative plural -σι)
+    if normalized.endswith('ε') or normalized.endswith('ι'):
+        normalized_with_nu = normalized + 'ν'
+        if normalized_with_nu in RAHLFS_WORDS or normalized_with_nu in SWETE_WORDS:
+            return True
     
     return False
 
