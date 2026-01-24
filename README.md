@@ -56,6 +56,10 @@ brenton-lxx-error-finder/
 │   ├── README.md                   # Detailed documentation
 │   ├── check_breathing_marks.py    # Main script
 │   └── output/                     # Analysis results (breathing_errors.tsv)
+├── check_latin_characters/         # Correction verification (detects Latin chars in Greek)
+│   ├── README.md                   # Detailed documentation
+│   ├── check_latin_characters.py   # Main script
+│   └── output/                     # Analysis results (latin_characters.tsv)
 ├── apply_corrections/              # Correction application scripts
 │   ├── README.md                   # Detailed documentation
 │   ├── apply_corrections.py        # Script to apply corrections to LaTeX
@@ -173,6 +177,22 @@ The script handles:
 - Diacritical mark fixes (breathing marks, etc.)
 - Word boundary detection to avoid false matches
 
+### 4. Verify Corrections (`check_latin_characters/`)
+
+After applying corrections, verify that no Latin characters were accidentally introduced:
+
+```bash
+cd check_latin_characters
+python3 check_latin_characters.py
+```
+
+The `check_latin_characters.py` script:
+- Scans `Brenton-corrected.tex` for Latin characters mixed with Greek text
+- Also scans `word_corrections.tsv` to catch errors before they're applied
+- Detects visually similar Latin/Greek character confusion (K/Κ, Y/Υ, p/ρ, etc.)
+
+This is primarily a **correction verification tool** rather than an OCR error detector. When manually entering Greek corrections, it's easy to accidentally type a Latin character that looks identical to its Greek equivalent (e.g., Latin 'K' instead of Greek 'Κ').
+
 ## Shared Files
 
 ### `word_corrections.tsv`
@@ -274,4 +294,5 @@ This project is for academic and research purposes, analyzing public domain Sept
 - [ ] Todo check for breathing marks in wrong spots (not on first or second vowel, following a consonant)
 - [ ] 10066	ΒΑΣΙΛΕΙΩΝ Β 11:25	σου εἰν	σου εἳν
 [ ] create word counts for each version, and compare them, if a word is off by a lot, its possibly a common error (εἰν probably happens a lot for εἰς comparatively)
-[ ] how to compare normal word accenting to find errors.
+- [ ] how to compare normal word accenting to find errors.
+- [x] Detect latin characters in corrections (verification tool for word_corrections.tsv and corrected output)
