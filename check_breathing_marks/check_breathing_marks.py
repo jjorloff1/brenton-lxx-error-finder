@@ -364,6 +364,36 @@ def check_breathing_errors(word: str, crasis_dict: Dict[str, str]) -> List[Breat
     if stripped.isupper() and len(stripped) > 1:
         return errors
 
+    # Check for multiple breathing marks (should never have more than one)
+    # Exception: valid ῤῥ pattern on double rho contributes 2 breathing marks
+    if len(breathing_info.all_breathings) > 1:
+        base_chars = get_base_chars(word)
+
+        # Find and exclude valid ῤῥ patterns from the count
+        excluded_positions = set()
+        breathings = breathing_info.all_breathings
+        for i in range(len(breathings) - 1):
+            pos1, type1, _ = breathings[i]
+            pos2, type2, _ = breathings[i + 1]
+            # Check if this pair is a valid ῤῥ pattern
+            if (pos1 < len(base_chars) and pos2 < len(base_chars) and
+                base_chars[pos1][0].lower() == 'ρ' and base_chars[pos2][0].lower() == 'ρ' and
+                pos2 == pos1 + 1 and type1 == 'smooth' and type2 == 'rough'):
+                excluded_positions.add(pos1)
+                excluded_positions.add(pos2)
+
+        # Count remaining breathing marks (not part of valid ῤῥ)
+        remaining = [(pos, btype) for pos, btype, _ in breathings if pos not in excluded_positions]
+
+        if len(remaining) > 1:
+            positions = [str(pos) for pos, _ in remaining]
+            errors.append(BreathingError(
+                error_type='multiple_breathing_marks',
+                description=f'Word has {len(remaining)} breathing marks (excluding valid ῤῥ) at positions {", ".join(positions)}'
+            ))
+            # Return early - no need to check other breathing errors if we have multiple marks
+            return errors
+
     # Check interior rho errors first (applies regardless of word start type)
     rho_errors = check_interior_rho(word)
     errors.extend(rho_errors)
@@ -466,6 +496,27 @@ def check_breathing_errors(word: str, crasis_dict: Dict[str, str]) -> List[Breat
                 errors.append(BreathingError(
                     error_type='crasis_missing_breathing',
                     description=f'Crasis form missing breathing, should be {correct_form}'
+                ))
+
+    # === Check for unexpected interior breathing on vowels ===
+    # Only for vowel-initial or rho-initial words: check for additional breathing marks
+    # beyond the expected initial position. Consonant-initial words are already handled
+    # by the crasis/unexpected_breathing_consonant_initial checks above.
+    if breathing_info.all_breathings and (start_info.starts_with_vowel or start_info.starts_with_rho):
+        base_chars = get_base_chars(word)
+
+        for pos, btype, _ in breathing_info.all_breathings:
+            # Skip if this is at the expected initial breathing position
+            if pos == start_info.expected_breathing_position:
+                continue
+            # Skip if on a rho (handled by interior rho checks)
+            if pos < len(base_chars) and base_chars[pos][0].lower() == 'ρ':
+                continue
+            # Check if this breathing is on a vowel
+            if pos < len(base_chars) and base_chars[pos][0].lower() in VOWELS_LOWER:
+                errors.append(BreathingError(
+                    error_type='unexpected_interior_breathing',
+                    description=f'Unexpected {btype} breathing on interior vowel at position {pos} (possible merged words)'
                 ))
 
     return errors
