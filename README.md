@@ -281,16 +281,16 @@ This project is for academic and research purposes, analyzing public domain Sept
 [x] fix multiple accents
     [x] why did τοῖ not show up from ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 16:42 -> τοι is a valid word in the Rahlf corpus
 [x] find multiple words in a row without accents (ΔΑΝΙΗΛ 9:4)
-[ ] find all words with misplace aaccent marks.
+[x] find all words with misplace aaccent marks.
 [x] Create a list of valid enclitics/proclitics and check accent-less words against that list.
 [ ] may not be worth it: words present, but in different order than rahlf and swete
-[ ] confirm fixes applied in all books
+[x] confirm fixes applied in all books
 [ ] apply all corrections one last time to make sure none missed.
-[ ] Specific cases
+[x] Specific cases
 - [x] ΑΡΙΘΜΟΙ 12:5	εἰν this must have been in rahlf? (yes, different diacriticals, but present)
 - [x] ΛΕΥΙΤΙΚΟΝ 14:2	ὁ νὁμος	ὁ νὅμος weird breathign mark in wrong spot.
 - [x] ΑΡΙΘΜΟΙ 15:15	νὀμος	νὄμος similar
-- [ ] why didn't Δανιδ get caught by typo check?
+- [x] why didn't Δανιδ get caught by typo check?
 - [x] Todo check for breathing marks in wrong spots (not on first or second vowel, following a consonant)
 - [x] 10066	ΒΑΣΙΛΕΙΩΝ Β 11:25	σου εἰν	σου εἳν
 - [x] 29296	ΜΙΧΑΙΑΣ 7:10	ροῦ why not caught - bad movable nu logic
