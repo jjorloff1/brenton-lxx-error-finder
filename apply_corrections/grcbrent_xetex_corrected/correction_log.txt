@@ -2,7 +2,7 @@
 CORRECTION LOG
 ================================================================================
 
-Total corrections applied: 1744
+Total corrections applied: 1790
 Corrections not found: 2
 Corrections at unexpected locations: 0
 
@@ -15,6 +15,12 @@ File: 1CH_src.tex, Line 812
   Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 25:1
   Changed: 'ἀποφεγγομένους' -> 'ἀποφθεγγομένους'
   Location: Chapter 25, Verse 1
+
+File: 1CH_src.tex, Line 710
+  TSV Line: 1540
+  Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 21:15
+  Changed: 'ἐξολοθρεύονντι' -> 'ἐξολοθρεύοντι'
+  Location: Chapter 21, Verse 15
 
 File: 1CH_src.tex, Line 291
   TSV Line: 1204
@@ -314,6 +320,24 @@ File: 1CH_src.tex, Line 718
   Changed: 'εαὐτοῦ' -> 'ἑαυτοῦ'
   Location: Chapter 21, Verse 23
 
+File: 1CH_src.tex, Line 710
+  TSV Line: 1539
+  Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 21:15
+  Changed: 'ἄγγελο' -> 'ἄγγελον'
+  Location: Chapter 21, Verse 15
+
+File: 1CH_src.tex, Line 737
+  TSV Line: 1548
+  Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 22:11
+  Changed: 'υἱέμου' -> 'υἱέ μου'
+  Location: Chapter 22, Verse 11
+
+File: 1CH_src.tex, Line 752
+  TSV Line: 1549
+  Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 23:6
+  Changed: 'Μαραρί' -> 'Μεραρί'
+  Location: Chapter 23, Verse 6
+
 File: 1CH_src.tex, Line 367
   TSV Line: 246
   Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 9:5
@@ -386,6 +410,12 @@ File: 1CH_src.tex, Line 857
   Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 26:14
   Changed: 'Βοῥῥᾶ' -> 'Βοῤῥᾶ'
   Location: Chapter 26, Verse 14
+
+File: 1CH_src.tex, Line 754
+  TSV Line: 1550
+  Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 23:8
+  Changed: 'Ζηθὸμ' -> 'Ζηθὰν'
+  Location: Chapter 23, Verse 8
 
 File: 1CH_src.tex, Line 712
   TSV Line: 262
@@ -465,6 +495,12 @@ File: 1CH_src.tex, Line 583
   Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 16:8
   Changed: 'Ὠδη' -> 'ᾨδή'
   Location: Chapter 16, Verse 8
+
+File: 1CH_src.tex, Line 697
+  TSV Line: 1526
+  Reference: ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 21:2
+  Changed: 'ἀρὸ' -> 'ἀπὸ'
+  Location: Chapter 21, Verse 2
 
 File: 1CH_src.tex, Line 661
   TSV Line: 191
@@ -578,259 +614,259 @@ File: 1CH_src.tex, Line 658
   Notes: 7 matches
 
 File: 1CH_src.tex, Line 480
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 12, Verse 10
 
 File: 1CH_src.tex, Line 465
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 11, Verse 43
 
 File: 1CH_src.tex, Line 460
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 11, Verse 38
 
 File: 1CH_src.tex, Line 457
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 11, Verse 35
 
 File: 1CH_src.tex, Line 449
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 11, Verse 27
 
 File: 1CH_src.tex, Line 433
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 11, Verse 11
 
 File: 1CH_src.tex, Line 335
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 8, Verse 14
 
 File: 1CH_src.tex, Line 330
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 8, Verse 9
 
 File: 1CH_src.tex, Line 328
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 8, Verse 7
 
 File: 1CH_src.tex, Line 322
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 8, Verse 1
 
 File: 1CH_src.tex, Line 315
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 7, Verse 35
 
 File: 1CH_src.tex, Line 301
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 7, Verse 21
 
 File: 1CH_src.tex, Line 299
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 7, Verse 19
 
 File: 1CH_src.tex, Line 292
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 7, Verse 12
 
 File: 1CH_src.tex, Line 283
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 7, Verse 3
 
 File: 1CH_src.tex, Line 315
-  TSV Line: 1526
+  TSV Line: 1574
   Reference: ALL
   Changed: 'ʼΕ' -> 'Ἐ'
   Location: Chapter 7, Verse 35
 
 File: 1CH_src.tex, Line 301
-  TSV Line: 1526
+  TSV Line: 1574
   Reference: ALL
   Changed: 'ʼΕ' -> 'Ἐ'
   Location: Chapter 7, Verse 21
 
 File: 1CH_src.tex, Line 300
-  TSV Line: 1526
+  TSV Line: 1574
   Reference: ALL
   Changed: 'ʼΕ' -> 'Ἐ'
   Location: Chapter 7, Verse 20
 
 File: 1CH_src.tex, Line 288
-  TSV Line: 1526
+  TSV Line: 1574
   Reference: ALL
   Changed: 'ʼΕ' -> 'Ἐ'
   Location: Chapter 7, Verse 8
 
 File: 1CH_src.tex, Line 287
-  TSV Line: 1526
+  TSV Line: 1574
   Reference: ALL
   Changed: 'ʼΕ' -> 'Ἐ'
   Location: Chapter 7, Verse 7
 
 File: 1CH_src.tex, Line 459
-  TSV Line: 1527
+  TSV Line: 1575
   Reference: ALL
   Changed: 'ʼΗ' -> 'Ἠ'
   Location: Chapter 11, Verse 37
 
 File: 1CH_src.tex, Line 478
-  TSV Line: 1528
+  TSV Line: 1576
   Reference: ALL
   Changed: 'ʼΙ' -> 'Ἰ'
   Location: Chapter 12, Verse 8
 
 File: 1CH_src.tex, Line 337
-  TSV Line: 1528
+  TSV Line: 1576
   Reference: ALL
   Changed: 'ʼΙ' -> 'Ἰ'
   Location: Chapter 8, Verse 16
 
 File: 1CH_src.tex, Line 317
-  TSV Line: 1528
+  TSV Line: 1576
   Reference: ALL
   Changed: 'ʼΙ' -> 'Ἰ'
   Location: Chapter 7, Verse 37
 
 File: 1CH_src.tex, Line 316
-  TSV Line: 1528
+  TSV Line: 1576
   Reference: ALL
   Changed: 'ʼΙ' -> 'Ἰ'
   Location: Chapter 7, Verse 36
 
 File: 1CH_src.tex, Line 315
-  TSV Line: 1528
+  TSV Line: 1576
   Reference: ALL
   Changed: 'ʼΙ' -> 'Ἰ'
   Location: Chapter 7, Verse 35
 
 File: 1CH_src.tex, Line 314
-  TSV Line: 1528
+  TSV Line: 1576
   Reference: ALL
   Changed: 'ʼΙ' -> 'Ἰ'
   Location: Chapter 7, Verse 34
 
 File: 1CH_src.tex, Line 291
-  TSV Line: 1528
+  TSV Line: 1576
   Reference: ALL
   Changed: 'ʼΙ' -> 'Ἰ'
   Location: Chapter 7, Verse 11
 
 File: 1CH_src.tex, Line 290
-  TSV Line: 1528
+  TSV Line: 1576
   Reference: ALL
   Changed: 'ʼΙ' -> 'Ἰ'
   Location: Chapter 7, Verse 10
 
 File: 1CH_src.tex, Line 288
-  TSV Line: 1528
+  TSV Line: 1576
   Reference: ALL
   Changed: 'ʼΙ' -> 'Ἰ'
   Location: Chapter 7, Verse 8
 
 File: 1CH_src.tex, Line 286
-  TSV Line: 1528
+  TSV Line: 1576
   Reference: ALL
   Changed: 'ʼΙ' -> 'Ἰ'
   Location: Chapter 7, Verse 6
 
 File: 1CH_src.tex, Line 283
-  TSV Line: 1528
+  TSV Line: 1576
   Reference: ALL
   Changed: 'ʼΙ' -> 'Ἰ'
   Location: Chapter 7, Verse 3
 
 File: 1CH_src.tex, Line 283
-  TSV Line: 1528
+  TSV Line: 1576
   Reference: ALL
   Changed: 'ʼΙ' -> 'Ἰ'
   Location: Chapter 7, Verse 3
 
 File: 1CH_src.tex, Line 283
-  TSV Line: 1528
+  TSV Line: 1576
   Reference: ALL
   Changed: 'ʼΙ' -> 'Ἰ'
   Location: Chapter 7, Verse 3
 
 File: 1CH_src.tex, Line 283
-  TSV Line: 1528
+  TSV Line: 1576
   Reference: ALL
   Changed: 'ʼΙ' -> 'Ἰ'
   Location: Chapter 7, Verse 3
 
 File: 1CH_src.tex, Line 282
-  TSV Line: 1528
+  TSV Line: 1576
   Reference: ALL
   Changed: 'ʼΙ' -> 'Ἰ'
   Location: Chapter 7, Verse 2
 
 File: 1CH_src.tex, Line 282
-  TSV Line: 1528
+  TSV Line: 1576
   Reference: ALL
   Changed: 'ʼΙ' -> 'Ἰ'
   Location: Chapter 7, Verse 2
 
 File: 1CH_src.tex, Line 282
-  TSV Line: 1528
+  TSV Line: 1576
   Reference: ALL
   Changed: 'ʼΙ' -> 'Ἰ'
   Location: Chapter 7, Verse 2
 
 File: 1CH_src.tex, Line 319
-  TSV Line: 1529
+  TSV Line: 1577
   Reference: ALL
   Changed: 'ʼΟ' -> 'Ὀ'
   Location: Chapter 7, Verse 39
 
 File: 1CH_src.tex, Line 283
-  TSV Line: 1529
+  TSV Line: 1577
   Reference: ALL
   Changed: 'ʼΟ' -> 'Ὀ'
   Location: Chapter 7, Verse 3
 
 File: 1CH_src.tex, Line 329
-  TSV Line: 1531
+  TSV Line: 1579
   Reference: ALL
   Changed: 'ʼΩ' -> 'Ὠ'
   Location: Chapter 8, Verse 8
 
 File: 1CH_src.tex, Line 317
-  TSV Line: 1531
+  TSV Line: 1579
   Reference: ALL
   Changed: 'ʼΩ' -> 'Ὠ'
   Location: Chapter 7, Verse 37
 
 File: 1CH_src.tex, Line 296
-  TSV Line: 1532
+  TSV Line: 1580
   Reference: ALL
   Changed: 'ʼΡ' -> 'Ῥ'
   Location: Chapter 7, Verse 16
@@ -933,6 +969,13 @@ File: 1ES_src.tex, Line 114
   Changed: 'πλουσιας' -> 'πλουσίας'
   Location: Chapter 3, Verse 21
 
+File: 1ES_src.tex, Line 233
+  TSV Line: 1557
+  Reference: ΕΣΔΡΑΣ Α 5:51
+  Changed: 'ἐγάγοσαν' -> 'ἠγάγοσαν'
+  Location: Chapter 5, Verse 51
+  Notes: rahlf
+
 File: 1ES_src.tex, Line 160
   TSV Line: 452
   Reference: ΕΣΔΡΑΣ Α 4:42
@@ -1011,6 +1054,12 @@ File: 1ES_src.tex, Line 53
   Reference: ΕΣΔΡΑΣ Α 1:50
   Changed: 'Θεὸζ' -> 'Θεὸς'
   Location: Chapter 1, Verse 50
+
+File: 1ES_src.tex, Line 218
+  TSV Line: 1556
+  Reference: ΕΣΔΡΑΣ Α 5:36
+  Changed: 'Ἀλάρ' -> 'Ἀαλάρ'
+  Location: Chapter 5, Verse 36
 
 File: 1ES_src.tex, Line 331
   TSV Line: 457
@@ -1712,6 +1761,12 @@ File: 1SA_src.tex, Line 58
   Changed: 'ανθρώπων' -> 'ἀνθρώπων'
   Location: Chapter 2, Verse 26
 
+File: 1SA_src.tex, Line 791
+  TSV Line: 1544
+  Reference: ΒΑΣΙΛΕΙΩΝ Α 30:30
+  Changed: 'Βηρσαβεὶ' -> 'Βηρσαβεὲ'
+  Location: Chapter 30, Verse 30
+
 File: 1SA_src.tex, Line 111
   TSV Line: 175
   Reference: ΒΑΣΙΛΕΙΩΝ Α 4:20
@@ -1976,331 +2031,331 @@ File: 1SA_src.tex, Line 320
   Notes: 7 matches
 
 File: 1SA_src.tex, Line 697
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 26, Verse 14
 
 File: 1SA_src.tex, Line 521
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 20, Verse 20
 
 File: 1SA_src.tex, Line 454
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 17, Verse 52
 
 File: 1SA_src.tex, Line 454
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 17, Verse 52
 
 File: 1SA_src.tex, Line 425
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 17, Verse 1
 
 File: 1SA_src.tex, Line 413
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 16, Verse 13
 
 File: 1SA_src.tex, Line 408
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 16, Verse 8
 
 File: 1SA_src.tex, Line 398
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 15, Verse 34
 
 File: 1SA_src.tex, Line 397
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 15, Verse 33
 
 File: 1SA_src.tex, Line 397
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 15, Verse 33
 
 File: 1SA_src.tex, Line 396
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 15, Verse 32
 
 File: 1SA_src.tex, Line 396
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 15, Verse 32
 
 File: 1SA_src.tex, Line 396
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 15, Verse 32
 
 File: 1SA_src.tex, Line 396
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 15, Verse 32
 
 File: 1SA_src.tex, Line 384
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 15, Verse 20
 
 File: 1SA_src.tex, Line 384
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 15, Verse 20
 
 File: 1SA_src.tex, Line 384
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 15, Verse 20
 
 File: 1SA_src.tex, Line 379
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 15, Verse 15
 
 File: 1SA_src.tex, Line 376
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 15, Verse 12
 
 File: 1SA_src.tex, Line 373
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 15, Verse 9
 
 File: 1SA_src.tex, Line 372
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 15, Verse 8
 
 File: 1SA_src.tex, Line 372
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 15, Verse 8
 
 File: 1SA_src.tex, Line 370
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 15, Verse 6
 
 File: 1SA_src.tex, Line 370
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 15, Verse 6
 
 File: 1SA_src.tex, Line 369
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 15, Verse 5
 
 File: 1SA_src.tex, Line 367
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 15, Verse 3
 
 File: 1SA_src.tex, Line 366
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 15, Verse 2
 
 File: 1SA_src.tex, Line 362
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 14, Verse 51
 
 File: 1SA_src.tex, Line 362
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 14, Verse 51
 
 File: 1SA_src.tex, Line 361
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 14, Verse 50
 
 File: 1SA_src.tex, Line 361
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 14, Verse 50
 
 File: 1SA_src.tex, Line 359
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 14, Verse 48
 
 File: 1SA_src.tex, Line 358
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 14, Verse 47
 
 File: 1SA_src.tex, Line 329
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 14, Verse 18
 
 File: 1SA_src.tex, Line 314
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 14, Verse 3
 
 File: 1SA_src.tex, Line 314
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 14, Verse 3
 
 File: 1SA_src.tex, Line 274
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 12, Verse 12
 
 File: 1SA_src.tex, Line 271
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 12, Verse 9
 
 File: 1SA_src.tex, Line 270
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 12, Verse 8
 
 File: 1SA_src.tex, Line 268
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 12, Verse 6
 
 File: 1SA_src.tex, Line 257
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 11, Verse 11
 
 File: 1SA_src.tex, Line 256
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 11, Verse 10
 
 File: 1SA_src.tex, Line 248
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 11, Verse 2
 
 File: 1SA_src.tex, Line 191
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 9, Verse 1
 
 File: 1SA_src.tex, Line 191
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 9, Verse 1
 
 File: 1SA_src.tex, Line 171
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 8, Verse 4
 
 File: 1SA_src.tex, Line 169
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 8, Verse 2
 
 File: 1SA_src.tex, Line 166
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 7, Verse 17
 
 File: 1SA_src.tex, Line 163
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 7, Verse 14
 
 File: 1SA_src.tex, Line 163
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 7, Verse 14
 
 File: 1SA_src.tex, Line 163
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 7, Verse 14
 
 File: 1SA_src.tex, Line 161
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 7, Verse 12
 
 File: 1SA_src.tex, Line 153
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 7, Verse 4
 
 File: 1SA_src.tex, Line 150
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 7, Verse 1
 
 File: 1SA_src.tex, Line 684
-  TSV Line: 1526
+  TSV Line: 1574
   Reference: ALL
   Changed: 'ʼΕ' -> 'Ἐ'
   Location: Chapter 26, Verse 1
@@ -2884,6 +2939,12 @@ File: 2KI_src.tex, Line 404
   Changed: 'ῃραν' -> 'ἦραν'
   Location: Chapter 14, Verse 20
 
+File: 2KI_src.tex, Line 641
+  TSV Line: 1525
+  Reference: ΒΑΣΙΛΕΙΩΝ Δ 21:26
+  Changed: 'κήτῳ' -> 'κήπῳ'
+  Location: Chapter 21, Verse 26
+
 File: 2KI_src.tex, Line 126
   TSV Line: 218
   Reference: ΒΑΣΙΛΕΙΩΝ Δ 5:1
@@ -3077,6 +3138,12 @@ File: 2MA_src.tex, Line 467
   Changed: 'ἐκομισατο' -> 'ἐκομίσατο'
   Location: Chapter 13, Verse 8
 
+File: 2MA_src.tex, Line 155
+  TSV Line: 1563
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Β 4:41
+  Changed: 'Συνιδότες' -> 'Συνιδόντες'
+  Location: Chapter 4, Verse 41
+
 File: 2MA_src.tex, Line 122
   TSV Line: 504
   Reference: ΜΑΚΚΑΒΑΙΩΝ Β 4:8
@@ -3133,6 +3200,12 @@ File: 2MA_src.tex, Line 93
   Changed: 'οὐρανον' -> 'οὐρανὸν'
   Location: Chapter 3, Verse 20
 
+File: 2MA_src.tex, Line 322
+  TSV Line: 1529
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Β 9:17
+  Changed: 'Ἰουδαῖο' -> 'Ἰουδαῖον'
+  Location: Chapter 9, Verse 17
+
 File: 2MA_src.tex, Line 226
   TSV Line: 508
   Reference: ΜΑΚΚΑΒΑΙΩΝ Β 7:1
@@ -3163,6 +3236,13 @@ File: 2MA_src.tex, Line 435
   Reference: ΜΑΚΚΑΒΑΙΩΝ Β 12:22
   Changed: 'ἀλλαχῃ' -> 'ἀλλαχῇ'
   Location: Chapter 12, Verse 22
+
+File: 2MA_src.tex, Line 229
+  TSV Line: 1564
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Β 7:4
+  Changed: 'μετρὸς' -> 'μητρὸς'
+  Location: Chapter 7, Verse 4
+  Notes: rahlf
 
 File: 2MA_src.tex, Line 205
   TSV Line: 507
@@ -3215,7 +3295,7 @@ File: 2MA_src.tex, Line 352
   Notes: 3 matches
 
 File: 2MA_src.tex, Line 280
-  TSV Line: 1528
+  TSV Line: 1576
   Reference: ALL
   Changed: 'ʼΙ' -> 'Ἰ'
   Location: Chapter 8, Verse 12
@@ -3274,6 +3354,12 @@ File: 2SA_src.tex, Line 246
   Changed: 'ἔπτάισεν' -> 'ἔπταισεν'
   Location: Chapter 10, Verse 15
 
+File: 2SA_src.tex, Line 512
+  TSV Line: 1545
+  Reference: ΒΑΣΙΛΕΙΩΝ Β 19:1
+  Changed: 'Ἀβεσαλώμ' -> 'Ἀβεσσαλώμ'
+  Location: Chapter 19, Verse 1
+
 File: 2SA_src.tex, Line 570
   TSV Line: 194
   Reference: ΒΑΣΙΛΕΙΩΝ Β 20:14
@@ -3285,6 +3371,12 @@ File: 2SA_src.tex, Line 340
   Reference: ΒΑΣΙΛΕΙΩΝ Β 13:29
   Changed: 'ἡμιονον' -> 'ἡμίονον'
   Location: Chapter 13, Verse 29
+
+File: 2SA_src.tex, Line 591
+  TSV Line: 1546
+  Reference: ΒΑΣΙΛΕΙΩΝ Β 21:8
+  Changed: 'Ἐρμωνοῒ' -> 'Ἑρμωνοῒ'
+  Location: Chapter 21, Verse 8
 
 File: 2SA_src.tex, Line 486
   TSV Line: 192
@@ -3533,6 +3625,12 @@ File: 3MA_src.tex, Line 180
   Changed: 'ἀναδειξας' -> 'ἀναδείξας'
   Location: Chapter 6, Verse 8
 
+File: 3MA_src.tex, Line 92
+  TSV Line: 1530
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Γ 3:25
+  Changed: 'ἐνδεσμοῖς' -> 'ἐν δεσμοῖς'
+  Location: Chapter 3, Verse 25
+
 File: 3MA_src.tex, Line 76
   TSV Line: 526
   Reference: ΜΑΚΚΑΒΑΙΩΝ Γ 3:9
@@ -3681,6 +3779,13 @@ File: 4MA_src.tex, Line 405
   Changed: 'καὶ μεγαλόψυχοι, καὶ φιλάδελφοι, καὶ μεγαλόψυχοι, καὶ μεψαλόψυχοι, καὶ φιλάδελφοι,' -> 'καὶ μεγαλόψυχοι, καὶ φιλάδελφοι,'
   Location: Chapter 15, Verse 10
 
+File: 4MA_src.tex, Line 332
+  TSV Line: 1569
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 12:7
+  Changed: '(ὡς ἐροῦμεν μετὰ μικρὸν ὕστερον.)' -> 'ὡς ἐροῦμεν μετὰ μικρὸν ὕστερον,'
+  Location: Chapter 12, Verse 7
+  Notes: rahlf
+
 File: 4MA_src.tex, Line 405
   TSV Line: 580
   Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 15:10
@@ -3692,6 +3797,12 @@ File: 4MA_src.tex, Line 212
   Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 7:24
   Changed: 'φιλοσοφουντες χαλεπωτερων' -> 'φιλοσοφοῦντες χαλεπωτέρων'
   Location: Chapter 7, Verse 24
+
+File: 4MA_src.tex, Line 332
+  TSV Line: 1568
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 12:7
+  Changed: 'προτρεψαμένης· αὐτὸν' -> 'προτρεψαμένης αὐτὸν,'
+  Location: Chapter 12, Verse 7
 
 File: 4MA_src.tex, Line 329
   TSV Line: 557
@@ -3778,6 +3889,13 @@ File: 4MA_src.tex, Line 129
   Changed: 'πολιτευεσθαι' -> 'πολιτεύεσθαι'
   Location: Chapter 5, Verse 16
 
+File: 4MA_src.tex, Line 332
+  TSV Line: 1570
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 12:7
+  Changed: 'ἀπολύσατε με' -> 'ἀπολύσατέ με'
+  Location: Chapter 12, Verse 7
+  Notes: swete
+
 File: 4MA_src.tex, Line 348
   TSV Line: 569
   Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 13:2
@@ -3863,6 +3981,19 @@ File: 4MA_src.tex, Line 241
   Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 8:27
   Changed: 'περιφρονες' -> 'περίφρονες'
   Location: Chapter 8, Verse 27
+
+File: 4MA_src.tex, Line 274
+  TSV Line: 1565
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 9:32
+  Changed: 'μιαιρότατε' -> 'μιαιρώτατε'
+  Location: Chapter 9, Verse 32
+  Notes: corrected to match other brenton forms
+
+File: 4MA_src.tex, Line 331
+  TSV Line: 1566
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 12:6
+  Changed: 'στερηθῖσαν' -> 'στερηθεῖσαν'
+  Location: Chapter 12, Verse 6
 
 File: 4MA_src.tex, Line 324
   TSV Line: 532
@@ -4023,7 +4154,7 @@ File: 4MA_src.tex, Line 182
 File: 4MA_src.tex, Line 331
   TSV Line: 558
   Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 12:6
-  Changed: 'ἐμεήσαν' -> 'ἐμεήσας'
+  Changed: 'ἐμεήσαν' -> 'ἐμεήσας τοσούτων'
   Location: Chapter 12, Verse 6
 
 File: 4MA_src.tex, Line 419
@@ -4073,6 +4204,12 @@ File: 4MA_src.tex, Line 491
   Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 18:12
   Changed: 'Ανανίαν' -> 'Ἀνανίαν'
   Location: Chapter 18, Verse 12
+
+File: 4MA_src.tex, Line 331
+  TSV Line: 1567
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 12:6
+  Changed: 'εὐπειθῆ' -> 'εὐπειθῆ ποιῆσαι'
+  Location: Chapter 12, Verse 6
 
 File: 4MA_src.tex, Line 36
   TSV Line: 533
@@ -4334,6 +4471,12 @@ File: 4MA_src.tex, Line 443
   Changed: 'ὃτε' -> 'ὅτε'
   Location: Chapter 16, Verse 15
 
+File: 4MA_src.tex, Line 183
+  TSV Line: 1538
+  Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 6:31
+  Changed: 'οἶν' -> 'οὖν'
+  Location: Chapter 6, Verse 31
+
 File: 4MA_src.tex, Line 444
   TSV Line: 1520
   Reference: ΜΑΚΚΑΒΑΙΩΝ Δ 16:16
@@ -4463,6 +4606,12 @@ File: DAG_src.tex, Line 168
   Changed: 'Ἀβδεσαγὼ' -> 'Ἀβδεναγὼ'
   Location: Chapter 3, Verse 95
 
+File: DAG_src.tex, Line 112
+  TSV Line: 1555
+  Reference: ΔΑΝΙΗΛ 3:37
+  Changed: 'ταπεενοὶ' -> 'ταπεινοὶ'
+  Location: Chapter 3, Verse 37
+
 File: DAG_src.tex, Line 402
   TSV Line: 435
   Reference: ΔΑΝΙΗΛ 11:24
@@ -4480,6 +4629,12 @@ File: DAG_src.tex, Line 124
   Reference: ΔΑΝΙΗΛ 3:49
   Changed: 'Αζαρίαν' -> 'Ἀζαρίαν'
   Location: Chapter 3, Verse 49
+
+File: DAG_src.tex, Line 312
+  TSV Line: 1536
+  Reference: ΔΑΝΙΗΛ 8:12
+  Changed: 'ἐῤῥρίφη' -> 'ἐῤῥίφη'
+  Location: Chapter 8, Verse 12
 
 File: DAG_src.tex, Line 289
   TSV Line: 431
@@ -5134,6 +5289,18 @@ File: ESG_src.tex, Line 10
   Reference: ΕΣΘΗΡ 1:1g
   Changed: 'θλιψις' -> 'θλίψις'
   Location: Chapter 1, Verse 1g
+
+File: ESG_src.tex, Line 159
+  TSV Line: 1533
+  Reference: ΕΣΘΗΡ 6:4
+  Changed: 'εἶπν' -> 'εἶπε'
+  Location: Chapter 6, Verse 4
+
+File: ESG_src.tex, Line 178
+  TSV Line: 1534
+  Reference: ΕΣΘΗΡ 7:8
+  Changed: 'εἶπν' -> 'εἶπε'
+  Location: Chapter 7, Verse 8
 
 File: ESG_src.tex, Line 204
   TSV Line: 1230
@@ -5895,6 +6062,12 @@ File: EZK_src.tex, Line 1257
   Reference: ΙΕΖΕΚΙΗΛ 45:24
   Changed: 'πεμματι' -> 'πέμματι'
   Location: Chapter 45, Verse 24
+
+File: EZK_src.tex, Line 1271
+  TSV Line: 1554
+  Reference: ΙΕΖΕΚΙΗΛ 46:12
+  Changed: 'ἀνοίξεῃ' -> 'ἀνοίξῃ'
+  Location: Chapter 46, Verse 12
 
 File: EZK_src.tex, Line 1246
   TSV Line: 423
@@ -6705,13 +6878,13 @@ File: GEN_src.tex, Line 480
   Notes: 3 matches
 
 File: GEN_src.tex, Line 360
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 14, Verse 7
 
 File: GEN_src.tex, Line 398
-  TSV Line: 1532
+  TSV Line: 1580
   Reference: ALL
   Changed: 'ʼΡ' -> 'Ῥ'
   Location: Chapter 15, Verse 20
@@ -6803,6 +6976,12 @@ File: HOS_src.tex, Line 27
   Changed: 'οὐρανου' -> 'οὐρανοῦ'
   Location: Chapter 2, Verse 14
   Notes: 2 matches
+
+File: ISA_src.tex, Line 1255
+  TSV Line: 1552
+  Reference: ΗΣΑΙΑΣ 60:15
+  Changed: 'ἐνκαταλελειμμένην' -> 'ἐγκαταλελειμμένην'
+  Location: Chapter 60, Verse 15
 
 File: ISA_src.tex, Line 533
   TSV Line: 376
@@ -6973,6 +7152,18 @@ File: ISA_src.tex, Line 1370
   Reference: ΗΣΑΙΑΣ 66:20
   Changed: 'ἁρματων' -> 'ἁρμάτων'
   Location: Chapter 66, Verse 20
+
+File: ISA_src.tex, Line 777
+  TSV Line: 1532
+  Reference: ΗΣΑΙΑΣ 37:30
+  Changed: 'ἐνιαὐτῷ' -> 'ἐνιαυτῷ'
+  Location: Chapter 37, Verse 30
+
+File: ISA_src.tex, Line 442
+  TSV Line: 1547
+  Reference: ΗΣΑΙΑΣ 22:13
+  Changed: 'λέγονες' -> 'λέγοντες'
+  Location: Chapter 22, Verse 13
 
 File: ISA_src.tex, Line 99
   TSV Line: 368
@@ -7162,6 +7353,12 @@ File: ISA_src.tex, Line 365
   Reference: ΗΣΑΙΑΣ 17:14
   Changed: 'πριν' -> 'πρὶν'
   Location: Chapter 17, Verse 14
+
+File: ISA_src.tex, Line 300
+  TSV Line: 1528
+  Reference: ΗΣΑΙΑΣ 14:9
+  Changed: 'ἐθνῶ' -> 'ἐθνῶν'
+  Location: Chapter 14, Verse 9
 
 File: ISA_src.tex, Line 342
   TSV Line: 371
@@ -7435,6 +7632,13 @@ File: JDT_src.tex, Line 283
   Location: Chapter 13, Verse 6
   Notes: rahlf
 
+File: JDT_src.tex, Line 260
+  TSV Line: 1558
+  Reference: ΙΟΥΔΙΘ 12:4
+  Changed: 'δαπανήσι' -> 'δαπανήσει'
+  Location: Chapter 12, Verse 4
+  Notes: rahlf
+
 File: JDT_src.tex, Line 305
   TSV Line: 468
   Reference: ΙΟΥΔΙΘ 14:7
@@ -7692,6 +7896,12 @@ File: JER_src.tex, Line 1117
   Reference: ΙΕΡΕΜΙΑΣ 42:6
   Changed: 'υμῶν' -> 'ὑμῶν'
   Location: Chapter 42, Verse 6
+
+File: JER_src.tex, Line 20
+  TSV Line: 1553
+  Reference: ΙΕΡΕΜΙΑΣ 1:17
+  Changed: 'εἰπὸ' -> 'εἰπὸν'
+  Location: Chapter 1, Verse 17
 
 File: JER_src.tex, Line 1288
   TSV Line: 1288
@@ -7969,6 +8179,12 @@ File: JOS_src.tex, Line 369
   Changed: 'διεκβάλλεῖ' -> 'διεκβάλλει'
   Location: Chapter 15, Verse 7
 
+File: JOS_src.tex, Line 5
+  TSV Line: 1542
+  Reference: ΙΗΣΟΥΣ ΝΑΥΗ 1:2
+  Changed: 'θεράπωνμου' -> 'θεράπων μου'
+  Location: Chapter 1, Verse 2
+
 File: JOS_src.tex, Line 12
   TSV Line: 145
   Reference: ΙΗΣΟΥΣ ΝΑΥΗ 1:9
@@ -8004,6 +8220,12 @@ File: JOS_src.tex, Line 664
   Reference: ΙΗΣΟΥΣ ΝΑΥΗ 24:15
   Changed: 'Ἀμοῤραίων' -> 'Ἀμοῤῥαίων'
   Location: Chapter 24, Verse 15
+
+File: JOS_src.tex, Line 9
+  TSV Line: 1543
+  Reference: ΙΗΣΟΥΣ ΝΑΥΗ 1:6
+  Changed: 'πατράσινν' -> 'πατράσιν'
+  Location: Chapter 1, Verse 6
 
 File: JOS_src.tex, Line 9
   TSV Line: 144
@@ -8905,6 +9127,12 @@ File: NEH_src.tex, Line 387
   Changed: 'ταὐτῇ' -> 'ταύτῃ'
   Location: Chapter 13, Verse 14
 
+File: NEH_src.tex, Line 4
+  TSV Line: 1535
+  Reference: ΝΕΕΜΙΑΣ 1:1
+  Changed: 'ἤμηνν' -> 'ἤμην'
+  Location: Chapter 1, Verse 1
+
 File: NEH_src.tex, Line 105
   TSV Line: 1226
   Reference: ΝΕΕΜΙΑΣ 5:13
@@ -9387,6 +9615,12 @@ File: NUM_src.tex, Line 939
   Changed: 'Αροαδί' -> 'Ἀροαδί'
   Location: Chapter 26, Verse 26
 
+File: NUM_src.tex, Line 892
+  TSV Line: 1541
+  Reference: ΑΡΙΘΜΟΙ 24:24
+  Changed: 'χειρῶς' -> 'χειρῶν'
+  Location: Chapter 24, Verse 24
+
 File: NUM_src.tex, Line 449
   TSV Line: 67
   Reference: ΑΡΙΘΜΟΙ 11:16
@@ -9594,7 +9828,7 @@ File: NUM_src.tex, Line 1258
   Notes: 23 matches
 
 File: NUM_src.tex, Line 68
-  TSV Line: 1532
+  TSV Line: 1580
   Reference: ALL
   Changed: 'ʼΡ' -> 'Ῥ'
   Location: Chapter 2, Verse 10
@@ -9732,6 +9966,12 @@ File: PRO_src.tex, Line 819
   Changed: 'Οδὸς' -> 'Ὁδὸς'
   Location: Chapter 25, Verse 19
 
+File: PRO_src.tex, Line 490
+  TSV Line: 1527
+  Reference: ΠΑΡΟΙΜΙΑΙ ΣΑΛΩΜΩΝΤΟΣ 16:14
+  Changed: 'Θυμὸ' -> 'Θυμὸς'
+  Location: Chapter 16, Verse 14
+
 File: PRO_src.tex, Line 695
   TSV Line: 1258
   Reference: ΠΑΡΟΙΜΙΑΙ ΣΑΛΩΜΩΝΤΟΣ 23:14
@@ -9834,6 +10074,12 @@ File: PSA_src.tex, Line 2309
   Reference: ΨΑΛΜΟΙ 118:109
   Changed: 'τὸν νόμον' -> 'τοῦ νόμου'
   Location: Chapter 118, Verse 109
+
+File: PSA_src.tex, Line 1782
+  TSV Line: 1551
+  Reference: ΨΑΛΜΟΙ 100:3
+  Changed: 'μοικαρδία' -> 'μοι καρδία'
+  Location: Chapter 100, Verse 3
 
 File: PSA_src.tex, Line 837
   TSV Line: 339
@@ -10002,6 +10248,12 @@ File: PSA_src.tex, Line 1882
   Changed: 'Ασατε' -> 'Ἄσατε'
   Location: Chapter 104, Verse 2
 
+File: PSA_src.tex, Line 2597
+  TSV Line: 1537
+  Reference: ΨΑΛΜΟΙ 138:16
+  Changed: 'εἶδου' -> 'εἶδον'
+  Location: Chapter 138, Verse 16
+
 File: PSA_src.tex, Line 1013
   TSV Line: 342
   Reference: ΨΑΛΜΟΙ 60:9
@@ -10065,19 +10317,19 @@ File: PSA_src.tex, Line 332
   Notes: 2 matches
 
 File: PSA_src.tex, Line 6
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 1, Verse 2
 
 File: PSA_src.tex, Line 1365
-  TSV Line: 1526
+  TSV Line: 1574
   Reference: ALL
   Changed: 'ʼΕ' -> 'Ἐ'
   Location: Chapter 77, Verse 32
 
 File: PSA_src.tex, Line 1393
-  TSV Line: 1528
+  TSV Line: 1576
   Reference: ALL
   Changed: 'ʼΙ' -> 'Ἰ'
   Location: Chapter 77, Verse 60
@@ -10126,6 +10378,12 @@ File: SIR_src.tex, Line 1121
   Changed: 'περιβαλλουμένου' -> 'περιβαλλομένου'
   Location: Chapter 40, Verse 4
   Notes: rahlf
+
+File: SIR_src.tex, Line 683
+  TSV Line: 1561
+  Reference: ΣΟΦΙΑ ΣΕΙΡΑΧ 25:1
+  Changed: 'συπεριφερόμενοι' -> 'συμπεριφερόμενοι'
+  Location: Chapter 25, Verse 1
 
 File: SIR_src.tex, Line 326
   TSV Line: 1338
@@ -10343,6 +10601,19 @@ File: SIR_src.tex, Line 686
   Changed: 'βουλην' -> 'βουλήν'
   Location: Chapter 25, Verse 4
 
+File: SIR_src.tex, Line 830
+  TSV Line: 1531
+  Reference: ΣΟΦΙΑ ΣΕΙΡΑΧ 30:13
+  Changed: 'ἐναὐτῷ' -> 'ἐν αὐτῷ'
+  Location: Chapter 30, Verse 13
+
+File: SIR_src.tex, Line 706
+  TSV Line: 1562
+  Reference: ΣΟΦΙΑ ΣΕΙΡΑΧ 25:25
+  Changed: 'πωνηρᾷ' -> 'πονηρᾷ'
+  Location: Chapter 25, Verse 25
+  Notes: rahlf
+
 File: SIR_src.tex, Line 1290
   TSV Line: 484
   Reference: ΣΟΦΙΑ ΣΕΙΡΑΧ 46:5
@@ -10367,6 +10638,12 @@ File: SIR_src.tex, Line 1317
   Reference: ΣΟΦΙΑ ΣΕΙΡΑΧ 47:11
   Changed: 'ἀυτοῦ' -> 'αὐτοῦ'
   Location: Chapter 47, Verse 11
+
+File: SIR_src.tex, Line 311
+  TSV Line: 1560
+  Reference: ΣΟΦΙΑ ΣΕΙΡΑΧ 11:28
+  Changed: 'αὐτῶυ' -> 'αὐτῶν'
+  Location: Chapter 11, Verse 28
 
 File: SIR_src.tex, Line 25
   TSV Line: 1502
@@ -10439,7 +10716,7 @@ File: SIR_src.tex, Line 491
   Notes: 23 matches
 
 File: SIR_src.tex, Line 833
-  TSV Line: 1530
+  TSV Line: 1578
   Reference: ALL
   Changed: 'ʼΥ' -> 'Ὑ'
   Location: Chapter 30, Verse 13b
@@ -10619,7 +10896,7 @@ File: TOB_src.tex, Line 22
   Notes: 23 matches
 
 File: TOB_src.tex, Line 9
-  TSV Line: 1525
+  TSV Line: 1573
   Reference: ALL
   Changed: 'ʼΑ' -> 'Ἀ'
   Location: Chapter 1, Verse 6
@@ -10635,6 +10912,12 @@ File: WIS_src.tex, Line 316
   Reference: ΣΟΦΙΑ ΣΑΛΩΜΩΝ 14:10
   Changed: 'κολασθησεται' -> 'κολασθήσεται'
   Location: Chapter 14, Verse 10
+
+File: WIS_src.tex, Line 280
+  TSV Line: 1559
+  Reference: ΣΟΦΙΑ ΣΑΛΩΜΩΝ 12:22
+  Changed: 'προσδοκῶμει' -> 'προσδοκῶμεν'
+  Location: Chapter 12, Verse 22
 
 File: WIS_src.tex, Line 19
   TSV Line: 470
@@ -10773,37 +11056,37 @@ TSV Line 730: ΔΕΥΤΕΡΟΝΟΜΙΟΝ 3:11
 SUMMARY BY FILE
 --------------------------------------------------------------------------------
 
-1CH_src.tex: 136 corrections
-1ES_src.tex: 39 corrections
+1CH_src.tex: 142 corrections
+1ES_src.tex: 41 corrections
 1KI_src.tex: 45 corrections
 1MA_src.tex: 42 corrections
-1SA_src.tex: 113 corrections
+1SA_src.tex: 114 corrections
 2CH_src.tex: 38 corrections
-2KI_src.tex: 72 corrections
-2MA_src.tex: 39 corrections
-2SA_src.tex: 38 corrections
-3MA_src.tex: 35 corrections
-4MA_src.tex: 117 corrections
+2KI_src.tex: 73 corrections
+2MA_src.tex: 42 corrections
+2SA_src.tex: 40 corrections
+3MA_src.tex: 36 corrections
+4MA_src.tex: 124 corrections
 AMO_src.tex: 6 corrections
 BAR_src.tex: 3 corrections
 BEL_src.tex: 1 corrections
-DAG_src.tex: 22 corrections
+DAG_src.tex: 24 corrections
 DEU_src.tex: 68 corrections
 ECC_src.tex: 7 corrections
-ESG_src.tex: 20 corrections
+ESG_src.tex: 22 corrections
 EXO_src.tex: 90 corrections
-EZK_src.tex: 64 corrections
+EZK_src.tex: 65 corrections
 EZR_src.tex: 10 corrections
 GEN_src.tex: 84 corrections
 HAB_src.tex: 3 corrections
 HOS_src.tex: 11 corrections
-ISA_src.tex: 70 corrections
+ISA_src.tex: 74 corrections
 JDG_src.tex: 24 corrections
-JDT_src.tex: 20 corrections
-JER_src.tex: 33 corrections
+JDT_src.tex: 21 corrections
+JER_src.tex: 34 corrections
 JOB_src.tex: 31 corrections
 JOL_src.tex: 2 corrections
-JOS_src.tex: 61 corrections
+JOS_src.tex: 63 corrections
 LAM_src.tex: 5 corrections
 LEV_src.tex: 45 corrections
 LJE_src.tex: 17 corrections
@@ -10811,16 +11094,16 @@ MAL_src.tex: 2 corrections
 MAN_src.tex: 6 corrections
 MIC_src.tex: 3 corrections
 NAM_src.tex: 2 corrections
-NEH_src.tex: 55 corrections
-NUM_src.tex: 79 corrections
+NEH_src.tex: 56 corrections
+NUM_src.tex: 80 corrections
 OBA_src.tex: 1 corrections
-PRO_src.tex: 23 corrections
-PSA_src.tex: 55 corrections
+PRO_src.tex: 24 corrections
+PSA_src.tex: 57 corrections
 RUT_src.tex: 6 corrections
-SIR_src.tex: 51 corrections
+SIR_src.tex: 55 corrections
 SNG_src.tex: 7 corrections
 SUS_src.tex: 3 corrections
 TOB_src.tex: 19 corrections
-WIS_src.tex: 18 corrections
+WIS_src.tex: 19 corrections
 ZEC_src.tex: 2 corrections
 ZEP_src.tex: 1 corrections
