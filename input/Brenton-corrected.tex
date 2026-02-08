@@ -7,57 +7,136 @@
 \date{}
 
 \begin{document}
+\frontmatter
 \begin{spacing}{1.1}
 \maketitle
 
+% Copyright / colophon page (verso of half title)
+\thispagestyle{empty}
+\vspace*{\fill}
+\begin{center}
+\begin{small}
+
+First Edition, 2026\\[1.5em]
+
+\textit{Old Testament}\\
+The Septuagint text is based on Sir Lancelot Charles Lee Brenton's edition,\\
+originally published 1851 by Samuel Bagster \& Sons, London. Public domain.\\
+Digital text obtained from ebible.org.\\[1em]
+
+Septuagint text corrected by Jesse Orloff.\\[1.5em]
+
+\textit{New Testament}\\
+The Open Greek New Testament (OpenGNT) by Eliran Wong.\\
+Licensed under the Creative Commons Attribution 4.0\\
+International License (CC BY 4.0).\\[1.5em]
+
+Typeset with \LaTeX\ using the Gentium typeface.\\[1em]
+
+Source code: github.com/jjorloff1/lxx-nt-greek-bible-builder\\
+www.jesseorloff.com\\[1em]
+
+\end{small}
+\end{center}
+% Preface (recto)
 \cleardoublepage
-\begin{titlepage}
-  \begin{center}
-    \textcolor{bookheadingcolor}{\Huge Preface}\par
-  \end{center}
-  \vspace{2em}
-  
-  This project was undertaken in love and respect for the Bible, with a desire to have an accessible and
-  beautiful Greek Bible available in print to anyone who would like one. While there are many great Greek
-  New Testaments available in print, the Septuagint has been less accessible, particularly in a format that
-  is both compact and minimalist. Most of the Septuagints available in print are quite large. Additionally,
-  there are almost no complete Greek Bibles available to purchase for a reasonable price. I have undertaken
-  this project for those out there who, like me, want to take a physical Greek Bible along 
-  with them where ever they want to go.
+\thispagestyle{empty}
+\begin{center}
+  \textcolor{bookheadingcolor}{\Huge Preface}\par
+\end{center}
+\vspace{2em}
 
-  When I started this project, I went hunting for open and public domain editions of the Septuagint and the NT
-  that I could use as the texts for this Bible. While there are several great options out there, I settled on
-  the Brenton Septuagint and the OpenGNT new testament. The reason for choosing Brenton's Septuagint was simple:
-  I found a great open source project that had already digitized the text and prepared it for print: 
-  https://github.com/mrgreekgeek/Brenton-LXX-Latex-print-project/. Starting with this baseline, I was able to
-  style the text in a way that I liked. Then I had to find and prepare a NT Text.
+This project was born from a desire to have an accessible, compact Greek Bible available in
+print. While many fine Greek New Testaments exist in printed form, the Septuagint has been far
+less accessible---particularly in a format that is both portable and minimalist. Most printed
+Septuagints are large and expensive. And a complete Greek Bible, containing both the Old and New
+Testaments under one cover, has been especially difficult to find at a reasonable price. I
+undertook this project for anyone who, like me, wants a physical Greek Bible as a companion for
+study and devotion.
 
-  For the NT I chose the Open GNT (https://opengnt.com/) which was prepared by Eliran Wong and released under
-  the Creative Commons Attribution 4.0 International License (CC BY 4.0). This project was created "to offer a 
-  FREE NA-equivalent text of Greek New Testament, compiled from open-resources" and provided access to the text
-  in a format that I could adapt to my needs.
+In designing this edition, I was inspired by the minimalist reader Bibles available in English.
+My aim was to keep the text front and center, eliminating distractions and unnecessary elements.
+Section headings and chapter numbers have been made as unobtrusive as possible. I ultimately
+decided to retain verse numbers for ease of navigation, but they are visually subdued. The goal
+is a novel-like reading experience, where the text of Scripture speaks for itself.
 
-  As for formatting, I was inspired by some of the beautiful minimalist reader Bibles available in English. As
-  much as possible, I wanted to keep the text front and center, eliminating distractions and unnecessary elements.
-  I have tried to mitigate the distraction from things like section headings, spacing between chapters, and even
-  chapter numbers to some degree. I ultimately decided to leave verse numbers in place, because I think navigating
-  the Old Testament may have been more difficult without them; however, I tried to minimize their visual impact.
-  My goal is to facilitate a novel-like reading experience, free of distractions.
+I am grateful to my wife Amanda for her encouragement and patience throughout this project. I 
+also wish to thank Cody Weber, Juan Arambula, and Andrew DeWitt for reviewing corrections to 
+the Septuagint text. The open-source community has been indispensable: the Brenton LXX \LaTeX\ 
+Print Project by mrgreekgeek provided the original digitized Septuagint text, and Eliran Wong's 
+OpenGNT project made a freely available Greek New Testament possible.
 
-  The source code that I have used to extract, process, and format the texts used for this Bible is available 
-  free of charge at https://github.com/jjorloff1/lxx-nt-greek-bible-builder.
+May this project bring Glory to God!
 
-  I hope that this Greek Bible will serve you well as you study and meditate on the Scriptures.
-  Glory to God!
+\vfill
+\begin{flushright}
+  {\large\textit{Jesse Orloff}\par}
+  {\large www.jesseorloff.com\par}
+  {\large 2026\par}
+\end{flushright}
+% Introduction (recto)
+\cleardoublepage
+\thispagestyle{empty}
+\begin{center}
+  \textcolor{bookheadingcolor}{\Huge Introduction}\par
+\end{center}
+\vspace{2em}
 
-  \vfill
-  \begin{flushright}
-    {\large\textit{Jesse Orloff}\par}
-    {\large www.jesseorloff.com\par}
-    {\large August 2025\par}
-  \end{flushright}  
-\end{titlepage}
+\noindent{\large\textbf{The Old Testament Text}}
+\vspace{0.5em}
 
+\noindent The Old Testament in this edition is the Septuagint as published by Sir Lancelot Charles Lee
+Brenton, originally issued in 1851 by Samuel Bagster \& Sons, London. The digital text was
+obtained from ebible.org and was originally prepared for \LaTeX\ by the Brenton LXX \LaTeX\
+Print Project (mrgreekgeek).
+
+During the preparation of this edition, extensive OCR and transcription errors were discovered in
+the digitized text. To address these, every word of the Septuagint was compared against the
+critical editions of Rahlfs (\textit{Septuaginta}, 1935) and Swete (\textit{The Old Testament
+in Greek}, 1909--1922) using six automated detection methods. These methods identified vocabulary
+errors (words absent from all known editions), character substitution errors, accent and
+breathing mark discrepancies, and cases of incorrectly merged or split words.
+
+Through this process, 1,792 corrections were applied across all 53 books of the Old Testament
+and the Apocrypha. These corrections fall into two categories:
+
+\textit{OCR corrections} (approximately 1,370): These restore the text to what Brenton's
+printed edition actually says. They correct errors introduced during digitization and OCR
+processing. Each was verified visually against a PDF of Brenton's \textasciitilde 1900 edition
+(\textit{The Septuagint Version of the Old Testament and Apocrypha}, Samuel Bagster, London;
+from archive.org).
+
+\textit{Editorial corrections} (approximately 170): These are corrections \textit{away} from
+Brenton's text to align with the critical editions---primarily Rahlfs (approximately 146
+corrections), with some to Swete (approximately 12), Codex Vaticanus (4), and Codex Alexandrinus
+(1). In a small number of cases, an editorial judgment was made based on the available evidence.
+
+Additionally, approximately 2,400 legitimate textual variants were catalogued as valid
+differences between Brenton and the critical editions. The complete correction log with full
+details is available in the source repository.
+
+\vspace{1em}
+\noindent{\large\textbf{The New Testament Text}}
+\vspace{0.5em}
+
+\noindent The New Testament text is the Open Greek New Testament (OpenGNT) by Eliran Wong, released under
+the Creative Commons Attribution 4.0 International License (CC BY 4.0). The OpenGNT provides an
+NA-equivalent text compiled from open resources. No corrections were made to this text.
+
+\vspace{1em}
+\noindent{\large\textbf{Versification and Canon}}
+\vspace{0.5em}
+
+\noindent The Psalms follow LXX numbering, with Masoretic cross-references provided. The Old Testament
+follows the standard Septuagint canonical order, including the deuterocanonical books. The New
+Testament follows the standard 27-book ordering.
+
+\vspace{1em}
+\noindent{\large\textbf{Source Code}}
+\vspace{0.5em}
+
+\noindent The source code used to build this edition is freely available at:\\
+github.com/jjorloff1/lxx-nt-greek-bible-builder
 \cleardoublepage
 \pagestyle{empty}
 \begingroup
@@ -73,6 +152,7 @@
 \end{multicols}
 \pagestyle{fancy}
 
+\mainmatter
 
 \def\book{ΓΕΝΕΣΙΣ}
 \biblebook{ΓΕΝΕΣΙΣ}
