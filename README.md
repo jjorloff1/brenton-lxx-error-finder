@@ -271,29 +271,33 @@ This project is for academic and research purposes, analyzing public domain Sept
 - Swete's Old Testament in Greek edition
 
 ## To Do
-[x] Refactor: Move Brenton.tex input file up to root and update all scripts accordingly.
-[x] Refactor: Extract Brenton.tex parsing logic into shared `brenton_parser.py` utility.
+- [x] Refactor: Move Brenton.tex input file up to root and update all scripts accordingly.
+- [x] Refactor: Extract Brenton.tex parsing logic into shared `brenton_parser.py` utility.
 - [x] The missing_words, and legitimate words files don't have the same number in them, which are different?
-[x] Refactor: For check_sequence_errors move line number to the first column
-[x] Manual: Validate sequencing errors
-[x] Manual: Verify and Fix Grave Errors
-    [x] Investigated why merged words weren't detected by typo script - they were matching compound word combinations and being classified as "legitimate variations". Created `check_multiple_accents.py` to detect these.
-[x] fix multiple accents
-    [x] why did τοῖ not show up from ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 16:42 -> τοι is a valid word in the Rahlf corpus
-[x] find multiple words in a row without accents (ΔΑΝΙΗΛ 9:4)
-[x] find all words with misplace aaccent marks.
-[x] Create a list of valid enclitics/proclitics and check accent-less words against that list.
-[ ] may not be worth it: words present, but in different order than rahlf and swete
-[x] confirm fixes applied in all books
-[ ] apply all corrections one last time to make sure none missed.
-[x] Specific cases
-- [x] ΑΡΙΘΜΟΙ 12:5	εἰν this must have been in rahlf? (yes, different diacriticals, but present)
-- [x] ΛΕΥΙΤΙΚΟΝ 14:2	ὁ νὁμος	ὁ νὅμος weird breathign mark in wrong spot.
-- [x] ΑΡΙΘΜΟΙ 15:15	νὀμος	νὄμος similar
-- [x] why didn't Δανιδ get caught by typo check?
-- [x] Todo check for breathing marks in wrong spots (not on first or second vowel, following a consonant)
-- [x] 10066	ΒΑΣΙΛΕΙΩΝ Β 11:25	σου εἰν	σου εἳν
-- [x] 29296	ΜΙΧΑΙΑΣ 7:10	ροῦ why not caught - bad movable nu logic
-[ ] create word counts for each version, and compare them, if a word is off by a lot, its possibly a common error (εἰν probably happens a lot for εἰς comparatively)
-- [ ] how to compare normal word accenting to find errors.
+- [x] Refactor: For check_sequence_errors move line number to the first column
+- [x] Manual: Validate sequencing errors
+- [x] Manual: Verify and Fix Grave Errors
+    - [x] Investigated why merged words weren't detected by typo script - they were matching compound word combinations and being classified as "legitimate variations". Created `check_multiple_accents.py` to detect these.
+- [x] fix multiple accents
+    - [x] why did τοῖ not show up from ΠΑΡΑΛΕΙΠΟΜΕΝΩΝ Α 16:42 -> τοι is a valid word in the Rahlf corpus
+- [x] find multiple words in a row without accents (ΔΑΝΙΗΛ 9:4)
+- [x] find all words with misplace aaccent marks.
+- [x] Create a list of valid enclitics/proclitics and check accent-less words against that list.
+- [x] confirm fixes applied in all books
+- [x] Specific cases
+    - [x] ΑΡΙΘΜΟΙ 12:5	εἰν this must have been in rahlf? (yes, different diacriticals, but present)
+    - [x] ΛΕΥΙΤΙΚΟΝ 14:2	ὁ νὁμος	ὁ νὅμος weird breathign mark in wrong spot.
+    - [x] ΑΡΙΘΜΟΙ 15:15	νὀμος	νὄμος similar
+    - [x] why didn't Δανιδ get caught by typo check?
+    - [x] Todo check for breathing marks in wrong spots (not on first or second vowel, following a consonant)
+    - [x] 10066	ΒΑΣΙΛΕΙΩΝ Β 11:25	σου εἰν	σου εἳν
+    - [x] 29296	ΜΙΧΑΙΑΣ 7:10	ροῦ why not caught - bad movable nu logic
 - [x] Detect latin characters in corrections (verification tool for word_corrections.tsv and corrected output)
+- [ ] Detect misplaced verse start/end.  If you string together two verses, and the text is basically the same, but the verse number in Brenton is in a different place, its probably because the numbering in the physical document was in the margins.  Adopt Rahlf's positioning, shifting the words over.
+    - if an article is at the end of the verse
+    - if a period is in the middle of a verse
+    - if the first word isn't capitalized
+- [ ] create word counts for each version, and compare them, if a word is off by a lot, its possibly a common error (εἰν probably happens a lot for εἰς comparatively)
+- [ ] how to compare normal word accenting to find errors.
+- [ ] may not be worth it: words present, but in different order than rahlf and swete
+- [ ] apply all corrections one last time to make sure none missed.
